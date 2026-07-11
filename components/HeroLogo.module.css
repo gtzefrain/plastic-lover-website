@@ -5,14 +5,19 @@
   width: min(44vh, 70vw, 500px);
 }
 
-.logo {
+.stack {
+  position: relative;
   width: 100%;
   aspect-ratio: 3246 / 3226;
-  transform-origin: 50% 0%;
-  background-image: url("/logo/LOGO_3D.png");
+}
+
+.letter {
+  position: absolute;
+  inset: 0;
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
+  will-change: transform, filter;
 }
 
 .shadow {

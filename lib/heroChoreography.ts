@@ -1,20 +1,28 @@
-// Choreography for the landing hero logo entrance.
-//
-// The handoff's default entrance ("blobs") assembles the wordmark from 12
-// individually-positioned letter PNGs, all meant to be the same full
-// 3246x3226 canvas so they stack pixel-perfectly. The delivered asset pack
-// is missing that layer for "o" (O.png is a differently-cropped 1501x2113
-// glyph, not the full canvas), which breaks the wordmark. We use the
-// "melt" entrance instead — fully specified in the handoff and built on
-// LOGO_3D.png, the one complete, correctly-composed asset.
+// Choreography for the landing hero logo entrance ("blobs" — the handoff's
+// default): 12 individually-positioned full-canvas (3246x3226) letter PNGs
+// fly in from scattered offsets as blurred blobs and sharpen into place.
 export const HERO_SPEED = 1;
 export const HERO_FLOATING = true;
 
 export const d = (seconds: number) => seconds / HERO_SPEED + "s";
 
-export const HERO_DROP_DURATION = d(2.2);
-export const HERO_ENTER_EASE = "cubic-bezier(0.45, 0.05, 0.25, 1)";
+export const NAV_DELAY = d(2.4);
+export const TAGLINE_DELAY = d(2.75);
+export const CTA_DELAY = d(3.05);
 
-export const NAV_DELAY = d(1.7);
-export const TAGLINE_DELAY = d(2.05);
-export const CTA_DELAY = d(2.35);
+// [filename, dx (vw), dy (vh), rot (deg)] — scatter start offsets for each
+// letter layer, spelling P-l-a-s-t-i-c-L-o-v-e-r.
+export const LETTERS: [string, number, number, number][] = [
+  ["P.png", -42, -30, -60],
+  ["l1.png", 18, -48, 45],
+  ["a.png", -30, 35, -90],
+  ["S.png", 40, -25, 70],
+  ["t.png", -15, -52, -40],
+  ["i.png", 48, 20, 110],
+  ["c.png", 35, -40, -75],
+  ["L.png", -48, 25, 80],
+  ["o.png", -22, 50, -55],
+  ["v.png", 12, 55, 65],
+  ["e.png", 45, 38, -100],
+  ["R.png", 30, 48, 50],
+];
