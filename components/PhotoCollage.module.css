@@ -29,6 +29,8 @@
 
 .frame {
   position: absolute;
+  width: var(--frame-w);
+  height: var(--frame-h);
   background: repeating-linear-gradient(
     45deg,
     var(--pl-placeholder) 0px,
@@ -57,10 +59,29 @@
 
 @media (max-width: 640px) {
   /* On a narrow, tall viewport the independent vw/vh sizes no longer
-     approximate the desktop aspect ratio, so derive height from width
-     via the ratio baked into --frame-ratio instead of the raw vh value. */
+     approximate the desktop aspect ratio. Keep the vh height (it still
+     reads as a sensible chunk of a phone screen) and derive width from
+     it via --frame-ratio instead of the raw vw, which would otherwise
+     shrink every frame down to a tiny, distorted sliver. */
   .frame {
+    /* Prefer the width implied by the (still vh-based) height, but never
+       more than the space actually available to the right of the frame's
+       left offset (minus a gutter, so the right edge gets a real margin
+       instead of sitting flush against the viewport) — otherwise the
+       right edge overflows while height stays put. Deriving height from
+       whichever width wins keeps the aspect ratio correct either way,
+       instead of just clamping width and leaving height fixed (which
+       would restretch the frame). */
+    width: min(calc(var(--frame-h) * var(--frame-ratio)), calc(100% - var(--frame-left) - 16px));
     height: auto;
     aspect-ratio: var(--frame-ratio);
+  }
+
+  /* Frames are now sized to fill a real chunk of a phone screen, so having
+     up to 8 of them animate in per set turn (tuned for a spacious desktop
+     canvas) reads as a crowded jumble. Drop 2 of every 8 per set so at
+     most ~6 are ever cycling in at once. */
+  .frameAlt {
+    display: none;
   }
 }

@@ -19,16 +19,17 @@ export default function PhotoCollage({ scrollTargetId }: PhotoCollageProps) {
       {photos.map((p, i) => (
         <div
           key={i}
-          className={styles.frame}
+          className={p.posInSet % 4 === 3 ? `${styles.frame} ${styles.frameAlt}` : styles.frame}
           style={{
             top: p.top,
             left: p.left,
-            width: p.w,
-            height: p.h,
             zIndex: p.z,
             animation: p.anim,
             animationDelay: p.delay,
+            ["--frame-w" as string]: p.w,
+            ["--frame-h" as string]: p.h,
             ["--frame-ratio" as string]: p.ratio,
+            ["--frame-left" as string]: p.left,
           } as CSSProperties}
         >
           <span className={styles.frameLabel}>{p.label}</span>
