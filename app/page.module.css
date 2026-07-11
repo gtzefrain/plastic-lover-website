@@ -6,6 +6,7 @@
 
 .hero {
   height: 100vh;
+  height: 100dvh;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -45,6 +46,7 @@
 
 .release {
   min-height: 100vh;
+  min-height: 100dvh;
   position: relative;
   box-sizing: border-box;
   padding: 100px 6vw 150px;
@@ -105,6 +107,7 @@
 
 .join {
   height: 100vh;
+  height: 100dvh;
   box-sizing: border-box;
   padding: 70px 24px 84px;
   display: flex;

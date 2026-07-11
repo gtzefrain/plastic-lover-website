@@ -1,36 +1,71 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Plastic Lover
 
-## Getting Started
+Marketing site for the band Plastic Lover — a Next.js App Router site with an animated hero
+entrance, tour dates, releases, and a mailing-list signup.
 
-First, run the development server:
+## Stack
+
+- **Next.js 16** (App Router) on **React 19**, TypeScript, CSS Modules — no UI/animation
+  libraries; all motion is hand-written CSS keyframes driven from inline `style` props.
+- Deployed on Vercel (project linked via `.vercel/`).
+
+## Getting started
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run dev      # start the dev server at http://localhost:3000
+npm run build    # production build
+npm run start    # run the production build
+npm run lint     # eslint (eslint-config-next, flat config)
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Routes
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Route         | File                        | Notes                                             |
+| ------------- | --------------------------- | -------------------------------------------------- |
+| `/`           | `app/page.tsx`               | Server component reads the `pl_hero_seen` cookie, hands off to `HomeClient` (see below). |
+| `/live`       | `app/live/page.tsx`          | Tour dates, built on `PageShell` + `RowList`.       |
+| `/releases`   | `app/releases/page.tsx`      | Release cards, built on `PageShell` + `CardGrid`.   |
+| `/releases/[slug]` | `app/releases/[slug]/page.tsx` | Single-release landing page (title, streaming embed, service links). Standalone — no `SiteNav`/`Footer`. Data in `lib/releases.ts`. |
+| `/lyrics`     | `app/lyrics/page.tsx`        | `PageShell` + `RowList`.                            |
+| `/videos`     | `app/videos/page.tsx`        | `PageShell` + `CardGrid`.                           |
+| `/store`      | `app/store/page.tsx`         | `PageShell` + `CardGrid`.                           |
+| `/contact`    | `app/contact/page.tsx`       | `PageShell` + `RowList`.                            |
+| `/subscribe`  | `app/subscribe/page.tsx`     | Standalone mailing-list page (nav + form + footer). |
+| `POST /api/subscribe` | `app/api/subscribe/route.ts` | Validates the email and logs it. **Not wired up to a real provider yet** — see below. |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Architecture
 
-## Learn More
+- **Home page** (`app/page.tsx` → `components/HomeClient.tsx`): the server component checks
+  for the `pl_hero_seen` cookie and passes `heroSeen` into the client component, which decides
+  whether to play the full hero entrance animation or skip straight to the settled state (and
+  sets the cookie so repeat visits skip the intro). A "↻ REPLAY" control in the footer lets a
+  visitor re-trigger the entrance via a `run` counter that re-mounts the animated pieces
+  (`SiteNav`, `HeroLogo`, footer) with fresh `key`s.
+- **Hero entrance choreography** lives in `lib/heroChoreography.ts`: per-letter scatter offsets
+  and stagger delays for the 12-layer logo (`components/HeroLogo.tsx`, one absolutely-positioned
+  PNG per letter in `public/logo/`), plus the delay constants that stagger the nav, tagline, and
+  CTA fade-ins on top of it.
+- **Photo collage** (`components/PhotoCollage.tsx`): `lib/photoSets.ts` defines three sets of 8
+  positioned photo placeholders that loop continuously and cross-fade on a 16s cycle, offset by a
+  third of the cycle per set so the section is never empty.
+- **Inner pages share `components/PageShell.tsx`**, which renders `SiteNav` + a titled content
+  area + `Footer`. Content is composed from two presentational CSS-module "kits" rather than
+  per-page components:
+  - `components/RowList.module.css` — list rows (live dates, lyrics, contact).
+  - `components/CardGrid.module.css` — card grids (releases, store, videos).
 
-To learn more about Next.js, take a look at the following resources:
+  These are imported directly as CSS modules (`import rows from "@/components/RowList.module.css"`)
+  with no accompanying `.tsx` wrapper — pages assemble the markup inline using the shared class
+  names.
+- **Navigation** is data-driven from `lib/nav.ts` (`NAV_LINKS`), consumed by `SiteNav` (desktop
+  links + a mobile slide-out drawer above 860px/below breakpoint).
+- **Mailing list**: `components/MailingListForm.tsx` posts `{ email }` to `/api/subscribe`. The
+  route currently only validates and `console.log`s the address — wiring it up to a real provider
+  (Mailchimp, Klaviyo, etc.) is a known TODO (see the comment in `app/api/subscribe/route.ts`).
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Working in this repo
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This project runs Next.js 16, the current stable release on npm — not a fork or beta. Because
+it's newer than most training data, APIs, conventions, and file structure may differ from what's
+expected. Before writing code that touches routing, data fetching, config, or any other
+framework API, read the matching guide under `node_modules/next/dist/docs/`.

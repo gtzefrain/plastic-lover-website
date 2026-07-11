@@ -1,0 +1,101 @@
+.frame {
+  position: relative;
+  width: 188px;
+  aspect-ratio: 1 / 1;
+  display: block;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid rgba(198, 12, 44, 0.35);
+  box-shadow: var(--pl-shadow-frame);
+  background: var(--pl-bg);
+  cursor: pointer;
+}
+
+@media (min-width: 641px) {
+  .frame {
+    width: 240px;
+  }
+}
+
+.cover {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.playIcon {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.playIcon::before {
+  content: "";
+  position: absolute;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--pl-primary);
+  box-shadow: 0 6px 18px rgba(198, 12, 44, 0.45);
+  transition: transform 0.2s var(--pl-spring), background 0.2s;
+}
+
+.playIcon svg {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  margin-left: 3px;
+  color: #fff;
+}
+
+.frame:hover .playIcon::before {
+  transform: scale(1.1);
+  background: var(--pl-button-hover);
+}
+
+.modalBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  animation: plFadeIn 0.2s ease both;
+}
+
+.modalBody {
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+}
+
+.modalClose {
+  position: absolute;
+  top: -44px;
+  right: 0;
+  border: none;
+  background: none;
+  color: #fff;
+  font-size: 32px;
+  line-height: 1;
+  padding: 4px 8px;
+  cursor: pointer;
+}
+
+.modalVideo {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #000;
+}
+
+.modalVideo iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+}

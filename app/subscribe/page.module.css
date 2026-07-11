@@ -3,6 +3,7 @@
   font-family: var(--pl-font-display);
   color: var(--pl-primary);
   height: 100vh;
+  height: 100dvh;
   box-sizing: border-box;
   padding: 70px 0 64px;
   display: flex;

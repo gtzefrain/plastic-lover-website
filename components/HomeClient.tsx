@@ -33,19 +33,21 @@ export default function HomeClient({ heroSeen }: HomeClientProps) {
   const ctaDelay = heroPlaying ? CTA_DELAY : "0s";
 
   const handleReplay = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
     setHeroPlaying(true);
     setRun((r) => r + 1);
   };
 
   return (
     <div className={styles.page}>
-      <SiteNav entranceDelay={navDelay} />
+      <SiteNav key={`nav-${run}`} entranceDelay={navDelay} />
 
       <div data-screen-label="Hero" className={styles.hero}>
         <div className={styles.heroInner}>
           <HeroLogo runKey={run} skipEntrance={!heroPlaying} />
 
           <div
+            key={`tagline-${run}`}
             className={styles.tagline}
             style={{
               animation: `plFadeUp 0.8s cubic-bezier(0.2,0.8,0.2,1) forwards`,
@@ -56,6 +58,7 @@ export default function HomeClient({ heroSeen }: HomeClientProps) {
           </div>
 
           <div
+            key={`cta-${run}`}
             className={styles.ctaWrap}
             style={{
               animation: `plPop 0.6s cubic-bezier(0.34,1.56,0.64,1) forwards`,
@@ -66,7 +69,12 @@ export default function HomeClient({ heroSeen }: HomeClientProps) {
           </div>
         </div>
 
-        <ScrollArrow targetId="pl-release" label="Scroll to latest release" fadeDelay={ctaDelay} />
+        <ScrollArrow
+          key={`arrow-${run}`}
+          targetId="pl-release"
+          label="Scroll to latest release"
+          fadeDelay={ctaDelay}
+        />
       </div>
 
       <div data-screen-label="Latest Release" id="pl-release" className={styles.release}>
@@ -98,7 +106,7 @@ export default function HomeClient({ heroSeen }: HomeClientProps) {
         <MailingListForm />
       </div>
 
-      <Footer onReplay={handleReplay} entranceDelay={ctaDelay} />
+      <Footer key={`footer-${run}`} onReplay={handleReplay} entranceDelay={ctaDelay} />
     </div>
   );
 }
