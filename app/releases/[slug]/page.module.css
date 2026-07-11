@@ -11,6 +11,11 @@
   padding: 56px 24px 72px;
 }
 
+.pageWithChrome {
+  padding-top: 130px;
+  padding-bottom: 110px;
+}
+
 .content {
   width: 100%;
   max-width: 380px;

@@ -37,7 +37,7 @@ export default function SiteNav({ entranceDelay }: SiteNavProps) {
     >
       <div className={styles.bar}>
         <Link href="/" className={styles.wordmark}>
-          PLASTIC&nbsp;LOVER&nbsp;®
+          PLASTIC&nbsp;LOVER
         </Link>
 
         {!isMobile && (
@@ -74,7 +74,7 @@ export default function SiteNav({ entranceDelay }: SiteNavProps) {
       {isMobile && menuOpen && (
         <div className={styles.drawer}>
           <div className={styles.drawerBar}>
-            <span className={styles.wordmark}>PLASTIC&nbsp;LOVER&nbsp;®</span>
+            <span className={styles.wordmark}>PLASTIC&nbsp;LOVER</span>
             <button
               type="button"
               onClick={() => setMenuOpen(false)}

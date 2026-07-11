@@ -45,15 +45,20 @@
 
 .playIcon svg {
   position: relative;
-  width: 20px;
-  height: 20px;
-  margin-left: 3px;
+  width: 28px;
+  height: 28px;
+  margin-left: 4px;
   color: #fff;
+  transition: transform 0.2s var(--pl-spring);
 }
 
 .frame:hover .playIcon::before {
   transform: scale(1.1);
   background: var(--pl-button-hover);
+}
+
+.frame:hover .playIcon svg {
+  transform: scale(1.1);
 }
 
 .modalBackdrop {

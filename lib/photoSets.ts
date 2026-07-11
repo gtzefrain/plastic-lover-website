@@ -43,7 +43,14 @@ export const PHOTO_SETS: PhotoSpec[][] = [
 
 const LOOP = 16;
 
-export type LoopedPhoto = PhotoSpec & { anim: string; delay: string };
+// The vw/vh sizes above were tuned against a widescreen desktop viewport, so
+// their w:h ratio only reads correctly there — on a narrow, tall mobile
+// viewport the same vw/vh pair maps to very different pixel dimensions and
+// the frame looks stretched. Bake in the desktop aspect ratio here so it can
+// be reapplied via CSS `aspect-ratio` on mobile instead of the raw vh.
+const DESKTOP_ASPECT = 16 / 9;
+
+export type LoopedPhoto = PhotoSpec & { anim: string; delay: string; ratio: number };
 
 // All 24 photos loop continuously on a 16s cycle; each is visible for a
 // third of it (0.9s in + ~3.5s hold + 0.9s out). The three sets are offset
@@ -55,6 +62,7 @@ export function buildLoopedPhotos(): LoopedPhoto[] {
       ...p,
       anim: `${i % 2 === 0 ? "plLoopR" : "plLoopL"} ${LOOP}s ease-in-out infinite both`,
       delay: `${s * (LOOP / 3) + p.dly}s`,
+      ratio: (parseFloat(p.w) / parseFloat(p.h)) * DESKTOP_ASPECT,
     })),
   );
 }

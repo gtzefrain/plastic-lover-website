@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import { buildLoopedPhotos } from "@/lib/photoSets";
 import styles from "./PhotoCollage.module.css";
 import ScrollArrow from "./ScrollArrow";
@@ -27,7 +28,8 @@ export default function PhotoCollage({ scrollTargetId }: PhotoCollageProps) {
             zIndex: p.z,
             animation: p.anim,
             animationDelay: p.delay,
-          }}
+            ["--frame-ratio" as string]: p.ratio,
+          } as CSSProperties}
         >
           <span className={styles.frameLabel}>{p.label}</span>
         </div>

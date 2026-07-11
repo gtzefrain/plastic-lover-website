@@ -54,3 +54,13 @@
   border: 1px dashed rgba(198, 12, 44, 0.4);
   white-space: nowrap;
 }
+
+@media (max-width: 640px) {
+  /* On a narrow, tall viewport the independent vw/vh sizes no longer
+     approximate the desktop aspect ratio, so derive height from width
+     via the ratio baked into --frame-ratio instead of the raw vh value. */
+  .frame {
+    height: auto;
+    aspect-ratio: var(--frame-ratio);
+  }
+}

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
+import { FaPlay } from "react-icons/fa6";
 import styles from "./ReleasePlayer.module.css";
 
 type ReleasePlayerProps = {
@@ -34,9 +35,7 @@ export default function ReleasePlayer({ cover, title, videoId }: ReleasePlayerPr
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={cover} alt={`${title} cover art`} className={styles.cover} />
         <span className={styles.playIcon} aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="currentColor">
-            <path d="M8 5v14l11-7z" />
-          </svg>
+          <FaPlay />
         </span>
       </button>
 

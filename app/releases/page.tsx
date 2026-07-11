@@ -29,7 +29,7 @@ export default function ReleasesPage() {
               <div className={grid.title}>{r.title}</div>
               <div className={grid.metaRow}>
                 <span className={grid.meta}>{r.meta}</span>
-                <Button href={hasPage ? `/releases/${r.slug}` : "#"} variant="outline">
+                <Button href={hasPage ? `/releases/${r.slug}?site=1` : "#"} variant="outline">
                   STREAM
                 </Button>
               </div>
