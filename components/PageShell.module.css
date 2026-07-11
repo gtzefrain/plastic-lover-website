@@ -1,0 +1,20 @@
+.page {
+  background: var(--pl-bg);
+  font-family: var(--pl-font-display);
+  color: var(--pl-primary);
+  min-height: 100vh;
+  box-sizing: border-box;
+  padding: 90px 0 90px;
+}
+
+.content {
+  margin: 0 auto;
+  padding: 40px 44px 0;
+}
+
+.kicker {
+  font-family: var(--pl-font-mono);
+  font-size: 13px;
+  letter-spacing: 0.22em;
+  margin-bottom: 40px;
+}

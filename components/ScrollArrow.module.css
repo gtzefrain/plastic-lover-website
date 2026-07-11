@@ -1,0 +1,42 @@
+.wrap {
+  position: absolute;
+  bottom: 96px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.wrapSolid {
+  z-index: 20;
+}
+
+.wrapHero {
+  opacity: 0;
+}
+
+.circle {
+  cursor: pointer;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 1px solid rgba(198, 12, 44, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--pl-primary);
+  background: none;
+  padding: 0;
+}
+
+.circle:hover {
+  background: rgba(198, 12, 44, 0.07);
+}
+
+.circleSolid {
+  background: var(--pl-bg);
+}
+
+.circleSolid:hover {
+  background: rgba(198, 12, 44, 0.07);
+}

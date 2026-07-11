@@ -1,65 +1,81 @@
-import Image from "next/image";
+"use client";
+
+import { useState } from "react";
+import Button from "@/components/Button";
+import Footer from "@/components/Footer";
+import HeroLogo from "@/components/HeroLogo";
+import MailingListForm from "@/components/MailingListForm";
+import PhotoCollage from "@/components/PhotoCollage";
+import ScrollArrow from "@/components/ScrollArrow";
+import SiteNav from "@/components/SiteNav";
+import { CTA_DELAY, NAV_DELAY, TAGLINE_DELAY } from "@/lib/heroChoreography";
+import styles from "./page.module.css";
 
 export default function Home() {
+  const [run, setRun] = useState(0);
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <div className={styles.page}>
+      <SiteNav entranceDelay={NAV_DELAY} />
+
+      <div data-screen-label="Hero" className={styles.hero}>
+        <div className={styles.heroInner}>
+          <HeroLogo runKey={run} />
+
+          <div
+            className={styles.tagline}
+            style={{
+              animation: `plFadeUp 0.8s cubic-bezier(0.2,0.8,0.2,1) forwards`,
+              animationDelay: TAGLINE_DELAY,
+            }}
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
+            <div className={styles.taglineText}>New single melting soon. Get it first.</div>
+          </div>
+
+          <div
+            className={styles.ctaWrap}
+            style={{
+              animation: `plPop 0.6s cubic-bezier(0.34,1.56,0.64,1) forwards`,
+              animationDelay: CTA_DELAY,
+            }}
+          >
+            <Button href="/subscribe">LISTEN NOW</Button>
+          </div>
+        </div>
+
+        <ScrollArrow targetId="pl-release" label="Scroll to latest release" fadeDelay={CTA_DELAY} />
+      </div>
+
+      <div data-screen-label="Latest Release" id="pl-release" className={styles.release}>
+        <div className={styles.releaseGrid}>
+          <div className={styles.videoFrame}>
+            <iframe
+              src="https://www.youtube.com/embed/jNQXAC9IVRw"
+              title="Latest release video"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+          </div>
+          <div className={styles.releaseCopy}>
+            <div className={styles.kicker}>LATEST RELEASE</div>
+            <div className={styles.releaseHeadline}>Plastic Lover — the new single, out now.</div>
+            <div className={styles.releaseBody}>
+              Watch the official video, then take it with you — streaming on every platform.
+            </div>
+            <Button href="/releases">STREAM EVERYWHERE</Button>
+          </div>
         </div>
-      </main>
+
+        <ScrollArrow targetId="pl-photos" label="Scroll to photos" onWhite />
+      </div>
+
+      <PhotoCollage scrollTargetId="pl-join" />
+
+      <div data-screen-label="Mailing List" id="pl-join" className={styles.join}>
+        <MailingListForm />
+      </div>
+
+      <Footer onReplay={() => setRun((r) => r + 1)} entranceDelay={CTA_DELAY} />
     </div>
   );
 }

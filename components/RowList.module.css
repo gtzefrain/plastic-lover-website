@@ -1,0 +1,48 @@
+.list {
+  display: flex;
+  flex-direction: column;
+}
+
+.row {
+  display: grid;
+  gap: 16px;
+  align-items: baseline;
+  padding: 24px 0;
+  border-bottom: 1px solid rgba(198, 12, 44, 0.25);
+}
+
+.rowLyrics {
+  grid-template-columns: 60px 1fr auto;
+}
+
+.rowLive {
+  grid-template-columns: 110px 1fr 1fr auto;
+}
+
+.rowContact {
+  grid-template-columns: 160px 1fr;
+}
+
+.index {
+  font-family: var(--pl-font-mono);
+  font-size: 13px;
+}
+
+.name {
+  font-size: 20px;
+}
+
+.sub {
+  font-size: 16px;
+  opacity: 0.65;
+}
+
+.contactLabel {
+  font-family: var(--pl-font-mono);
+  font-size: 13px;
+  letter-spacing: 0.14em;
+}
+
+.contactEmail {
+  font-size: 20px;
+}

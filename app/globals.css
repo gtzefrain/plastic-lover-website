@@ -1,26 +1,322 @@
-@import "tailwindcss";
-
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --pl-bg: #ffffff;
+  --pl-primary: #c60c2c;
+  --pl-primary-hover: #8f0820;
+  --pl-button-hover: #e8283f;
+  --pl-button-text: #fff3f4;
+  --pl-placeholder: #ffecef;
+  --pl-shadow-button: 0 12px 28px rgba(198, 12, 44, 0.32);
+  --pl-shadow-frame: 0 18px 44px rgba(198, 12, 44, 0.16);
+  --pl-font-display: "Helvetica Neue", Helvetica, sans-serif;
+  --pl-font-mono: "SF Mono", Menlo, monospace;
+  --pl-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+* {
+  box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--pl-bg);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  color: var(--pl-primary);
+  font-family: var(--pl-font-display);
+}
+
+a {
+  color: var(--pl-primary);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--pl-primary-hover);
+}
+
+button {
+  font: inherit;
+}
+
+@keyframes plDrop {
+  0% {
+    transform: translateY(-120vh) scale(0.55) rotate(-6deg);
+  }
+  58% {
+    transform: translateY(0) scale(1) rotate(0.5deg);
+  }
+  70% {
+    transform: translateY(0) scaleY(0.82) scaleX(1.14) rotate(0deg);
+  }
+  82% {
+    transform: translateY(-26px) scaleY(1.08) scaleX(0.94);
+  }
+  92% {
+    transform: translateY(0) scaleY(0.97) scaleX(1.03);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes plMelt {
+  0% {
+    clip-path: inset(0 0 100% 0);
+    transform: scaleY(2.2);
+    filter: blur(22px) saturate(1.6);
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+  }
+  55% {
+    clip-path: inset(0 0 0% 0);
+    transform: scaleY(1.35);
+    filter: blur(10px) saturate(1.35);
+  }
+  72% {
+    transform: scaleY(0.94);
+    filter: blur(3px) saturate(1.1);
+  }
+  85% {
+    transform: scaleY(1.05);
+    filter: blur(0px) saturate(1);
+  }
+  100% {
+    clip-path: inset(0 0 0 0);
+    transform: scaleY(1);
+    filter: none;
+    opacity: 1;
+  }
+}
+
+@keyframes plMeltShadow {
+  0% {
+    transform: scaleX(0.3);
+    opacity: 0;
+  }
+  55% {
+    transform: scaleX(0.7);
+    opacity: 0.2;
+  }
+  72% {
+    transform: scaleX(1.12);
+    opacity: 0.55;
+  }
+  100% {
+    transform: scaleX(1);
+    opacity: 0.45;
+  }
+}
+
+@keyframes plBlob {
+  0% {
+    transform: translate(var(--dx), var(--dy)) rotate(var(--rot)) scale(0.12);
+    border-radius: 50%;
+    filter: blur(18px) saturate(1.5);
+    opacity: 0;
+  }
+  18% {
+    opacity: 1;
+  }
+  68% {
+    transform: translate(0, 0) rotate(0deg) scale(1.06);
+    border-radius: 24%;
+    filter: blur(5px) saturate(1.2);
+  }
+  84% {
+    transform: scale(0.98);
+    border-radius: 8%;
+    filter: blur(1px);
+  }
+  100% {
+    transform: none;
+    border-radius: 0;
+    filter: none;
+    opacity: 1;
+  }
+}
+
+@keyframes plFloat {
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+  30% {
+    transform: translateY(-14px) rotate(1.2deg);
+  }
+  65% {
+    transform: translateY(6px) rotate(-1deg);
+  }
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+}
+
+@keyframes plShadow {
+  0% {
+    transform: scaleX(0.55);
+    opacity: 0;
+  }
+  58% {
+    transform: scaleX(1);
+    opacity: 0.5;
+  }
+  70% {
+    transform: scaleX(1.18);
+    opacity: 0.6;
+  }
+  82% {
+    transform: scaleX(0.92);
+    opacity: 0.35;
+  }
+  100% {
+    transform: scaleX(1);
+    opacity: 0.45;
+  }
+}
+
+@keyframes plShadowFloat {
+  0% {
+    transform: scaleX(1);
+    opacity: 0.45;
+  }
+  30% {
+    transform: scaleX(0.92);
+    opacity: 0.32;
+  }
+  65% {
+    transform: scaleX(1.05);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scaleX(1);
+    opacity: 0.45;
+  }
+}
+
+@keyframes plFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes plFadeDown {
+  from {
+    opacity: 0;
+    transform: translateY(-16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes plFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes plPop {
+  0% {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.12);
+  }
+  80% {
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* 16s loop: enter 0.9s, hold ~3.5s with subtle float, exit 0.9s, hidden the rest */
+@keyframes plLoopR {
+  0% {
+    opacity: 0;
+    transform: translateX(92vw);
+  }
+  5.6% {
+    opacity: 1;
+    transform: translateX(0) translateY(0);
+  }
+  11% {
+    transform: translateY(-4px);
+  }
+  16.6% {
+    transform: translateY(3px);
+  }
+  22% {
+    transform: translateY(-3px);
+  }
+  27.7% {
+    opacity: 1;
+    transform: translateX(0) translateY(0);
+  }
+  33.3% {
+    opacity: 0;
+    transform: translateX(-92vw);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-92vw);
+  }
+}
+
+@keyframes plLoopL {
+  0% {
+    opacity: 0;
+    transform: translateX(-92vw);
+  }
+  5.6% {
+    opacity: 1;
+    transform: translateX(0) translateY(0);
+  }
+  11% {
+    transform: translateY(3px);
+  }
+  16.6% {
+    transform: translateY(-4px);
+  }
+  22% {
+    transform: translateY(2px);
+  }
+  27.7% {
+    opacity: 1;
+    transform: translateX(0) translateY(0);
+  }
+  33.3% {
+    opacity: 0;
+    transform: translateX(92vw);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(92vw);
+  }
+}
+
+@keyframes plArrowBob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(8px);
+  }
 }

@@ -1,0 +1,29 @@
+.wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: min(44vh, 70vw, 500px);
+}
+
+.logo {
+  width: 100%;
+  aspect-ratio: 3246 / 3226;
+  transform-origin: 50% 0%;
+  background-image: url("/logo/LOGO_3D.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.shadow {
+  width: min(34vh, 46vw, 330px);
+  height: 22px;
+  margin-top: -14px;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(120, 10, 30, 0.55) 0%,
+    rgba(120, 10, 30, 0) 70%
+  );
+  transform-origin: center;
+}
