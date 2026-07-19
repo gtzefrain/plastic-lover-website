@@ -3,15 +3,14 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { FaPlay } from "react-icons/fa6";
-import styles from "./ReleasePlayer.module.css";
+import styles from "./VideoCardPlayer.module.css";
 
-type ReleasePlayerProps = {
-  cover: string;
+type VideoCardPlayerProps = {
+  videoId: string;
   title: string;
-  videoId?: string;
 };
 
-export default function ReleasePlayer({ cover, title, videoId }: ReleasePlayerProps) {
+export default function VideoCardPlayer({ videoId, title }: VideoCardPlayerProps) {
   const [open, setOpen] = useState(false);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
@@ -35,15 +34,6 @@ export default function ReleasePlayer({ cover, title, videoId }: ReleasePlayerPr
     };
   }, [open]);
 
-  if (!videoId) {
-    return (
-      <div className={`${styles.frame} ${styles.frameStatic}`}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={cover} alt={`${title} cover art`} className={styles.cover} />
-      </div>
-    );
-  }
-
   return (
     <>
       <button
@@ -54,7 +44,11 @@ export default function ReleasePlayer({ cover, title, videoId }: ReleasePlayerPr
         aria-label={`Play ${title}`}
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={cover} alt={`${title} cover art`} className={styles.cover} />
+        <img
+          src={`https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`}
+          alt={`${title} video still`}
+          className={styles.cover}
+        />
         <span className={styles.playIcon} aria-hidden="true">
           <FaPlay />
         </span>

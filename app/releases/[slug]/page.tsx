@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 import Footer from "@/components/Footer";
 import ReleasePlayer from "@/components/ReleasePlayer";
 import SiteNav from "@/components/SiteNav";
+import { getDictionary } from "@/lib/i18n/dictionaries";
+import { getServerLocale } from "@/lib/i18n/locale";
 import { getReleaseBySlug, RELEASES } from "@/lib/releases";
 import styles from "./page.module.css";
 
@@ -18,8 +20,9 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const release = getReleaseBySlug(slug);
+  const locale = await getServerLocale();
   return {
-    title: release ? `${release.title} — Plastic Lover` : "Release — Plastic Lover",
+    title: release ? `${release.title} — Plastic Lover` : getDictionary(locale).pages.releaseDetail.fallbackTitle,
   };
 }
 
@@ -28,40 +31,37 @@ export default async function ReleasePage({ params, searchParams }: Props) {
   const { site } = await searchParams;
   const showChrome = site === "1";
   const release = getReleaseBySlug(slug);
+  const locale = await getServerLocale();
 
   if (!release) notFound();
 
   return (
     <div className={showChrome ? `${styles.page} ${styles.pageWithChrome}` : styles.page}>
-      {showChrome && <SiteNav />}
+      {showChrome && <SiteNav locale={locale} />}
 
-      <div className={styles.content}>
-        <ReleasePlayer cover={release.cover} title={release.title} videoId={release.embed.videoId} />
+      <main id="main-content" className={styles.content}>
+        <ReleasePlayer cover={release.cover} title={release.title} videoId={release.embed?.videoId} />
 
         <h1 className={styles.title}>{release.title}</h1>
         <div className={styles.meta}>
           {release.artist} · {release.meta}
         </div>
 
-        <div className={styles.linksTable}>
+        <ul className={styles.linksTable}>
           {release.links.map((link) => (
-            <a
-              key={link.label}
-              href={link.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={styles.linkRow}
-            >
-              <span className={styles.linkLabel}>{link.label}</span>
-              <span className={styles.linkArrow} aria-hidden="true">
-                →
-              </span>
-            </a>
+            <li key={link.label}>
+              <a href={link.href} target="_blank" rel="noopener noreferrer" className={styles.linkRow}>
+                <span className={styles.linkLabel}>{link.label}</span>
+                <span className={styles.linkArrow} aria-hidden="true">
+                  →
+                </span>
+              </a>
+            </li>
           ))}
-        </div>
-      </div>
+        </ul>
+      </main>
 
-      {showChrome && <Footer />}
+      {showChrome && <Footer locale={locale} />}
     </div>
   );
 }

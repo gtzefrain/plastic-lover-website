@@ -1,4 +1,5 @@
 import type { CSSProperties } from "react";
+import Image from "next/image";
 import { buildLoopedPhotos } from "@/lib/photoSets";
 import styles from "./PhotoCollage.module.css";
 import ScrollArrow from "./ScrollArrow";
@@ -32,6 +33,14 @@ export default function PhotoCollage({ scrollTargetId }: PhotoCollageProps) {
             ["--frame-left" as string]: p.left,
           } as CSSProperties}
         >
+          <Image
+            src={p.src}
+            alt={p.label}
+            fill
+            sizes="(max-width: 640px) 60vw, 26vw"
+            className={styles.frameImage}
+            preload={i === 0}
+          />
           <span className={styles.frameLabel}>{p.label}</span>
         </div>
       ))}

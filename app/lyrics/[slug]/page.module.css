@@ -1,0 +1,33 @@
+.title {
+  font-family: var(--pl-font-display);
+  font-size: clamp(28px, 5vw, 40px);
+  font-weight: 400;
+  margin: 0 0 32px;
+}
+
+.lyrics {
+  font-family: var(--pl-font-display);
+  font-size: 20px;
+  line-height: 1.7;
+  white-space: pre-line;
+}
+
+.footnote {
+  margin-top: 48px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(198, 12, 44, 0.25);
+  font-family: var(--pl-font-mono);
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  opacity: 0.65;
+}
+
+.footnote strong {
+  font-weight: inherit;
+  opacity: 1;
+}
+
+.spotifyLink {
+  display: inline-block;
+  margin-top: 40px;
+}

@@ -1,7 +1,7 @@
 .frame {
   position: relative;
-  width: 188px;
-  aspect-ratio: 1 / 1;
+  width: 100%;
+  aspect-ratio: 16 / 9;
   display: block;
   padding: 0;
   overflow: hidden;
@@ -9,16 +9,6 @@
   box-shadow: var(--pl-shadow-frame);
   background: var(--pl-bg);
   cursor: pointer;
-}
-
-.frameStatic {
-  cursor: default;
-}
-
-@media (min-width: 641px) {
-  .frame {
-    width: 240px;
-  }
 }
 
 .cover {

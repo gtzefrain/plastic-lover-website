@@ -12,7 +12,7 @@
 }
 
 .rowLyrics {
-  grid-template-columns: 60px 1fr auto;
+  grid-template-columns: 1fr auto;
 }
 
 .rowLive {

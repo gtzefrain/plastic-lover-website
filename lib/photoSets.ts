@@ -1,5 +1,6 @@
 export type PhotoSpec = {
   label: string;
+  src: string;
   top: string;
   left: string;
   w: string;
@@ -10,34 +11,34 @@ export type PhotoSpec = {
 
 export const PHOTO_SETS: PhotoSpec[][] = [
   [
-    { label: "LIVE — MELT TOUR", top: "14%", left: "6%", w: "24vw", h: "34vh", z: 1, dly: 0 },
-    { label: "STUDIO", top: "11%", left: "32%", w: "18vw", h: "26vh", z: 2, dly: 1.8 },
-    { label: "PRESS SHOT", top: "19%", left: "52%", w: "26vw", h: "38vh", z: 1, dly: 1.8 },
-    { label: "BACKSTAGE", top: "12%", left: "80%", w: "15vw", h: "28vh", z: 2, dly: 0.7 },
-    { label: "CROWD", top: "46%", left: "14%", w: "20vw", h: "30vh", z: 3, dly: 2.4 },
-    { label: "POLAROID", top: "42%", left: "36%", w: "13vw", h: "20vh", z: 4, dly: 2.7 },
-    { label: "VIDEO STILL", top: "52%", left: "48%", w: "22vw", h: "32vh", z: 2, dly: 0.6 },
-    { label: "SOUNDCHECK", top: "48%", left: "70%", w: "20vw", h: "34vh", z: 3, dly: 2.9 },
+    { label: "LIVE — MELT TOUR", src: "/photos/live-melt-tour.jpg", top: "14%", left: "6%", w: "24vw", h: "34vh", z: 1, dly: 0 },
+    { label: "STUDIO", src: "/photos/studio.jpg", top: "11%", left: "32%", w: "18vw", h: "26vh", z: 2, dly: 1.8 },
+    { label: "PRESS SHOT", src: "/photos/press-shot.jpg", top: "19%", left: "52%", w: "26vw", h: "38vh", z: 1, dly: 1.8 },
+    { label: "BACKSTAGE", src: "/photos/backstage.jpg", top: "12%", left: "80%", w: "15vw", h: "28vh", z: 2, dly: 0.7 },
+    { label: "CROWD", src: "/photos/crowd.jpg", top: "46%", left: "14%", w: "20vw", h: "30vh", z: 3, dly: 2.4 },
+    { label: "POLAROID", src: "/photos/polaroid.jpg", top: "42%", left: "36%", w: "13vw", h: "20vh", z: 4, dly: 2.7 },
+    { label: "VIDEO STILL", src: "/photos/video-still.jpg", top: "52%", left: "48%", w: "22vw", h: "32vh", z: 2, dly: 0.6 },
+    { label: "SOUNDCHECK", src: "/photos/soundcheck.jpg", top: "48%", left: "70%", w: "20vw", h: "34vh", z: 3, dly: 2.9 },
   ],
   [
-    { label: "VINYL MACRO", top: "12%", left: "10%", w: "18vw", h: "28vh", z: 2, dly: 1.1 },
-    { label: "FANS", top: "16%", left: "36%", w: "25vw", h: "36vh", z: 1, dly: 0 },
-    { label: "TOUR BUS", top: "10%", left: "60%", w: "20vw", h: "26vh", z: 2, dly: 2.5 },
-    { label: "MERCH", top: "24%", left: "82%", w: "13vw", h: "22vh", z: 3, dly: 0.7 },
-    { label: "NEON SIGN", top: "48%", left: "8%", w: "15vw", h: "24vh", z: 4, dly: 1.9 },
-    { label: "REHEARSAL", top: "44%", left: "28%", w: "22vw", h: "34vh", z: 2, dly: 0.3 },
-    { label: "PORTRAIT", top: "50%", left: "52%", w: "17vw", h: "32vh", z: 3, dly: 2.95 },
-    { label: "GREEN ROOM", top: "46%", left: "72%", w: "21vw", h: "28vh", z: 1, dly: 1.5 },
+    { label: "VINYL MACRO", src: "/photos/vinyl-macro.jpg", top: "12%", left: "10%", w: "18vw", h: "28vh", z: 2, dly: 1.1 },
+    { label: "FANS", src: "/photos/fans.jpg", top: "16%", left: "36%", w: "25vw", h: "36vh", z: 1, dly: 0 },
+    { label: "TOUR BUS", src: "/photos/tour-bus.jpg", top: "10%", left: "60%", w: "20vw", h: "26vh", z: 2, dly: 2.5 },
+    { label: "MERCH", src: "/photos/merch.jpg", top: "24%", left: "82%", w: "13vw", h: "22vh", z: 3, dly: 0.7 },
+    { label: "NEON SIGN", src: "/photos/neon-sign.jpg", top: "48%", left: "8%", w: "15vw", h: "24vh", z: 4, dly: 1.9 },
+    { label: "REHEARSAL", src: "/photos/rehearsal.jpg", top: "44%", left: "28%", w: "22vw", h: "34vh", z: 2, dly: 0.3 },
+    { label: "PORTRAIT", src: "/photos/portrait.jpg", top: "50%", left: "52%", w: "17vw", h: "32vh", z: 3, dly: 2.95 },
+    { label: "GREEN ROOM", src: "/photos/green-room.jpg", top: "46%", left: "72%", w: "21vw", h: "28vh", z: 1, dly: 1.5 },
   ],
   [
-    { label: "FESTIVAL", top: "13%", left: "8%", w: "26vw", h: "36vh", z: 1, dly: 1.7 },
-    { label: "ENCORE", top: "10%", left: "38%", w: "17vw", h: "24vh", z: 2, dly: 0.2 },
-    { label: "SETLIST", top: "18%", left: "58%", w: "14vw", h: "26vh", z: 3, dly: 2.7 },
-    { label: "VAN LOAD-IN", top: "12%", left: "76%", w: "18vw", h: "30vh", z: 2, dly: 1.0 },
-    { label: "HOTEL TV", top: "46%", left: "16%", w: "15vw", h: "22vh", z: 4, dly: 2.2 },
-    { label: "RADIO", top: "44%", left: "34%", w: "21vw", h: "32vh", z: 2, dly: 0.6 },
-    { label: "SIGNING", top: "52%", left: "56%", w: "24vw", h: "30vh", z: 1, dly: 1.35 },
-    { label: "AFTERSHOW", top: "48%", left: "82%", w: "13vw", h: "24vh", z: 3, dly: 3.0 },
+    { label: "FESTIVAL", src: "/photos/festival.jpg", top: "13%", left: "8%", w: "26vw", h: "36vh", z: 1, dly: 1.7 },
+    { label: "ENCORE", src: "/photos/encore.jpg", top: "10%", left: "38%", w: "17vw", h: "24vh", z: 2, dly: 0.2 },
+    { label: "SETLIST", src: "/photos/setlist.jpg", top: "18%", left: "58%", w: "14vw", h: "26vh", z: 3, dly: 2.7 },
+    { label: "VAN LOAD-IN", src: "/photos/van-load-in.jpg", top: "12%", left: "76%", w: "18vw", h: "30vh", z: 2, dly: 1.0 },
+    { label: "HOTEL TV", src: "/photos/hotel-tv.jpg", top: "46%", left: "16%", w: "15vw", h: "22vh", z: 4, dly: 2.2 },
+    { label: "RADIO", src: "/photos/radio.jpg", top: "44%", left: "34%", w: "21vw", h: "32vh", z: 2, dly: 0.6 },
+    { label: "SIGNING", src: "/photos/signing.jpg", top: "52%", left: "56%", w: "24vw", h: "30vh", z: 1, dly: 1.35 },
+    { label: "AFTERSHOW", src: "/photos/aftershow.jpg", top: "48%", left: "82%", w: "13vw", h: "24vh", z: 3, dly: 3.0 },
   ],
 ];
 

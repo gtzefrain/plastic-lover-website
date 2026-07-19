@@ -31,29 +31,27 @@
   position: absolute;
   width: var(--frame-w);
   height: var(--frame-h);
-  background: repeating-linear-gradient(
-    45deg,
-    var(--pl-placeholder) 0px,
-    var(--pl-placeholder) 14px,
-    var(--pl-bg) 14px,
-    var(--pl-bg) 28px
-  );
+  overflow: hidden;
+  background: var(--pl-bg);
   border: 1px solid rgba(198, 12, 44, 0.35);
   box-shadow: var(--pl-shadow-frame);
-  display: flex;
-  align-items: center;
-  justify-content: center;
   will-change: transform, opacity;
 }
 
+.frameImage {
+  object-fit: cover;
+}
+
 .frameLabel {
+  position: absolute;
+  left: 0;
+  bottom: 0;
   font-family: var(--pl-font-mono);
   font-size: 11px;
   letter-spacing: 0.14em;
-  color: rgba(198, 12, 44, 0.8);
-  background: var(--pl-bg);
+  color: var(--pl-bg);
+  background: rgba(198, 12, 44, 0.85);
   padding: 6px 10px;
-  border: 1px dashed rgba(198, 12, 44, 0.4);
   white-space: nowrap;
 }
 

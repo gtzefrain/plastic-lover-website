@@ -1,0 +1,26 @@
+.selector {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--pl-font-mono);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+}
+
+.option {
+  background: none;
+  border: none;
+  color: var(--pl-primary);
+  opacity: 0.45;
+  cursor: pointer;
+  padding: 4px 2px;
+}
+
+.optionActive {
+  opacity: 1;
+  border-bottom: 1px solid var(--pl-primary);
+}
+
+.option:not(.optionActive):hover {
+  opacity: 0.75;
+}

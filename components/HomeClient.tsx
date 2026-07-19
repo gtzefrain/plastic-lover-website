@@ -5,9 +5,11 @@ import Button from "@/components/Button";
 import Footer from "@/components/Footer";
 import HeroLogo from "@/components/HeroLogo";
 import MailingListForm from "@/components/MailingListForm";
-import PhotoCollage from "@/components/PhotoCollage";
+// TODO: re-enable once PhotoCollage is back (see below)
+// import PhotoCollage from "@/components/PhotoCollage";
 import ScrollArrow from "@/components/ScrollArrow";
 import SiteNav from "@/components/SiteNav";
+import { getDictionary, type Locale } from "@/lib/i18n/dictionaries";
 import { CTA_DELAY, NAV_DELAY, TAGLINE_DELAY } from "@/lib/heroChoreography";
 import styles from "@/app/page.module.css";
 
@@ -16,11 +18,13 @@ const HERO_SEEN_MAX_AGE = 60 * 60 * 24 * 365; // 1 year
 
 type HomeClientProps = {
   heroSeen: boolean;
+  locale: Locale;
 };
 
-export default function HomeClient({ heroSeen }: HomeClientProps) {
+export default function HomeClient({ heroSeen, locale }: HomeClientProps) {
   const [run, setRun] = useState(0);
   const [heroPlaying, setHeroPlaying] = useState(!heroSeen);
+  const dict = getDictionary(locale);
 
   useEffect(() => {
     if (!heroSeen) {
@@ -40,9 +44,10 @@ export default function HomeClient({ heroSeen }: HomeClientProps) {
 
   return (
     <div className={styles.page}>
-      <SiteNav key={`nav-${run}`} entranceDelay={navDelay} />
+      <SiteNav key={`nav-${run}`} entranceDelay={navDelay} locale={locale} />
 
-      <div data-screen-label="Hero" className={styles.hero}>
+      <main id="main-content">
+        <div data-screen-label="Hero" className={styles.hero}>
         <div className={styles.heroInner}>
           <HeroLogo runKey={run} skipEntrance={!heroPlaying} />
 
@@ -54,7 +59,7 @@ export default function HomeClient({ heroSeen }: HomeClientProps) {
               animationDelay: taglineDelay,
             }}
           >
-            <div className={styles.taglineText}>New single melting soon. Get it first.</div>
+            <h1 className={styles.taglineText}>{dict.home.tagline}</h1>
           </div>
 
           <div
@@ -65,19 +70,20 @@ export default function HomeClient({ heroSeen }: HomeClientProps) {
               animationDelay: ctaDelay,
             }}
           >
-            <Button href="/subscribe">LISTEN NOW</Button>
+            <Button href="/subscribe">{dict.home.listenNow}</Button>
           </div>
         </div>
 
         <ScrollArrow
           key={`arrow-${run}`}
-          targetId="pl-release"
-          label="Scroll to latest release"
+          targetId="pl-join"
+          label={dict.home.scrollToPhotos}
           fadeDelay={ctaDelay}
         />
       </div>
 
-      <div data-screen-label="Latest Release" id="pl-release" className={styles.release}>
+      {/* TODO: Latest Release section hidden until the August release — re-enable then */}
+      {/* <div data-screen-label="Latest Release" id="pl-release" className={styles.release}>
         <div className={styles.releaseGrid}>
           <div className={styles.videoFrame}>
             <iframe
@@ -88,25 +94,25 @@ export default function HomeClient({ heroSeen }: HomeClientProps) {
             />
           </div>
           <div className={styles.releaseCopy}>
-            <div className={styles.kicker}>LATEST RELEASE</div>
-            <div className={styles.releaseHeadline}>Plastic Lover — the new single, out now.</div>
-            <div className={styles.releaseBody}>
-              Watch the official video, then take it with you — streaming on every platform.
-            </div>
-            <Button href="/releases">STREAM EVERYWHERE</Button>
+            <div className={styles.kicker}>{dict.home.latestRelease}</div>
+            <div className={styles.releaseHeadline}>{dict.home.releaseHeadline}</div>
+            <div className={styles.releaseBody}>{dict.home.releaseBody}</div>
+            <Button href="/releases">{dict.home.streamEverywhere}</Button>
           </div>
         </div>
 
-        <ScrollArrow targetId="pl-photos" label="Scroll to photos" onWhite />
-      </div>
+        <ScrollArrow targetId="pl-join" label={dict.home.scrollToPhotos} onWhite />
+      </div> */}
 
-      <PhotoCollage scrollTargetId="pl-join" />
+      {/* TODO: PhotoCollage section disabled pending a better photo selection — re-enable when ready */}
+      {/* <PhotoCollage scrollTargetId="pl-join" /> */}
 
       <div data-screen-label="Mailing List" id="pl-join" className={styles.join}>
-        <MailingListForm />
+        <MailingListForm locale={locale} />
       </div>
+      </main>
 
-      <Footer key={`footer-${run}`} onReplay={handleReplay} entranceDelay={ctaDelay} />
+      <Footer key={`footer-${run}`} onReplay={handleReplay} entranceDelay={ctaDelay} locale={locale} />
     </div>
   );
 }

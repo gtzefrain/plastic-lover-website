@@ -2,41 +2,54 @@ import type { Metadata } from "next";
 import Button from "@/components/Button";
 import PageShell from "@/components/PageShell";
 import grid from "@/components/CardGrid.module.css";
-import { getReleaseBySlug } from "@/lib/releases";
+import { getDictionary } from "@/lib/i18n/dictionaries";
+import { getServerLocale } from "@/lib/i18n/locale";
+import { RELEASES, type Release } from "@/lib/releases";
+import styles from "./page.module.css";
 
-export const metadata: Metadata = {
-  title: "Releases — Plastic Lover",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getServerLocale();
+  return { title: getDictionary(locale).pages.releases.title };
+}
 
-const RELEASES = [
-  { slug: "detalles", title: "Detalles", meta: "Single — 2023" },
-  { slug: "melting-point", title: "Melting Point", meta: "EP — 2026" },
-  { slug: "plastic-lover", title: "Plastic Lover", meta: "Single — 2026" },
-  { slug: "demos-vol-1", title: "Demos, Vol. 1", meta: "Mixtape — 2025" },
-];
-
-export default function ReleasesPage() {
+function ReleaseGrid({ releases, stream }: { releases: Release[]; stream: string }) {
   return (
-    <PageShell screenLabel="Releases" kicker="RELEASES" maxWidth={980}>
-      <div className={grid.grid}>
-        {RELEASES.map((r) => {
-          const hasPage = Boolean(getReleaseBySlug(r.slug));
-          return (
-            <div key={r.slug} className={grid.card}>
-              <div className={grid.thumbSquare}>
-                <span className={grid.thumbLabel}>COVER ART</span>
-              </div>
-              <div className={grid.title}>{r.title}</div>
-              <div className={grid.metaRow}>
-                <span className={grid.meta}>{r.meta}</span>
-                <Button href={hasPage ? `/releases/${r.slug}?site=1` : "#"} variant="outline">
-                  STREAM
-                </Button>
-              </div>
-            </div>
-          );
-        })}
-      </div>
+    <ul className={grid.grid}>
+      {releases.map((r) => (
+        <li key={r.slug} className={grid.card}>
+          <div className={grid.thumbSquare}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={r.cover} alt={`${r.title} cover art`} className={grid.thumbImage} />
+          </div>
+          <div className={grid.title}>{r.title}</div>
+          <div className={grid.metaRow}>
+            <span className={grid.meta}>{r.meta}</span>
+            <Button href={`/releases/${r.slug}?site=1`} variant="outline">
+              {stream}
+            </Button>
+          </div>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+export default async function ReleasesPage() {
+  const locale = await getServerLocale();
+  const dict = getDictionary(locale).pages.releases;
+  const releases = RELEASES.filter((r) => !r.collaboration);
+  const collaborations = RELEASES.filter((r) => r.collaboration);
+
+  return (
+    <PageShell screenLabel={dict.screenLabel} kicker={dict.kicker} maxWidth={980}>
+      <ReleaseGrid releases={releases} stream={dict.stream} />
+
+      {collaborations.length > 0 && (
+        <>
+          <h2 className={styles.kicker}>{dict.collaborations}</h2>
+          <ReleaseGrid releases={collaborations} stream={dict.stream} />
+        </>
+      )}
     </PageShell>
   );
 }

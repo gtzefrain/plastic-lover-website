@@ -16,6 +16,7 @@
 .kicker {
   font-family: var(--pl-font-mono);
   font-size: 13px;
+  font-weight: 400;
   letter-spacing: 0.22em;
-  margin-bottom: 40px;
+  margin: 0 0 40px;
 }

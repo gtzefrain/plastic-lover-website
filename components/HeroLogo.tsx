@@ -14,7 +14,7 @@ export default function HeroLogo({ runKey, skipEntrance = false }: HeroLogoProps
     : null;
 
   return (
-    <div key={`run-${runKey}`} className={styles.wrap}>
+    <div key={`run-${runKey}`} className={styles.wrap} aria-hidden="true">
       <div
         className={styles.stack}
         style={{

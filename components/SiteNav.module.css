@@ -12,6 +12,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  max-width: 1400px;
+  margin: 0 auto;
   padding: 22px 44px;
 }
 
@@ -25,6 +27,7 @@
 
 .links {
   display: flex;
+  align-items: center;
   gap: 32px;
   font-size: 13px;
   letter-spacing: 0.12em;
@@ -106,4 +109,9 @@
 .drawerLinkActive {
   opacity: 1;
   font-weight: 700;
+}
+
+.drawerLangSelector {
+  margin-top: 16px;
+  font-size: 16px;
 }

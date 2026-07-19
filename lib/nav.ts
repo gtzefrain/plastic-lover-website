@@ -1,13 +1,13 @@
+import type { NavKey } from "./i18n/dictionaries";
+
 export type NavLink = {
-  label: string;
+  key: NavKey;
   href: string;
 };
 
 export const NAV_LINKS: NavLink[] = [
-  { label: "LIVE", href: "/live" },
-  { label: "STORE", href: "/store" },
-  { label: "LYRICS", href: "/lyrics" },
-  { label: "VIDEOS", href: "/videos" },
-  { label: "RELEASES", href: "/releases" },
-  { label: "CONTACT", href: "/contact" },
+  { key: "live", href: "/live" },
+  { key: "lyrics", href: "/lyrics" },
+  { key: "videos", href: "/videos" },
+  { key: "releases", href: "/releases" },
 ];
