@@ -4,6 +4,7 @@ import PageShell from "@/components/PageShell";
 import { getDictionary } from "@/lib/i18n/dictionaries";
 import { getServerLocale } from "@/lib/i18n/locale";
 import { getSongBySlug, SONGS } from "@/lib/songs";
+import { buildOpenGraph, buildTwitter } from "@/lib/seo";
 import styles from "./page.module.css";
 
 type Props = {
@@ -18,8 +19,22 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const song = getSongBySlug(slug);
   const locale = await getServerLocale();
+  const dict = getDictionary(locale).pages.lyricsDetail;
+
+  if (!song) {
+    return { title: dict.fallbackTitle, description: dict.fallbackDescription };
+  }
+
+  const title = `${song.title} — Plastic Lover`;
+  const description = `${dict.descriptionPrefix} "${song.title}" — Plastic Lover.`;
+  const path = `/lyrics/${song.slug}`;
+
   return {
-    title: song ? `${song.title} — Plastic Lover` : getDictionary(locale).pages.lyricsDetail.fallbackTitle,
+    title,
+    description,
+    alternates: { canonical: path },
+    openGraph: buildOpenGraph({ title, description, path, locale }),
+    twitter: buildTwitter({ title, description }),
   };
 }
 

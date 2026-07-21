@@ -1,17 +1,27 @@
 import { NextResponse } from "next/server";
+import { defaultLocale, isLocale, type Locale } from "@/lib/i18n/dictionaries";
 
-const { LISTMONK_URL, LISTMONK_API_USER, LISTMONK_API_TOKEN, LISTMONK_LIST_ID } = process.env;
+const { LISTMONK_URL, LISTMONK_API_USER, LISTMONK_API_TOKEN, LISTMONK_LIST_ID, LISTMONK_LIST_ID_EN, LISTMONK_LIST_ID_ES } =
+  process.env;
+
+const LIST_ID_BY_LOCALE: Record<Locale, string | undefined> = {
+  en: LISTMONK_LIST_ID_EN,
+  es: LISTMONK_LIST_ID_ES,
+};
 
 export async function POST(request: Request) {
-  const { email } = await request.json();
+  const { email, locale } = await request.json();
 
   if (typeof email !== "string" || !email.includes("@")) {
     return NextResponse.json({ error: "Invalid email" }, { status: 400 });
   }
 
-  if (!LISTMONK_URL || !LISTMONK_API_USER || !LISTMONK_API_TOKEN || !LISTMONK_LIST_ID) {
+  const subscriberLocale: Locale = isLocale(locale) ? locale : defaultLocale;
+  const listId = LIST_ID_BY_LOCALE[subscriberLocale] ?? LISTMONK_LIST_ID;
+
+  if (!LISTMONK_URL || !LISTMONK_API_USER || !LISTMONK_API_TOKEN || !listId) {
     // Listmonk instance isn't deployed yet — see AGENTS.md for status.
-    console.log("New subscriber (Listmonk not configured):", email);
+    console.log("New subscriber (Listmonk not configured):", email, subscriberLocale);
     return NextResponse.json({ ok: true });
   }
 
@@ -24,7 +34,7 @@ export async function POST(request: Request) {
     body: JSON.stringify({
       email,
       status: "enabled",
-      lists: [Number(LISTMONK_LIST_ID)],
+      lists: [Number(listId)],
       preconfirm_subscriptions: true,
     }),
   });

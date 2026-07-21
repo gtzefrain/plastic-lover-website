@@ -2,13 +2,20 @@ import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/next";
 import { getDictionary } from "@/lib/i18n/dictionaries";
 import { getServerLocale } from "@/lib/i18n/locale";
+import { buildOpenGraph, buildTwitter, SITE_NAME, SITE_URL } from "@/lib/seo";
 import "./globals.css";
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getServerLocale();
+  const description = getDictionary(locale).site.description;
+
   return {
-    title: "Plastic Lover",
-    description: getDictionary(locale).site.description,
+    metadataBase: new URL(SITE_URL),
+    title: SITE_NAME,
+    description,
+    robots: { index: true, follow: true },
+    openGraph: buildOpenGraph({ title: SITE_NAME, description, path: "/", locale }),
+    twitter: buildTwitter({ title: SITE_NAME, description }),
   };
 }
 

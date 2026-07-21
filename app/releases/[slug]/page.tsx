@@ -6,6 +6,7 @@ import SiteNav from "@/components/SiteNav";
 import { getDictionary } from "@/lib/i18n/dictionaries";
 import { getServerLocale } from "@/lib/i18n/locale";
 import { getReleaseBySlug, RELEASES } from "@/lib/releases";
+import { buildOpenGraph, buildTwitter } from "@/lib/seo";
 import styles from "./page.module.css";
 
 type Props = {
@@ -21,8 +22,22 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const release = getReleaseBySlug(slug);
   const locale = await getServerLocale();
+  const dict = getDictionary(locale).pages.releaseDetail;
+
+  if (!release) {
+    return { title: dict.fallbackTitle, description: dict.fallbackDescription };
+  }
+
+  const title = `${release.title} — Plastic Lover`;
+  const description = `${release.artist} · ${release.meta}. ${dict.descriptionSuffix}`;
+  const path = `/releases/${release.slug}`;
+
   return {
-    title: release ? `${release.title} — Plastic Lover` : getDictionary(locale).pages.releaseDetail.fallbackTitle,
+    title,
+    description,
+    alternates: { canonical: path },
+    openGraph: buildOpenGraph({ title, description, path, locale }),
+    twitter: buildTwitter({ title, description }),
   };
 }
 

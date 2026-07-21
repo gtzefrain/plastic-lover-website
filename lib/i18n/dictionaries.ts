@@ -52,6 +52,7 @@ type Dictionary = {
     };
     live: {
       title: string;
+      description: string;
       kicker: string;
       screenLabel: string;
       tickets: string;
@@ -64,16 +65,20 @@ type Dictionary = {
     };
     lyrics: {
       title: string;
+      description: string;
       kicker: string;
       screenLabel: string;
       read: string;
     };
     lyricsDetail: {
       fallbackTitle: string;
+      fallbackDescription: string;
+      descriptionPrefix: string;
       writtenBy: string;
     };
     releases: {
       title: string;
+      description: string;
       kicker: string;
       screenLabel: string;
       stream: string;
@@ -81,14 +86,18 @@ type Dictionary = {
     };
     releaseDetail: {
       fallbackTitle: string;
+      fallbackDescription: string;
+      descriptionSuffix: string;
     };
     videos: {
       title: string;
+      description: string;
       kicker: string;
       screenLabel: string;
     };
     subscribe: {
       title: string;
+      description: string;
       screenLabel: string;
     };
   };
@@ -146,6 +155,7 @@ const dictionaries: Record<Locale, Dictionary> = {
       },
       live: {
         title: "Live — Plastic Lover",
+        description: "Tour dates for Plastic Lover. No shows booked yet — request one for your city.",
         kicker: "TOUR",
         screenLabel: "Live",
         tickets: "TICKETS",
@@ -158,16 +168,20 @@ const dictionaries: Record<Locale, Dictionary> = {
       },
       lyrics: {
         title: "Lyrics — Plastic Lover",
+        description: "Lyrics to every Plastic Lover song, in one place.",
         kicker: "LYRICS",
         screenLabel: "Lyrics",
         read: "READ",
       },
       lyricsDetail: {
         fallbackTitle: "Lyrics — Plastic Lover",
+        fallbackDescription: "Lyrics by Plastic Lover.",
+        descriptionPrefix: "Lyrics to",
         writtenBy: "WRITTEN BY",
       },
       releases: {
         title: "Releases — Plastic Lover",
+        description: "Every Plastic Lover single and EP — stream on Spotify, Apple Music, and more.",
         kicker: "RELEASES",
         screenLabel: "Releases",
         stream: "STREAM",
@@ -175,14 +189,18 @@ const dictionaries: Record<Locale, Dictionary> = {
       },
       releaseDetail: {
         fallbackTitle: "Release — Plastic Lover",
+        fallbackDescription: "Stream this release by Plastic Lover on every platform.",
+        descriptionSuffix: "Stream now on every platform.",
       },
       videos: {
         title: "Videos — Plastic Lover",
+        description: "Official music videos and visualizers from Plastic Lover.",
         kicker: "VIDEOS",
         screenLabel: "Videos",
       },
       subscribe: {
         title: "Subscribe — Plastic Lover",
+        description: "Join the Plastic Lover mailing list for new singles, tour dates, and secret shows.",
         screenLabel: "Subscribe",
       },
     },
@@ -238,6 +256,7 @@ const dictionaries: Record<Locale, Dictionary> = {
       },
       live: {
         title: "En Vivo — Plastic Lover",
+        description: "Fechas de gira de Plastic Lover. Todavía no hay shows confirmados — solicita uno en tu ciudad.",
         kicker: "GIRA",
         screenLabel: "En Vivo",
         tickets: "ENTRADAS",
@@ -250,16 +269,20 @@ const dictionaries: Record<Locale, Dictionary> = {
       },
       lyrics: {
         title: "Letras — Plastic Lover",
+        description: "Las letras de todas las canciones de Plastic Lover, en un solo lugar.",
         kicker: "LETRAS",
         screenLabel: "Letras",
         read: "LEER",
       },
       lyricsDetail: {
         fallbackTitle: "Letras — Plastic Lover",
+        fallbackDescription: "Letra de una canción de Plastic Lover.",
+        descriptionPrefix: "Letra de",
         writtenBy: "ESCRITA POR",
       },
       releases: {
         title: "Lanzamientos — Plastic Lover",
+        description: "Todos los sencillos y EPs de Plastic Lover — disponibles en Spotify, Apple Music y más.",
         kicker: "LANZAMIENTOS",
         screenLabel: "Lanzamientos",
         stream: "ESCUCHAR",
@@ -267,14 +290,18 @@ const dictionaries: Record<Locale, Dictionary> = {
       },
       releaseDetail: {
         fallbackTitle: "Lanzamiento — Plastic Lover",
+        fallbackDescription: "Escucha este lanzamiento de Plastic Lover en todas las plataformas.",
+        descriptionSuffix: "Escucha ahora en todas las plataformas.",
       },
       videos: {
         title: "Videos — Plastic Lover",
+        description: "Videos musicales oficiales y visualizers de Plastic Lover.",
         kicker: "VIDEOS",
         screenLabel: "Videos",
       },
       subscribe: {
         title: "Suscríbete — Plastic Lover",
+        description: "Únete a la lista de correo de Plastic Lover: nuevos sencillos, fechas y shows secretos.",
         screenLabel: "Suscribirse",
       },
     },

@@ -18,9 +18,13 @@ inline `style`/`animationDelay` props. Deployed on Vercel.
 - `app/` — one route per page (`live`, `releases`, `lyrics`, `videos`, `store`, `contact`,
   `subscribe`), plus `app/api/subscribe/route.ts` (POST, validates an email and posts it to a
   self-hosted [Listmonk](https://listmonk.app) instance via `LISTMONK_URL`,
-  `LISTMONK_API_USER`, `LISTMONK_API_TOKEN`, `LISTMONK_LIST_ID` env vars — falls back to
-  `console.log` when those aren't set. **Listmonk itself is not deployed/self-hosted yet**;
-  that's still TODO, so the env vars are unset in every environment for now).
+  `LISTMONK_API_USER`, `LISTMONK_API_TOKEN` env vars — falls back to `console.log` when those
+  aren't set. **Listmonk itself is not deployed/self-hosted yet**; that's still TODO, so the env
+  vars are unset in every environment for now). The request body includes the subscriber's
+  `locale` (`"en" | "es"`, from `MailingListForm`'s `locale` prop); the route maps it to a
+  per-language Listmonk list via `LISTMONK_LIST_ID_EN` / `LISTMONK_LIST_ID_ES`, falling back to
+  `LISTMONK_LIST_ID` for an unset/unrecognized locale — set that as a default list, or set both
+  per-language vars, when Listmonk is finally deployed.
 - `app/page.tsx` is a server component that reads the `pl_hero_seen` cookie and hands off to
   `components/HomeClient.tsx` (client component) to decide whether to play or skip the hero
   entrance animation.

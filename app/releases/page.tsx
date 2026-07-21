@@ -5,11 +5,19 @@ import grid from "@/components/CardGrid.module.css";
 import { getDictionary } from "@/lib/i18n/dictionaries";
 import { getServerLocale } from "@/lib/i18n/locale";
 import { RELEASES, type Release } from "@/lib/releases";
+import { buildOpenGraph, buildTwitter } from "@/lib/seo";
 import styles from "./page.module.css";
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getServerLocale();
-  return { title: getDictionary(locale).pages.releases.title };
+  const dict = getDictionary(locale).pages.releases;
+  return {
+    title: dict.title,
+    description: dict.description,
+    alternates: { canonical: "/releases" },
+    openGraph: buildOpenGraph({ title: dict.title, description: dict.description, path: "/releases", locale }),
+    twitter: buildTwitter({ title: dict.title, description: dict.description }),
+  };
 }
 
 function ReleaseGrid({ releases, stream }: { releases: Release[]; stream: string }) {

@@ -4,11 +4,19 @@ import MailingListForm from "@/components/MailingListForm";
 import SiteNav from "@/components/SiteNav";
 import { getDictionary } from "@/lib/i18n/dictionaries";
 import { getServerLocale } from "@/lib/i18n/locale";
+import { buildOpenGraph, buildTwitter } from "@/lib/seo";
 import styles from "./page.module.css";
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getServerLocale();
-  return { title: getDictionary(locale).pages.subscribe.title };
+  const dict = getDictionary(locale).pages.subscribe;
+  return {
+    title: dict.title,
+    description: dict.description,
+    alternates: { canonical: "/subscribe" },
+    openGraph: buildOpenGraph({ title: dict.title, description: dict.description, path: "/subscribe", locale }),
+    twitter: buildTwitter({ title: dict.title, description: dict.description }),
+  };
 }
 
 export default async function SubscribePage() {

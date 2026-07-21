@@ -4,10 +4,18 @@ import VideoCardPlayer from "@/components/VideoCardPlayer";
 import grid from "@/components/CardGrid.module.css";
 import { getDictionary } from "@/lib/i18n/dictionaries";
 import { getServerLocale } from "@/lib/i18n/locale";
+import { buildOpenGraph, buildTwitter } from "@/lib/seo";
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getServerLocale();
-  return { title: getDictionary(locale).pages.videos.title };
+  const dict = getDictionary(locale).pages.videos;
+  return {
+    title: dict.title,
+    description: dict.description,
+    alternates: { canonical: "/videos" },
+    openGraph: buildOpenGraph({ title: dict.title, description: dict.description, path: "/videos", locale }),
+    twitter: buildTwitter({ title: dict.title, description: dict.description }),
+  };
 }
 
 // Sourced from youtube.com/@myplasticlover, ordered by view count (most to least).

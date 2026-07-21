@@ -3,10 +3,18 @@ import PageShell from "@/components/PageShell";
 import ShowRequestForm from "@/components/ShowRequestForm";
 import { getDictionary } from "@/lib/i18n/dictionaries";
 import { getServerLocale } from "@/lib/i18n/locale";
+import { buildOpenGraph, buildTwitter } from "@/lib/seo";
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getServerLocale();
-  return { title: getDictionary(locale).pages.live.title };
+  const dict = getDictionary(locale).pages.live;
+  return {
+    title: dict.title,
+    description: dict.description,
+    alternates: { canonical: "/live" },
+    openGraph: buildOpenGraph({ title: dict.title, description: dict.description, path: "/live", locale }),
+    twitter: buildTwitter({ title: dict.title, description: dict.description }),
+  };
 }
 
 // No confirmed tour dates right now. Keeping the row-list design and data shape

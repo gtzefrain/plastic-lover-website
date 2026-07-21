@@ -25,7 +25,7 @@ export default function MailingListForm({ locale = "en", headingLevel = "h2" }: 
       await fetch("/api/subscribe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email, locale }),
       });
     } finally {
       setSubmitting(false);
