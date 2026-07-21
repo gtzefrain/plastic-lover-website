@@ -19,15 +19,11 @@
   font-family: var(--pl-font-mono);
   font-size: 13px;
   letter-spacing: 0.14em;
+  text-transform: uppercase;
   opacity: 0.65;
 }
 
 .footnote strong {
   font-weight: inherit;
   opacity: 1;
-}
-
-.spotifyLink {
-  display: inline-block;
-  margin-top: 40px;
 }

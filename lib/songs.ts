@@ -1,5 +1,3 @@
-import { getReleaseBySlug } from "./releases";
-
 export type Song = {
   slug: string;
   title: string;
@@ -537,12 +535,4 @@ You never made it clear`,
 
 export function getSongBySlug(slug: string): Song | undefined {
   return SONGS.find((s) => s.slug === slug);
-}
-
-export function getSpotifyLinkForSong(song: Song): string | undefined {
-  for (const releaseSlug of song.releaseSlugs) {
-    const spotify = getReleaseBySlug(releaseSlug)?.links.find((link) => link.label === "Spotify");
-    if (spotify) return spotify.href;
-  }
-  return undefined;
 }

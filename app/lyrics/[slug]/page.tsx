@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import Button from "@/components/Button";
 import PageShell from "@/components/PageShell";
 import { getDictionary } from "@/lib/i18n/dictionaries";
 import { getServerLocale } from "@/lib/i18n/locale";
-import { getSongBySlug, getSpotifyLinkForSong, SONGS } from "@/lib/songs";
+import { getSongBySlug, SONGS } from "@/lib/songs";
 import styles from "./page.module.css";
 
 type Props = {
@@ -31,7 +30,6 @@ export default async function LyricsDetailPage({ params }: Props) {
 
   const locale = await getServerLocale();
   const dict = getDictionary(locale).pages.lyricsDetail;
-  const spotifyHref = getSpotifyLinkForSong(song);
 
   return (
     <PageShell screenLabel={song.title} maxWidth={760}>
@@ -41,12 +39,6 @@ export default async function LyricsDetailPage({ params }: Props) {
       <p className={styles.footnote}>
         {dict.writtenBy} <strong>{song.authors.join(", ")}</strong>
       </p>
-
-      {spotifyHref && (
-        <Button href={spotifyHref} target="_blank" rel="noopener noreferrer" className={styles.spotifyLink}>
-          {dict.listenOnSpotify}
-        </Button>
-      )}
     </PageShell>
   );
 }

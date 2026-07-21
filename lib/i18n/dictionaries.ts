@@ -71,7 +71,6 @@ type Dictionary = {
     lyricsDetail: {
       fallbackTitle: string;
       writtenBy: string;
-      listenOnSpotify: string;
     };
     releases: {
       title: string;
@@ -166,7 +165,6 @@ const dictionaries: Record<Locale, Dictionary> = {
       lyricsDetail: {
         fallbackTitle: "Lyrics — Plastic Lover",
         writtenBy: "WRITTEN BY",
-        listenOnSpotify: "LISTEN ON SPOTIFY",
       },
       releases: {
         title: "Releases — Plastic Lover",
@@ -259,7 +257,6 @@ const dictionaries: Record<Locale, Dictionary> = {
       lyricsDetail: {
         fallbackTitle: "Letras — Plastic Lover",
         writtenBy: "ESCRITA POR",
-        listenOnSpotify: "ESCUCHAR EN SPOTIFY",
       },
       releases: {
         title: "Lanzamientos — Plastic Lover",
