@@ -11,6 +11,7 @@ type MailingListFormProps = {
 };
 
 export default function MailingListForm({ locale = "en", headingLevel = "h2" }: MailingListFormProps) {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [joined, setJoined] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -20,14 +21,14 @@ export default function MailingListForm({ locale = "en", headingLevel = "h2" }: 
 
   const onJoin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email.trim() || submitting) return;
+    if (!name.trim() || !email.trim() || submitting) return;
     setSubmitting(true);
     setFailed(false);
     try {
       const res = await fetch("/api/subscribe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, locale }),
+        body: JSON.stringify({ name, email, locale }),
       });
       if (!res.ok) throw new Error("Subscription failed");
       setJoined(true);
@@ -45,14 +46,26 @@ export default function MailingListForm({ locale = "en", headingLevel = "h2" }: 
       <div className={styles.formArea}>
         {!joined ? (
           <form onSubmit={onJoin} className={styles.form}>
+            <label htmlFor="mailing-list-name" className="visually-hidden">
+              {dict.mailingList.namePlaceholder}
+            </label>
+            <input
+              id="mailing-list-name"
+              type="text"
+              required
+              placeholder={dict.mailingList.namePlaceholder}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className={styles.input}
+            />
             <label htmlFor="mailing-list-email" className="visually-hidden">
-              {dict.mailingList.placeholder}
+              {dict.mailingList.emailPlaceholder}
             </label>
             <input
               id="mailing-list-email"
               type="email"
               required
-              placeholder={dict.mailingList.placeholder}
+              placeholder={dict.mailingList.emailPlaceholder}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className={styles.input}

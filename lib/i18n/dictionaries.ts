@@ -36,7 +36,8 @@ type Dictionary = {
   mailingList: {
     kicker: string;
     headline: string;
-    placeholder: string;
+    namePlaceholder: string;
+    emailPlaceholder: string;
     submit: string;
     joined: string;
     error: string;
@@ -140,7 +141,8 @@ const dictionaries: Record<Locale, Dictionary> = {
     mailingList: {
       kicker: "MAILING LIST",
       headline: "New singles, tour dates and secret shows. Straight to your inbox.",
-      placeholder: "your@email.com",
+      namePlaceholder: "your name",
+      emailPlaceholder: "your@email.com",
       submit: "JOIN THE LIST",
       joined: "YOU'RE ON THE LIST. CHECK YOUR INBOX",
       error: "SOMETHING WENT WRONG. PLEASE TRY AGAIN.",
@@ -242,7 +244,8 @@ const dictionaries: Record<Locale, Dictionary> = {
     mailingList: {
       kicker: "LISTA DE CORREO",
       headline: "Nuevos sencillos, fechas en vivo y shows secretos. Directo a tu bandeja.",
-      placeholder: "tu@correo.com",
+      namePlaceholder: "tu nombre",
+      emailPlaceholder: "tu@correo.com",
       submit: "UNIRSE A LA LISTA",
       joined: "YA ESTÁS EN LA LISTA. REVISA TU BANDEJA",
       error: "ALGO SALIÓ MAL. INTÉNTALO DE NUEVO.",

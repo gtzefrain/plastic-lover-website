@@ -10,7 +10,11 @@ const LIST_ID_BY_LOCALE: Record<Locale, string | undefined> = {
 };
 
 export async function POST(request: Request) {
-  const { email, locale } = await request.json();
+  const { name, email, locale } = await request.json();
+
+  if (typeof name !== "string" || !name.trim()) {
+    return NextResponse.json({ error: "Invalid name" }, { status: 400 });
+  }
 
   if (typeof email !== "string" || !email.includes("@")) {
     return NextResponse.json({ error: "Invalid email" }, { status: 400 });
@@ -21,7 +25,7 @@ export async function POST(request: Request) {
 
   if (!LISTMONK_URL || !LISTMONK_API_USER || !LISTMONK_API_TOKEN || !listId) {
     // Listmonk instance isn't deployed yet — see AGENTS.md for status.
-    console.log("New subscriber (Listmonk not configured):", email, subscriberLocale);
+    console.log("New subscriber (Listmonk not configured):", name, email, subscriberLocale);
     return NextResponse.json({ ok: true });
   }
 
@@ -33,6 +37,7 @@ export async function POST(request: Request) {
     },
     body: JSON.stringify({
       email,
+      name: name.trim(),
       status: "enabled",
       lists: [Number(listId)],
       preconfirm_subscriptions: true,
