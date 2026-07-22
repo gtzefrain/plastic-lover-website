@@ -1,13 +1,48 @@
 import { NextResponse } from "next/server";
 import { defaultLocale, isLocale, type Locale } from "@/lib/i18n/dictionaries";
 
-const { LISTMONK_URL, LISTMONK_API_USER, LISTMONK_API_TOKEN, LISTMONK_LIST_ID, LISTMONK_LIST_ID_EN, LISTMONK_LIST_ID_ES } =
-  process.env;
+const {
+  LISTMONK_URL,
+  LISTMONK_API_USER,
+  LISTMONK_API_TOKEN,
+  LISTMONK_LIST_ID,
+  LISTMONK_LIST_ID_EN,
+  LISTMONK_LIST_ID_ES,
+  LISTMONK_TX_TEMPLATE_ID_EN,
+  LISTMONK_TX_TEMPLATE_ID_ES,
+} = process.env;
 
 const LIST_ID_BY_LOCALE: Record<Locale, string | undefined> = {
   en: LISTMONK_LIST_ID_EN,
   es: LISTMONK_LIST_ID_ES,
 };
+
+const TX_TEMPLATE_ID_BY_LOCALE: Record<Locale, string | undefined> = {
+  en: LISTMONK_TX_TEMPLATE_ID_EN,
+  es: LISTMONK_TX_TEMPLATE_ID_ES,
+};
+
+async function sendWelcomeEmail(name: string, email: string, locale: Locale) {
+  const templateId = TX_TEMPLATE_ID_BY_LOCALE[locale];
+  if (!templateId) return;
+
+  const res = await fetch(`${LISTMONK_URL}/api/tx`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Basic ${Buffer.from(`${LISTMONK_API_USER}:${LISTMONK_API_TOKEN}`).toString("base64")}`,
+    },
+    body: JSON.stringify({
+      subscriber_email: email,
+      template_id: Number(templateId),
+      data: { name },
+    }),
+  });
+
+  if (!res.ok) {
+    console.error("Listmonk welcome email failed:", res.status, await res.text());
+  }
+}
 
 export async function POST(request: Request) {
   const { name, email, locale } = await request.json();
@@ -54,6 +89,8 @@ export async function POST(request: Request) {
     console.error("Listmonk subscribe failed:", res.status, body);
     return NextResponse.json({ error: "Subscription failed" }, { status: 502 });
   }
+
+  await sendWelcomeEmail(name.trim(), email, subscriberLocale);
 
   return NextResponse.json({ ok: true });
 }
