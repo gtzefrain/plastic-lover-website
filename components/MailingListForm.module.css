@@ -66,6 +66,16 @@
   background: var(--pl-button-hover);
 }
 
+.error {
+  width: 100%;
+  font-family: var(--pl-font-mono);
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  color: var(--pl-primary);
+  margin: 12px 0 0;
+  text-align: center;
+}
+
 .joined {
   font-family: var(--pl-font-mono);
   font-size: 14px;

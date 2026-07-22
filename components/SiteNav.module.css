@@ -97,6 +97,7 @@
 }
 
 .drawerLink {
+  display: block;
   color: var(--pl-primary);
   text-decoration: none;
   font-size: 28px;

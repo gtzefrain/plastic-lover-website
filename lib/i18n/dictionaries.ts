@@ -39,6 +39,7 @@ type Dictionary = {
     placeholder: string;
     submit: string;
     joined: string;
+    error: string;
     footnote: string;
   };
   pages: {
@@ -141,7 +142,8 @@ const dictionaries: Record<Locale, Dictionary> = {
       headline: "New singles, tour dates and secret shows. Straight to your inbox.",
       placeholder: "your@email.com",
       submit: "JOIN THE LIST",
-      joined: "YOU'RE ON THE LIST. STAY PLASTIC.",
+      joined: "YOU'RE ON THE LIST. CHECK YOUR INBOX",
+      error: "SOMETHING WENT WRONG. PLEASE TRY AGAIN.",
       footnote: "NO SPAM. UNSUBSCRIBE ANYTIME.",
     },
     pages: {
@@ -242,7 +244,8 @@ const dictionaries: Record<Locale, Dictionary> = {
       headline: "Nuevos sencillos, fechas en vivo y shows secretos. Directo a tu bandeja.",
       placeholder: "tu@correo.com",
       submit: "UNIRSE A LA LISTA",
-      joined: "YA ESTÁS EN LA LISTA. SIGUE PLASTIC.",
+      joined: "YA ESTÁS EN LA LISTA. REVISA TU BANDEJA",
+      error: "ALGO SALIÓ MAL. INTÉNTALO DE NUEVO.",
       footnote: "SIN SPAM. CANCELA CUANDO QUIERAS.",
     },
     pages: {

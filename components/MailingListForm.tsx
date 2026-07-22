@@ -14,6 +14,7 @@ export default function MailingListForm({ locale = "en", headingLevel = "h2" }: 
   const [email, setEmail] = useState("");
   const [joined, setJoined] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [failed, setFailed] = useState(false);
   const dict = getDictionary(locale);
   const Headline = headingLevel;
 
@@ -21,15 +22,19 @@ export default function MailingListForm({ locale = "en", headingLevel = "h2" }: 
     e.preventDefault();
     if (!email.trim() || submitting) return;
     setSubmitting(true);
+    setFailed(false);
     try {
-      await fetch("/api/subscribe", {
+      const res = await fetch("/api/subscribe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, locale }),
       });
+      if (!res.ok) throw new Error("Subscription failed");
+      setJoined(true);
+    } catch {
+      setFailed(true);
     } finally {
       setSubmitting(false);
-      setJoined(true);
     }
   };
 
@@ -52,9 +57,14 @@ export default function MailingListForm({ locale = "en", headingLevel = "h2" }: 
               onChange={(e) => setEmail(e.target.value)}
               className={styles.input}
             />
-            <button type="submit" className={styles.submit}>
+            <button type="submit" className={styles.submit} disabled={submitting}>
               {dict.mailingList.submit}
             </button>
+            {failed && (
+              <p className={styles.error} role="alert">
+                {dict.mailingList.error}
+              </p>
+            )}
           </form>
         ) : (
           <div className={styles.joined} role="status">

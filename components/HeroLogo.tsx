@@ -23,24 +23,29 @@ export default function HeroLogo({ runKey, skipEntrance = false }: HeroLogoProps
             : "none",
         }}
       >
-        {LETTERS.map(([src, dx, dy, rot], i) => (
+        {skipEntrance ? (
           <div
-            key={src}
             className={styles.letter}
-            style={
-              {
-                backgroundImage: `url(/logo/${src})`,
-                "--dx": `${dx}vw`,
-                "--dy": `${dy}vh`,
-                "--rot": `${rot}deg`,
-                animation: skipEntrance
-                  ? "none"
-                  : `plBlob ${1.6 / HERO_SPEED}s cubic-bezier(0.25,0.8,0.3,1) both`,
-                animationDelay: skipEntrance ? undefined : d(0.12 * i),
-              } as CSSProperties
-            }
+            style={{ backgroundImage: "url(/logo/LOGO_3D.png)" }}
           />
-        ))}
+        ) : (
+          LETTERS.map(([src, dx, dy, rot], i) => (
+            <div
+              key={src}
+              className={styles.letter}
+              style={
+                {
+                  backgroundImage: `url(/logo/${src})`,
+                  "--dx": `${dx}vw`,
+                  "--dy": `${dy}vh`,
+                  "--rot": `${rot}deg`,
+                  animation: `plBlob ${1.6 / HERO_SPEED}s cubic-bezier(0.25,0.8,0.3,1) both`,
+                  animationDelay: d(0.12 * i),
+                } as CSSProperties
+              }
+            />
+          ))
+        )}
       </div>
       <div
         className={styles.shadow}

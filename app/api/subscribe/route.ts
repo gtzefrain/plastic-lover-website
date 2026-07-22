@@ -41,6 +41,11 @@ export async function POST(request: Request) {
 
   if (!res.ok) {
     const body = await res.text();
+    if (res.status === 409) {
+      // Subscriber already exists — from the visitor's perspective they're already
+      // on the list, so this isn't a failure.
+      return NextResponse.json({ ok: true });
+    }
     console.error("Listmonk subscribe failed:", res.status, body);
     return NextResponse.json({ error: "Subscription failed" }, { status: 502 });
   }
