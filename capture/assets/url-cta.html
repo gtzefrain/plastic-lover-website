@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Plastic Lover — URL CTA</title>
+<style>
+  :root {
+    --pl-bg: #ffffff;
+    --pl-primary: #c60c2c;
+    --pl-font-display: "Helvetica Neue", Helvetica, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--pl-bg);
+    overflow: hidden;
+  }
+  body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--pl-font-display);
+  }
+
+  /* Plain text, same treatment as the site's tagline (app/globals.css
+     plFadeUp) — no special "logo" styling. The hand-drawn letter PNGs used
+     for the real wordmark only cover P-l-a-s-t-i-c-L-o-v-e-r, so an
+     arbitrary string like a URL is rendered as ordinary text. */
+  .url {
+    opacity: 0;
+    color: var(--pl-primary);
+    font-weight: 500;
+    font-size: clamp(28px, 6vw, 56px);
+    text-align: center;
+    white-space: nowrap;
+    animation: plFadeUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 0s forwards;
+  }
+  @keyframes plFadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .textWrap {
+    position: relative;
+    display: inline-flex;
+  }
+
+  /* Cursor: swoops in from off-frame and lands with its tip directly over
+     the text (on "r.mx"), like a "click here" tutorial cue. Anchored with
+     left/top as percentages of .textWrap's own box so the landing spot
+     stays proportional to the text regardless of viewport aspect ratio.
+     The translate keyframes only move .cursorPos itself, so that anchor
+     point is what the cursor swoops in to. */
+  .cursorPos {
+    position: absolute;
+    left: 78%;
+    top: 18%;
+    opacity: 0;
+    transform: translate(40vw, 34vh);
+    animation: cursorMove 0.9s cubic-bezier(0.22, 0.9, 0.3, 1) 0.9s forwards;
+    filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.28));
+  }
+  @keyframes cursorMove {
+    0% { opacity: 0; transform: translate(40vw, 34vh); }
+    15% { opacity: 1; }
+    100% { opacity: 1; transform: translate(0, 0); }
+  }
+
+  /* Click "press": scales the cursor icon down and back once. transform-origin
+     sits near the arrow's tip so the press pivots from the click point, not
+     the icon's center. */
+  .cursorIcon {
+    display: block;
+    transform-origin: 6px 4px;
+    animation: cursorPress 0.26s ease 1.8s;
+  }
+  @keyframes cursorPress {
+    0% { transform: scale(1); }
+    45% { transform: scale(0.82); }
+    100% { transform: scale(1); }
+  }
+
+  /* Fade the whole cursor out after the click so the clip settles on a
+     clean, static branded frame. Listed after cursorMove in the animation
+     list, so it wins on `opacity` once it becomes active. */
+  .cursorPos {
+    animation:
+      cursorMove 0.9s cubic-bezier(0.22, 0.9, 0.3, 1) 0.9s forwards,
+      cursorFadeOut 0.4s ease 2.4s forwards;
+  }
+  @keyframes cursorFadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+  }
+
+  /* Same anchor point as .cursorPos's tip, centered via translate(-50%,-50%)
+     baked into every keyframe (can't set it as a separate non-animated
+     transform since the `scale()` keyframes would replace it outright). */
+  .ripple {
+    position: absolute;
+    left: 78%;
+    top: 18%;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 3px solid var(--pl-primary);
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.3);
+  }
+  .ripple1 { animation: ripple 0.6s ease-out 1.8s forwards; }
+  @keyframes ripple {
+    0% { opacity: 0.65; transform: translate(-50%, -50%) scale(0.3); }
+    100% { opacity: 0; transform: translate(-50%, -50%) scale(2.4); border-width: 1px; }
+  }
+</style>
+</head>
+<body>
+  <div class="textWrap">
+    <span class="url">www.plasticlover.mx</span>
+
+    <div class="cursorPos">
+      <svg class="cursorIcon" viewBox="0 0 24 24" width="42" height="42" aria-hidden="true">
+        <path
+          d="M4 2 L4 20 L9 15.2 L12.6 21.6 L15.3 20.2 L11.8 14 L18 14 Z"
+          fill="#ffffff"
+          stroke="#1a1a1a"
+          stroke-width="1.3"
+          stroke-linejoin="round"
+        />
+      </svg>
+    </div>
+
+    <div class="ripple ripple1"></div>
+  </div>
+</body>
+</html>

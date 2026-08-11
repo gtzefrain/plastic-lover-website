@@ -1,0 +1,14 @@
+{
+  "name": "plastic-lover-hero-capture",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Frame-accurate export of Plastic Lover motion assets to MP4 for social media.",
+  "scripts": {
+    "capture": "node capture.js",
+    "capture:url-cta": "node capture-url-cta.js",
+    "midi": "node generate-midi.js"
+  },
+  "dependencies": {
+    "puppeteer": "^24"
+  }
+}
