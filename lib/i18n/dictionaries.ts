@@ -46,6 +46,7 @@ type Dictionary = {
   pages: {
     contact: {
       title: string;
+      description: string;
       kicker: string;
       screenLabel: string;
       management: string;
@@ -102,6 +103,15 @@ type Dictionary = {
       description: string;
       screenLabel: string;
     };
+    lasOlas: {
+      title: string;
+      description: string;
+      hiddenHeading: string;
+      kicker: string;
+      presaveButton: string;
+      revealedStatus: string;
+      replayButton: string;
+    };
   };
 };
 
@@ -151,6 +161,7 @@ const dictionaries: Record<Locale, Dictionary> = {
     pages: {
       contact: {
         title: "Contact — Plastic Lover",
+        description: "Booking, management, and press contacts for Plastic Lover.",
         kicker: "CONTACT",
         screenLabel: "Contact",
         management: "MANAGEMENT",
@@ -207,6 +218,15 @@ const dictionaries: Record<Locale, Dictionary> = {
         description: "Join the Plastic Lover mailing list for new singles, tour dates, and secret shows.",
         screenLabel: "Subscribe",
       },
+      lasOlas: {
+        title: "Las Olas — Plastic Lover",
+        description: "The new single — August 20. Tap to reveal.",
+        hiddenHeading: "Las Olas — the new single",
+        kicker: "THE NEW SINGLE — AUGUST 20",
+        presaveButton: "PRESAVE",
+        revealedStatus: "Las Olas revealed. Presave link available below.",
+        replayButton: "REPLAY",
+      },
     },
   },
   es: {
@@ -254,6 +274,7 @@ const dictionaries: Record<Locale, Dictionary> = {
     pages: {
       contact: {
         title: "Contacto — Plastic Lover",
+        description: "Contactos de contrataciones, management y prensa de Plastic Lover.",
         kicker: "CONTACTO",
         screenLabel: "Contacto",
         management: "MANAGEMENT",
@@ -309,6 +330,15 @@ const dictionaries: Record<Locale, Dictionary> = {
         title: "Suscríbete — Plastic Lover",
         description: "Únete a la lista de correo de Plastic Lover: nuevos sencillos, fechas y shows secretos.",
         screenLabel: "Suscribirse",
+      },
+      lasOlas: {
+        title: "Las Olas — Plastic Lover",
+        description: "El nuevo sencillo — 20 de agosto. Toca para revelar.",
+        hiddenHeading: "Las Olas — el nuevo sencillo",
+        kicker: "EL NUEVO SENCILLO — 20 DE AGOSTO",
+        presaveButton: "PRESAVE",
+        revealedStatus: "Las Olas revelado. Enlace de presave disponible abajo.",
+        replayButton: "REPETIR",
       },
     },
   },

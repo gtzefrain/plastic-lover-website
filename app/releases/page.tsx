@@ -11,12 +11,13 @@ import styles from "./page.module.css";
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getServerLocale();
   const dict = getDictionary(locale).pages.releases;
+  const ogDict = getDictionary("es").pages.releases;
   return {
     title: dict.title,
     description: dict.description,
     alternates: { canonical: "/releases" },
-    openGraph: buildOpenGraph({ title: dict.title, description: dict.description, path: "/releases", locale }),
-    twitter: buildTwitter({ title: dict.title, description: dict.description }),
+    openGraph: buildOpenGraph({ title: ogDict.title, description: ogDict.description, path: "/releases" }),
+    twitter: buildTwitter({ title: ogDict.title, description: ogDict.description }),
   };
 }
 

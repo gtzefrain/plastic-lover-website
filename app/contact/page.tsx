@@ -4,10 +4,19 @@ import PageShell from "@/components/PageShell";
 import rows from "@/components/RowList.module.css";
 import { getDictionary } from "@/lib/i18n/dictionaries";
 import { getServerLocale } from "@/lib/i18n/locale";
+import { buildOpenGraph, buildTwitter } from "@/lib/seo";
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getServerLocale();
-  return { title: getDictionary(locale).pages.contact.title };
+  const dict = getDictionary(locale).pages.contact;
+  const ogDict = getDictionary("es").pages.contact;
+  return {
+    title: dict.title,
+    description: dict.description,
+    alternates: { canonical: "/contact" },
+    openGraph: buildOpenGraph({ title: ogDict.title, description: ogDict.description, path: "/contact" }),
+    twitter: buildTwitter({ title: ogDict.title, description: ogDict.description }),
+  };
 }
 
 export default async function ContactPage() {

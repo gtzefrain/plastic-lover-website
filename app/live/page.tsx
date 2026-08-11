@@ -8,12 +8,13 @@ import { buildOpenGraph, buildTwitter } from "@/lib/seo";
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getServerLocale();
   const dict = getDictionary(locale).pages.live;
+  const ogDict = getDictionary("es").pages.live;
   return {
     title: dict.title,
     description: dict.description,
     alternates: { canonical: "/live" },
-    openGraph: buildOpenGraph({ title: dict.title, description: dict.description, path: "/live", locale }),
-    twitter: buildTwitter({ title: dict.title, description: dict.description }),
+    openGraph: buildOpenGraph({ title: ogDict.title, description: ogDict.description, path: "/live" }),
+    twitter: buildTwitter({ title: ogDict.title, description: ogDict.description }),
   };
 }
 

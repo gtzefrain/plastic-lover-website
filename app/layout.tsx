@@ -8,14 +8,15 @@ import "./globals.css";
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getServerLocale();
   const description = getDictionary(locale).site.description;
+  const ogDescription = getDictionary("es").site.description;
 
   return {
     metadataBase: new URL(SITE_URL),
     title: SITE_NAME,
     description,
     robots: { index: true, follow: true },
-    openGraph: buildOpenGraph({ title: SITE_NAME, description, path: "/", locale }),
-    twitter: buildTwitter({ title: SITE_NAME, description }),
+    openGraph: buildOpenGraph({ title: SITE_NAME, description: ogDescription, path: "/" }),
+    twitter: buildTwitter({ title: SITE_NAME, description: ogDescription }),
   };
 }
 

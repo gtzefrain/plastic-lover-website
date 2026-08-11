@@ -10,12 +10,13 @@ import { buildOpenGraph, buildTwitter } from "@/lib/seo";
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getServerLocale();
   const dict = getDictionary(locale).pages.lyrics;
+  const ogDict = getDictionary("es").pages.lyrics;
   return {
     title: dict.title,
     description: dict.description,
     alternates: { canonical: "/lyrics" },
-    openGraph: buildOpenGraph({ title: dict.title, description: dict.description, path: "/lyrics", locale }),
-    twitter: buildTwitter({ title: dict.title, description: dict.description }),
+    openGraph: buildOpenGraph({ title: ogDict.title, description: ogDict.description, path: "/lyrics" }),
+    twitter: buildTwitter({ title: ogDict.title, description: ogDict.description }),
   };
 }
 

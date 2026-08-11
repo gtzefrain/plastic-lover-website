@@ -1,30 +1,25 @@
 import type { Metadata } from "next";
-import type { Locale } from "./i18n/dictionaries";
 
 export const SITE_URL = "https://plasticlover.band";
 export const SITE_NAME = "Plastic Lover";
 
-function ogLocale(locale: Locale): string {
-  return locale === "es" ? "es_ES" : "en_US";
-}
-
+// og:title/og:description are always Spanish regardless of viewer locale — see callers,
+// which pass in getDictionary("es") copy rather than the page's own locale-aware dict.
 export function buildOpenGraph({
   title,
   description,
   path,
-  locale,
 }: {
   title: string;
   description: string;
   path: string;
-  locale: Locale;
 }): NonNullable<Metadata["openGraph"]> {
   return {
     title,
     description,
     url: path,
     siteName: SITE_NAME,
-    locale: ogLocale(locale),
+    locale: "es_ES",
     type: "website",
   };
 }

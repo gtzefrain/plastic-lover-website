@@ -27,14 +27,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const title = `${song.title} — Plastic Lover`;
   const description = `${dict.descriptionPrefix} "${song.title}" — Plastic Lover.`;
+  const ogDescriptionPrefix = getDictionary("es").pages.lyricsDetail.descriptionPrefix;
+  const ogDescription = `${ogDescriptionPrefix} "${song.title}" — Plastic Lover.`;
   const path = `/lyrics/${song.slug}`;
 
   return {
     title,
     description,
     alternates: { canonical: path },
-    openGraph: buildOpenGraph({ title, description, path, locale }),
-    twitter: buildTwitter({ title, description }),
+    openGraph: buildOpenGraph({ title, description: ogDescription, path }),
+    twitter: buildTwitter({ title, description: ogDescription }),
   };
 }
 
