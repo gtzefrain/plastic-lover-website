@@ -36,6 +36,13 @@ export default async function PressPhotosPage({ searchParams }: Props) {
   const locale = await getServerLocale();
   const dict = getDictionary(locale).pages.press;
 
+  const categories = new Map<string, typeof PRESS_PHOTOS>();
+  for (const photo of PRESS_PHOTOS) {
+    const group = categories.get(photo.category) ?? [];
+    group.push(photo);
+    categories.set(photo.category, group);
+  }
+
   return (
     <div className={showChrome ? `${styles.page} ${styles.pageWithChrome}` : styles.page}>
       {showChrome && <SiteNav locale={locale} />}
@@ -48,20 +55,25 @@ export default async function PressPhotosPage({ searchParams }: Props) {
         <p className={styles.kicker}>{dict.artistBioHeading}</p>
         <h1 className={styles.title}>{dict.photosLabel}</h1>
 
-        <ul className={styles.photoGrid}>
-          {PRESS_PHOTOS.map((photo) => (
-            <li key={photo.src} className={styles.photoCard}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={photo.src} alt={photo.alt} className={styles.photoImage} />
-              <div className={styles.photoMeta}>
-                {photo.credit && <span className={styles.photoCredit}>{photo.credit}</span>}
-                <a href={photo.downloadSrc ?? photo.src} download className={styles.photoDownload}>
-                  {dict.downloadLabel}
-                </a>
-              </div>
-            </li>
-          ))}
-        </ul>
+        {[...categories.entries()].map(([category, photos]) => (
+          <section key={category} className={styles.categoryGroup}>
+            <h2 className={styles.categoryLabel}>{category}</h2>
+            <ul className={styles.photoGrid}>
+              {photos.map((photo) => (
+                <li key={photo.src} className={styles.photoCard}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={photo.src} alt={photo.alt} className={styles.photoImage} />
+                  <div className={styles.photoMeta}>
+                    {photo.credit && <span className={styles.photoCredit}>{photo.credit}</span>}
+                    <a href={photo.downloadSrc ?? photo.src} download className={styles.photoDownload}>
+                      {dict.downloadLabel}
+                    </a>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))}
       </main>
 
       {showChrome && <Footer locale={locale} />}

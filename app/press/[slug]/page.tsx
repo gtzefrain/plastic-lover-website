@@ -60,8 +60,8 @@ export default async function PressKitPage({ params, searchParams }: Props) {
 
   const contactEmail = kit.contactEmail ?? "myplasticlover@gmail.com";
   const artistBio = locale === "es" ? ARTIST_BIO.es : ARTIST_BIO.en;
-  // Main image of the press kit (Section 1) — DSCF5471, not the release cover art.
-  const heroPhoto = PRESS_PHOTOS[0];
+  // Main image of the press kit (Section 1) — not the release cover art.
+  const heroPhoto = kit.heroImage ?? PRESS_PHOTOS[0];
   // Right column of the BIO section — the live performance shot (IMG_6544).
   const portrait = PRESS_PHOTOS[6] ?? PRESS_PHOTOS[0];
 
@@ -89,8 +89,6 @@ export default async function PressKitPage({ params, searchParams }: Props) {
 
         {/* Section 1b — full width: stream links */}
         <section className={styles.streamSection}>
-          <h2 className={styles.sectionLabel}>{dict.streamLabel}</h2>
-
           {kit.previewAudio && <AudioPlayer src={kit.previewAudio.src} title={kit.previewAudio.title} />}
 
           <ul className={styles.linksTable}>
@@ -122,8 +120,15 @@ export default async function PressKitPage({ params, searchParams }: Props) {
           </div>
 
           <div className={styles.contentImageCol}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={release.cover} alt={`${release.title} cover art`} className={styles.contentImage} />
+            <div className={styles.contentVideo}>
+              <iframe
+                src="https://www.youtube.com/embed/QfgRF2Kfsos"
+                title={`${release.title} video`}
+                allow="autoplay; encrypted-media; picture-in-picture"
+                allowFullScreen
+                className={styles.contentVideoFrame}
+              />
+            </div>
           </div>
         </section>
 

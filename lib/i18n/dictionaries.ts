@@ -115,7 +115,6 @@ type Dictionary = {
     };
     press: {
       kicker: string;
-      streamLabel: string;
       creditsLabel: string;
       photosLabel: string;
       viewPhotosLabel: string;
@@ -246,7 +245,6 @@ const dictionaries: Record<Locale, Dictionary> = {
       },
       press: {
         kicker: "ELECTRONIC PRESS KIT",
-        streamLabel: "STREAM",
         creditsLabel: "CREDITS",
         photosLabel: "PHOTOS",
         viewPhotosLabel: "HD Photos",
@@ -375,7 +373,6 @@ const dictionaries: Record<Locale, Dictionary> = {
       },
       press: {
         kicker: "KIT DE PRENSA ELECTRÓNICO",
-        streamLabel: "ESCUCHAR",
         creditsLabel: "CRÉDITOS",
         photosLabel: "FOTOS",
         viewPhotosLabel: "Fotografías en HD",

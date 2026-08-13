@@ -6,6 +6,7 @@ export type PressPhoto = {
   src: string; // web-sized display image — actual file must exist under public/press/
   downloadSrc?: string; // full-res original for the DOWNLOAD link; defaults to `src` if omitted
   alt: string;
+  category: string; // grouping heading on /press/photos, e.g. "Portrait", "Las Olas"
   credit?: string; // e.g. "Photo: Jane Doe"
 };
 
@@ -27,6 +28,7 @@ export type PressKit = {
   };
   quotes?: PressQuote[];
   credits?: PressCredit[];
+  heroImage?: { src: string; alt: string }; // Section 1's main image; falls back to PRESS_PHOTOS[0]
   previewAudio?: { src: string; title: string }; // custom player in the stream section
   contactEmail?: string; // defaults to myplasticlover@gmail.com if omitted
 };
@@ -51,6 +53,11 @@ export const PRESS_KITS: PressKit[] = [
       src: "/press/las-olas/las-olas-master.mp3",
       title: "Las Olas — Preview",
     },
+    // Music video still (VLC capture), web-sized copy at public/press/las-olas/hero-web.jpg.
+    heroImage: {
+      src: "/press/las-olas/hero-web.jpg",
+      alt: "Plastic Lover kneeling in a grassy park, flanked by two masked figures in black suits",
+    },
   },
 ];
 
@@ -69,42 +76,79 @@ export const PRESS_PHOTOS: PressPhoto[] = [
     src: "/press/portraits/web/dscf5471.jpg",
     downloadSrc: "/press/portraits/DSCF5471.JPG",
     alt: "Plastic Lover in golden-hour light, sunglasses, backlit by louvered blinds",
-    credit: "Photo: Lorem Ipsum",
+    category: "Portrait",
+    credit: "Photo: Pablo Barrera",
   },
   {
     src: "/press/portraits/web/dscf5657.jpg",
     downloadSrc: "/press/portraits/DSCF5657.JPG",
     alt: "Plastic Lover at dusk by a chain-link fence, wearing a polka-dot neckerchief",
-    credit: "Photo: Lorem Ipsum",
+    category: "Portrait",
+    credit: "Photo: Pablo Barrera",
   },
   {
     src: "/press/portraits/web/dscf5712.jpg",
     downloadSrc: "/press/portraits/DSCF5712.JPG",
     alt: "Plastic Lover in a dark shirt and sunglasses, warm evening light",
-    credit: "Photo: Lorem Ipsum",
+    category: "Portrait",
+    credit: "Photo: Pablo Barrera",
   },
   {
     src: "/press/portraits/web/dscf5727.jpg",
     downloadSrc: "/press/portraits/DSCF5727.JPG",
     alt: "Plastic Lover at night in amber-tinted glasses, city lights behind him",
-    credit: "Photo: Lorem Ipsum",
+    category: "Portrait",
+    credit: "Photo: Pablo Barrera",
   },
   {
     src: "/press/portraits/web/dscf5736.jpg",
     downloadSrc: "/press/portraits/DSCF5736.jpg",
     alt: "Plastic Lover in a cream double-breasted suit against an amber-lit backdrop",
-    credit: "Photo: Lorem Ipsum",
+    category: "Portrait",
+    credit: "Photo: Pablo Barrera",
   },
   {
     src: "/press/portraits/web/dscf5756.jpg",
     downloadSrc: "/press/portraits/DSCF5756.JPG",
     alt: "Plastic Lover buttoning a cream blazer against an amber-lit backdrop",
-    credit: "Photo: Lorem Ipsum",
+    category: "Portrait",
+    credit: "Photo: Pablo Barrera",
   },
   {
     src: "/press/portraits/web/img_6544.jpg",
     downloadSrc: "/press/portraits/IMG_6544.JPG",
     alt: "Plastic Lover performing live on guitar under blue stage lighting",
+    category: "Portrait",
+    credit: "Photo: Pablo Barrera",
+  },
+  // "Las Olas" category — stills captured from the music video (VLC screenshots), uploaded to
+  // public/press/las-olas/. Web-sized copies at public/press/las-olas/web-vlcsnap-*.jpg.
+  {
+    src: "/press/las-olas/web-vlcsnap-2026-08-13-14h05m50s166-cropped.jpg",
+    downloadSrc: "/press/las-olas/vlcsnap-2026-08-13-14h05m50s166-cropped.png",
+    alt: "Close-up of Plastic Lover with the animated 'Plastic Lover' wordmark over his face, in a grassy park",
+    category: "Las Olas",
+    credit: "Photo: Lorem Ipsum",
+  },
+  {
+    src: "/press/las-olas/web-vlcsnap-2026-08-13-14h05m57s114-cropped.jpg",
+    downloadSrc: "/press/las-olas/vlcsnap-2026-08-13-14h05m57s114-cropped.png",
+    alt: "Close-up of a white fabric mask draped over a black-suited figure lying in the grass",
+    category: "Las Olas",
+    credit: "Photo: Lorem Ipsum",
+  },
+  {
+    src: "/press/las-olas/web-vlcsnap-2026-08-13-14h06m02s008-cropped.jpg",
+    downloadSrc: "/press/las-olas/vlcsnap-2026-08-13-14h06m02s008-cropped.png",
+    alt: "Plastic Lover kneeling in a grassy park, flanked by two masked figures in black suits",
+    category: "Las Olas",
+    credit: "Photo: Lorem Ipsum",
+  },
+  {
+    src: "/press/las-olas/web-vlcsnap-2026-08-13-14h06m20s226-cropped.jpg",
+    downloadSrc: "/press/las-olas/vlcsnap-2026-08-13-14h06m20s226-cropped.png",
+    alt: "Overhead shot of Plastic Lover kneeling in grass, surrounded by two masked figures lying down",
+    category: "Las Olas",
     credit: "Photo: Lorem Ipsum",
   },
 ];

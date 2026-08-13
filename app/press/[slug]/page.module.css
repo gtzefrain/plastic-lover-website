@@ -132,12 +132,17 @@
   flex-direction: column;
 }
 
-.contentImage {
+.contentVideo {
   width: 100%;
-  aspect-ratio: 1 / 1;
-  object-fit: cover;
-  display: block;
+  aspect-ratio: 16 / 9;
   box-shadow: var(--pl-shadow-frame);
+}
+
+.contentVideoFrame {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
 }
 
 /* Section 2b — full width: stream links */
@@ -145,8 +150,8 @@
   width: 100%;
   display: flex;
   flex-direction: column;
+  margin: -32px 0;
 }
-
 
 .sectionLabel {
   width: 100%;
@@ -159,7 +164,6 @@
   border-top: 1px solid rgba(198, 12, 44, 0.25);
 }
 
-.streamSection .sectionLabel:first-child,
 .heroTextCol .sectionLabel:first-child {
   margin-top: 0;
   padding-top: 0;
@@ -214,6 +218,8 @@
   grid-template-columns: 1fr minmax(0, 300px);
   gap: 48px;
   align-items: stretch;
+  padding-top: 32px;
+  border-top: 1px solid rgba(198, 12, 44, 0.25);
 }
 
 @media (max-width: 720px) {
@@ -249,15 +255,17 @@
   }
 }
 
-/* Section 4 — center: contact */
+/* Section 4 — full width: contact */
 .contactSection {
   width: 100%;
-  max-width: 560px;
-  margin: 0 auto;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
+}
+
+.contactSection .sectionLabel {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
 }
 
 .contactEmail {
