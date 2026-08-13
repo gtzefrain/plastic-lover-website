@@ -53,7 +53,13 @@ async function preparePage(browser, width, height) {
   const context = await browser.createBrowserContext();
   const page = await context.newPage();
   await page.setViewport({ width, height, deviceScaleFactor: DEVICE_SCALE_FACTOR });
-  await page.goto(BASE_URL, { waitUntil: "networkidle0" });
+  // "load" (all discovered resources fetched) rather than "networkidle0":
+  // this app's Vercel Analytics script 404s against a local server, and on
+  // a loaded machine that retry traffic can keep the connection count above
+  // zero long enough for networkidle0 to hang or resolve unpredictably late
+  // — which was letting some frames get captured before every letter layer
+  // had actually rasterized.
+  await page.goto(BASE_URL, { waitUntil: "load" });
 
   if (ISOLATE_LOGO) {
     // Social exports want just the animating logo, not the surrounding page
@@ -63,6 +69,24 @@ async function preparePage(browser, width, height) {
     // block, and the tagline/CTA/scroll-arrow are Hero's other children.
     // Zeroing Hero's padding (reserved for the fixed nav/footer) lets
     // heroInner's flex centering re-center the logo in the full frame.
+    //
+    // HeroLogo.module.css caps the logo at `min(44vh, 70vw, 500px)` — sized
+    // for it to sit alongside the tagline/CTA on a real browser window, not
+    // to fill a 1080px export frame. Override that here (targeting
+    // heroInner's surviving first child — the HeroLogo root — and its last
+    // child, the shadow) so the logo reads as the subject of the clip
+    // instead of a small watermark.
+    //
+    // Cap it at 72vh/72vw, not bigger: past ~75-80% of the viewport's
+    // shorter side, the vertical (1080x1920 @ deviceScaleFactor 2) target
+    // started silently dropping 1-2 of the 12 absolutely-positioned letter
+    // layers from the screenshot — DOM/computed style for the missing
+    // letters checked out identical to the visible ones (opacity 1, no
+    // transform/blur), so this reads as a headless Chrome
+    // raster/compositing limit tied to total physical viewport size, not a
+    // logic bug. The square target never showed it even at 80%, only the
+    // taller vertical one. Re-check this ceiling if TARGETS' dimensions or
+    // DEVICE_SCALE_FACTOR change.
     await page.addStyleTag({
       content: `
         nav, footer { display: none !important; }
@@ -70,6 +94,8 @@ async function preparePage(browser, width, height) {
         [data-screen-label="Hero"] { padding: 0 !important; }
         [data-screen-label="Hero"] > *:not([class*="__heroInner"]) { display: none !important; }
         [class*="__heroInner"] > *:not(:first-child) { display: none !important; }
+        [class*="__heroInner"] > *:first-child { width: min(72vh, 72vw) !important; }
+        [class*="__heroInner"] > *:first-child > *:last-child { width: min(48vh, 48vw) !important; }
       `,
     });
   }

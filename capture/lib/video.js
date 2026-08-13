@@ -60,6 +60,18 @@ async function setAnimationTime(page, ms) {
     document.getAnimations().forEach((a) => {
       a.currentTime = t;
     });
+    // Setting currentTime only updates style; it doesn't force the
+    // compositor to actually paint a frame reflecting it. Without waiting
+    // for that paint, page.screenshot() can occasionally grab a stale
+    // compositor surface for some of the absolutely-positioned, GPU-layered
+    // letter divs (each has its own `will-change: transform, filter`
+    // layer) — they read as fully correct in computed style/DOM but never
+    // got rasterized for that frame, so they're just missing from the
+    // screenshot. Waiting two rAFs guarantees at least one real paint has
+    // happened with the new currentTime applied before we capture.
+    return new Promise((resolve) => {
+      requestAnimationFrame(() => requestAnimationFrame(resolve));
+    });
   }, ms);
 }
 
