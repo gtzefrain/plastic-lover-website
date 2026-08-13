@@ -446,6 +446,17 @@ ol {
   }
 }
 
+@keyframes lasTapPulse {
+  0% {
+    transform: scale(0.5);
+    opacity: 0.85;
+  }
+  100% {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
+
 @keyframes lasBubble {
   0% {
     opacity: 0;

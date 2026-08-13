@@ -108,9 +108,25 @@ type Dictionary = {
       description: string;
       hiddenHeading: string;
       kicker: string;
+      tapHint: string;
       presaveButton: string;
       revealedStatus: string;
       replayButton: string;
+    };
+    press: {
+      kicker: string;
+      streamLabel: string;
+      creditsLabel: string;
+      photosLabel: string;
+      viewPhotosLabel: string;
+      backToKitLabel: string;
+      downloadLabel: string;
+      artistBioHeading: string;
+      socialLabel: string;
+      contactLabel: string;
+      fallbackTitle: string;
+      fallbackDescription: string;
+      descriptionSuffix: string;
     };
   };
 };
@@ -223,9 +239,25 @@ const dictionaries: Record<Locale, Dictionary> = {
         description: "The new single — August 20. Tap to reveal.",
         hiddenHeading: "Las Olas — the new single",
         kicker: "THE NEW SINGLE — AUGUST 20",
+        tapHint: "TAP THE WATER",
         presaveButton: "PRESAVE",
         revealedStatus: "Las Olas revealed. Presave link available below.",
         replayButton: "REPLAY",
+      },
+      press: {
+        kicker: "ELECTRONIC PRESS KIT",
+        streamLabel: "STREAM",
+        creditsLabel: "CREDITS",
+        photosLabel: "PHOTOS",
+        viewPhotosLabel: "HD Photos",
+        backToKitLabel: "← Back to press kit",
+        downloadLabel: "DOWNLOAD",
+        artistBioHeading: "PLASTIC LOVER",
+        socialLabel: "SOCIAL",
+        contactLabel: "PRESS CONTACT",
+        fallbackTitle: "Press Kit — Plastic Lover",
+        fallbackDescription: "Electronic press kit for a Plastic Lover release.",
+        descriptionSuffix: "Electronic press kit — bio, photos, and streaming links.",
       },
     },
   },
@@ -336,50 +368,10 @@ const dictionaries: Record<Locale, Dictionary> = {
         description: "El nuevo sencillo — 20 de agosto. Toca para revelar.",
         hiddenHeading: "Las Olas — el nuevo sencillo",
         kicker: "EL NUEVO SENCILLO — 20 DE AGOSTO",
+        tapHint: "TOCA EL AGUA",
         presaveButton: "PRESAVE",
         revealedStatus: "Las Olas revelado. Enlace de presave disponible abajo.",
         replayButton: "REPETIR",
-      },
-    },
-  },
-};
-
-export function getDictionary(locale: Locale): Dictionary {
-  return dictionaries[locale];
-}
-
-export function isLocale(value: string | undefined | null): value is Locale {
-  return value === "en" || value === "es";
-}
-    press: {
-      kicker: string;
-      streamLabel: string;
-      creditsLabel: string;
-      photosLabel: string;
-      viewPhotosLabel: string;
-      backToKitLabel: string;
-      downloadLabel: string;
-      artistBioHeading: string;
-      socialLabel: string;
-      contactLabel: string;
-      fallbackTitle: string;
-      fallbackDescription: string;
-      descriptionSuffix: string;
-    };
-      press: {
-        kicker: "ELECTRONIC PRESS KIT",
-        streamLabel: "STREAM",
-        creditsLabel: "CREDITS",
-        photosLabel: "PHOTOS",
-        viewPhotosLabel: "HD Photos",
-        backToKitLabel: "← Back to press kit",
-        downloadLabel: "DOWNLOAD",
-        artistBioHeading: "PLASTIC LOVER",
-        socialLabel: "SOCIAL",
-        contactLabel: "PRESS CONTACT",
-        fallbackTitle: "Press Kit — Plastic Lover",
-        fallbackDescription: "Electronic press kit for a Plastic Lover release.",
-        descriptionSuffix: "Electronic press kit — bio, photos, and streaming links.",
       },
       press: {
         kicker: "KIT DE PRENSA ELECTRÓNICO",
@@ -396,3 +388,14 @@ export function isLocale(value: string | undefined | null): value is Locale {
         fallbackDescription: "Kit de prensa electrónico de un lanzamiento de Plastic Lover.",
         descriptionSuffix: "Kit de prensa electrónico — bio, fotos y enlaces para escuchar.",
       },
+    },
+  },
+};
+
+export function getDictionary(locale: Locale): Dictionary {
+  return dictionaries[locale];
+}
+
+export function isLocale(value: string | undefined | null): value is Locale {
+  return value === "en" || value === "es";
+}

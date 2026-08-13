@@ -15,7 +15,7 @@
 }
 
 .logoWrap {
-  margin-bottom: 33vh;
+  margin-bottom: 47vh;
   pointer-events: none;
 }
 
@@ -114,7 +114,7 @@
 
 .revealPanel {
   position: absolute;
-  bottom: 14vh;
+  bottom: 38vh;
   left: 0;
   right: 0;
   display: flex;
@@ -168,6 +168,39 @@
 
 .replayButton:hover {
   color: rgba(198, 12, 44, 0.85);
+}
+
+.tapHint {
+  position: absolute;
+  bottom: 96px;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+.tapPulseWrap {
+  position: relative;
+  width: 22px;
+  height: 22px;
+}
+
+.tapDot {
+  position: absolute;
+  inset: 7px;
+  border-radius: 50%;
+  background: rgba(198, 12, 44, 0.75);
+}
+
+.tapRing {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1.5px solid rgba(198, 12, 44, 0.5);
 }
 
 .depthMeterWrap {
