@@ -15,6 +15,29 @@ type Props = {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 };
 
+// Parses `[label](url)` markdown-link syntax out of PressKit.content paragraphs into real
+// anchor tags — the only rich-text feature press copy needs, so a full markdown parser is overkill.
+function renderRichText(text: string) {
+  const pattern = /\[([^\]]+)\]\(([^)]+)\)/g;
+  const nodes: React.ReactNode[] = [];
+  let lastIndex = 0;
+  let match: RegExpExecArray | null;
+  let key = 0;
+
+  while ((match = pattern.exec(text)) !== null) {
+    if (match.index > lastIndex) nodes.push(text.slice(lastIndex, match.index));
+    nodes.push(
+      <a key={key++} href={match[2]} target="_blank" rel="noopener noreferrer" className={styles.inlineLink}>
+        {match[1]}
+      </a>,
+    );
+    lastIndex = pattern.lastIndex;
+  }
+  if (lastIndex < text.length) nodes.push(text.slice(lastIndex));
+
+  return nodes;
+}
+
 export function generateStaticParams() {
   return PRESS_KITS.map((p) => ({ slug: p.slug }));
 }
@@ -108,15 +131,11 @@ export default async function PressKitPage({ params, searchParams }: Props) {
         {/* Section 2 (Content) — left: release text, right: image, two-column grid on desktop */}
         <section className={styles.contentSection}>
           <div className={styles.contentTextCol}>
-            <p className={styles.bio}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum euismod nisl eget aliquam
-              ultricies, nunc nisl aliquet nunc, eget aliquam nunc nisl eget nunc.
-            </p>
-
-            <p className={styles.bio}>
-              Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
-              nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-            </p>
+            {(locale === "es" ? kit.content?.es : kit.content?.en)?.map((paragraph, i) => (
+              <p key={i} className={styles.bio}>
+                {renderRichText(paragraph)}
+              </p>
+            ))}
           </div>
 
           <div className={styles.contentImageCol}>

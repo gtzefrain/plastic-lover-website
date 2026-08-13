@@ -26,6 +26,10 @@ export type PressKit = {
     es: string; // 2–3 sentences, Spanish is the site's default — write this one first
     en: string;
   };
+  // Section 2 body copy (left column, next to the YouTube embed) — one string per paragraph.
+  // Supports inline links via `[label](url)` markdown-link syntax, rendered by renderRichText()
+  // in app/press/[slug]/page.tsx.
+  content?: { es: string[]; en: string[] };
   quotes?: PressQuote[];
   credits?: PressCredit[];
   heroImage?: { src: string; alt: string }; // Section 1's main image; falls back to PRESS_PHOTOS[0]
@@ -36,18 +40,20 @@ export type PressKit = {
 export const PRESS_KITS: PressKit[] = [
   {
     slug: "las-olas",
-    // Lorem ipsum stand-in — real bio still needed from Efraín, replace before sending to press.
     bio: {
-      es: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua, ut enim ad minim veniam.",
-      en: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua, ut enim ad minim veniam.",
+      es: "Las Olas es el nuevo sencillo de Plastic Lover. Un track de indie pop sobre el desamor, donde el mar se vuelve la metáfora para entender aquello que ya no está. Las Olas remite a referencias del proyecto como Indios, Little Jesus y Babasónicos.",
+      en: "Las Olas is the new single by Plastic Lover. An indie pop track about heartbreak, where the sea becomes a metaphor for understanding what's no longer there. Las Olas nods to the project's usual references, like Indios, Little Jesus, and Babasónicos.",
     },
-    // Lorem ipsum stand-in — no real quote secured yet.
-    quotes: [{ text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", source: "Lorem Ipsum Media" }],
-    // Lorem ipsum stand-in — real writer/producer credits still needed from Efraín.
-    credits: [
-      { label: "WRITTEN BY", value: "Lorem Ipsum" },
-      { label: "PRODUCED BY", value: "Lorem Ipsum" },
-    ],
+    content: {
+      es: [
+        "Las Olas fue escrita por Efraín Gutiérrez junto a [Sam Vazquez](https://www.instagram.com/vamsazquez/) e [Ivan Ivengo](https://www.instagram.com/ivan.ivengo/), y forma parte del próximo EP de Plastic Lover, producido en su totalidad por [Omar Guajardo](https://www.instagram.com/omaar_guajardo/). Las voces y la batería fueron grabadas en [El Nido Records](https://www.instagram.com/elnidorecordsmx/), con [Carlos Reyna](https://www.instagram.com/creynar_/) en la batería. El arte y diseño de la portada son de Efraín Gutiérrez, con fotografía de Pablo Barrera.",
+        "El sencillo llega acompañado de un visualizer dirigido por [JJ Smartz](https://www.instagram.com/jjsmartz), disponible a partir del día de su lanzamiento, el 20 de agosto de 2026.",
+      ],
+      en: [
+        "Las Olas was written by Efraín Gutiérrez alongside [Sam Vazquez](https://www.instagram.com/vamsazquez/) and [Ivan Ivengo](https://www.instagram.com/ivan.ivengo/), and is part of Plastic Lover's upcoming EP, produced entirely by [Omar Guajardo](https://www.instagram.com/omaar_guajardo/). Vocals and drums were recorded at [El Nido Records](https://www.instagram.com/elnidorecordsmx/), with [Carlos Reyna](https://www.instagram.com/creynar_/) on drums. Cover art and design are by Efraín Gutiérrez, with photography by Pablo Barrera.",
+        "The single arrives with a visualizer directed by [JJ Smartz](https://www.instagram.com/jjsmartz), out starting on release day, August 20, 2026.",
+      ],
+    },
     // Real master audio, supplied by Efraín — public/press/las-olas/las-olas-master.mp3.
     previewAudio: {
       src: "/press/las-olas/las-olas-master.mp3",

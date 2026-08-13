@@ -106,6 +106,10 @@
   text-align: left;
 }
 
+.inlineLink {
+  text-decoration: underline;
+}
+
 /* Section 2 (Content) — left: release text, right: image, two-column grid on desktop */
 .contentSection {
   display: grid;
