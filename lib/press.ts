@@ -53,10 +53,10 @@ export const PRESS_KITS: PressKit[] = [
       src: "/press/las-olas/las-olas-master.mp3",
       title: "Las Olas — Preview",
     },
-    // Music video still (VLC capture), web-sized copy at public/press/las-olas/hero-web.jpg.
+    // Official single cover art, web-sized copy at public/press/las-olas/cover-web.jpg.
     heroImage: {
-      src: "/press/las-olas/hero-web.jpg",
-      alt: "Plastic Lover kneeling in a grassy park, flanked by two masked figures in black suits",
+      src: "/press/las-olas/cover-web.jpg",
+      alt: "Las Olas cover art",
     },
   },
 ];
