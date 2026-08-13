@@ -24,10 +24,14 @@ export const RELEASES: Release[] = [
     artist: "Plastic Lover",
     // Presave stage — release date confirmed by the artist as August 20, 2026.
     meta: "Single — 2026",
-    // Real single cover art (public/press/las-olas/cover.png). Must be an absolute URL —
+    // Real single cover art (public/press/las-olas/cover-web.jpg). Must be an absolute URL —
     // opengraph-image.tsx and twitter-image.tsx `fetch()` this directly and can't resolve a
-    // relative /public path. Won't resolve locally until this branch is deployed to plasticlover.mx.
-    cover: "https://plasticlover.mx/press/las-olas/cover.png",
+    // relative /public path. Deliberately NOT a plasticlover.mx URL: that self-references the
+    // site's own domain, which 404s during this very build (the new file only exists once the
+    // build that adds it has already deployed — a circular dependency that fails every time).
+    // Using GitHub's raw content CDN instead breaks that cycle. Swap for the real per-DSP CDN
+    // cover once the single is actually released.
+    cover: "https://raw.githubusercontent.com/gtzefrain/plastic-lover-website/main/public/press/las-olas/cover-web.jpg",
     links: [
       // Presave-only — same URL wired into components/LasOlas.tsx. Replace with real
       // per-DSP links once the single is out.
