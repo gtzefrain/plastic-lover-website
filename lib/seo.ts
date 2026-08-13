@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-export const SITE_URL = "https://plasticlover.band";
+export const SITE_URL = "https://plasticlover.mx";
 export const SITE_NAME = "Plastic Lover";
 
 // og:title/og:description are always Spanish regardless of viewer locale — see callers,

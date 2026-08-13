@@ -25,9 +25,9 @@ export default async function ContactPage() {
   const dict = getDictionary(locale).pages.contact;
 
   const CONTACTS = [
-    { label: dict.management, email: "mgmt@plasticlover.band" },
-    { label: dict.booking, email: "booking@plasticlover.band" },
-    { label: dict.press, email: "press@plasticlover.band" },
+    { label: dict.management, email: "myplasticlover@gmail.com" },
+    { label: dict.booking, email: "myplasticlover@gmail.com" },
+    { label: dict.press, email: "myplasticlover@gmail.com" },
   ];
 
   return (

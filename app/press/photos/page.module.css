@@ -1,0 +1,93 @@
+.page {
+  background: var(--pl-bg);
+  color: var(--pl-primary);
+  font-family: var(--pl-font-display);
+  min-height: 100vh;
+  min-height: 100dvh;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 56px 24px 72px;
+}
+
+.pageWithChrome {
+  padding-top: 130px;
+  padding-bottom: 110px;
+}
+
+.main {
+  width: 100%;
+  max-width: 960px;
+  display: flex;
+  flex-direction: column;
+  animation: plFadeUp 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.backLink {
+  font-family: var(--pl-font-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  opacity: 0.7;
+  margin-bottom: 28px;
+}
+
+.backLink:hover {
+  text-decoration: underline;
+}
+
+.kicker {
+  font-family: var(--pl-font-mono);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  opacity: 0.7;
+  margin: 0 0 8px;
+}
+
+.title {
+  font-size: clamp(26px, 4vw, 36px);
+  margin: 0 0 32px;
+}
+
+.photoGrid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 24px;
+}
+
+.photoCard {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: left;
+}
+
+.photoImage {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  display: block;
+  background: var(--pl-placeholder);
+}
+
+.photoMeta {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.photoCredit {
+  font-family: var(--pl-font-mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  opacity: 0.6;
+}
+
+.photoDownload {
+  font-family: var(--pl-font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}

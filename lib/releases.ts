@@ -19,6 +19,25 @@ export type Release = {
 
 export const RELEASES: Release[] = [
   {
+    slug: "las-olas",
+    title: "Las Olas",
+    artist: "Plastic Lover",
+    // Presave stage — release date confirmed by the artist as August 20, 2026.
+    meta: "Single — 2026",
+    // Real single cover art (public/press/las-olas/cover.png). Must be an absolute URL —
+    // opengraph-image.tsx and twitter-image.tsx `fetch()` this directly and can't resolve a
+    // relative /public path. Won't resolve locally until this branch is deployed to plasticlover.mx.
+    cover: "https://plasticlover.mx/press/las-olas/cover.png",
+    links: [
+      // Presave-only — same URL wired into components/LasOlas.tsx. Replace with real
+      // per-DSP links once the single is out.
+      {
+        label: "Presave (Spotify)",
+        href: "https://ditto.fm/las-olas-plastic-lover/presavecallback?context=pre_save&service=spotify&redirecturl&actionid&order=6a7a28054700001200d01b91&fpEnabled=false&user=Efra%C3%ADn%20Fernando%20Guti%C3%A9rrez&status=success&origin=presavecallback",
+      },
+    ],
+  },
+  {
     slug: "cuadrado",
     title: "Cuadrado",
     artist: "Plastic Lover",

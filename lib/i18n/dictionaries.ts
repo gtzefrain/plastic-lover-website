@@ -351,3 +351,48 @@ export function getDictionary(locale: Locale): Dictionary {
 export function isLocale(value: string | undefined | null): value is Locale {
   return value === "en" || value === "es";
 }
+    press: {
+      kicker: string;
+      streamLabel: string;
+      creditsLabel: string;
+      photosLabel: string;
+      viewPhotosLabel: string;
+      backToKitLabel: string;
+      downloadLabel: string;
+      artistBioHeading: string;
+      socialLabel: string;
+      contactLabel: string;
+      fallbackTitle: string;
+      fallbackDescription: string;
+      descriptionSuffix: string;
+    };
+      press: {
+        kicker: "ELECTRONIC PRESS KIT",
+        streamLabel: "STREAM",
+        creditsLabel: "CREDITS",
+        photosLabel: "PHOTOS",
+        viewPhotosLabel: "HD Photos",
+        backToKitLabel: "← Back to press kit",
+        downloadLabel: "DOWNLOAD",
+        artistBioHeading: "PLASTIC LOVER",
+        socialLabel: "SOCIAL",
+        contactLabel: "PRESS CONTACT",
+        fallbackTitle: "Press Kit — Plastic Lover",
+        fallbackDescription: "Electronic press kit for a Plastic Lover release.",
+        descriptionSuffix: "Electronic press kit — bio, photos, and streaming links.",
+      },
+      press: {
+        kicker: "KIT DE PRENSA ELECTRÓNICO",
+        streamLabel: "ESCUCHAR",
+        creditsLabel: "CRÉDITOS",
+        photosLabel: "FOTOS",
+        viewPhotosLabel: "Fotografías en HD",
+        backToKitLabel: "← Volver al kit de prensa",
+        downloadLabel: "DESCARGAR",
+        artistBioHeading: "PLASTIC LOVER",
+        socialLabel: "REDES SOCIALES",
+        contactLabel: "CONTACTO DE PRENSA",
+        fallbackTitle: "Kit de Prensa — Plastic Lover",
+        fallbackDescription: "Kit de prensa electrónico de un lanzamiento de Plastic Lover.",
+        descriptionSuffix: "Kit de prensa electrónico — bio, fotos y enlaces para escuchar.",
+      },
