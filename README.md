@@ -31,6 +31,8 @@ npm run lint     # eslint (eslint-config-next, flat config)
 | `/store`      | `app/store/page.tsx`         | `PageShell` + `CardGrid`.                           |
 | `/contact`    | `app/contact/page.tsx`       | `PageShell` + `RowList`.                            |
 | `/subscribe`  | `app/subscribe/page.tsx`     | Standalone mailing-list page (nav + form + footer). |
+| `/press/[slug]` | `app/press/[slug]/page.tsx` | Electronic press kit for one release. Standalone — no `SiteNav`/`Footer` unless `?site=1`. Data in `lib/press.ts`, joined to `lib/releases.ts` by `slug`. |
+| `/press/photos` | `app/press/photos/page.tsx` | Shared press-photo library, grouped by category — not tied to one release. Data in `lib/press.ts`'s `PRESS_PHOTOS`. |
 | `POST /api/subscribe` | `app/api/subscribe/route.ts` | Validates the email and logs it. **Not wired up to a real provider yet** — see below. |
 
 ## Architecture
@@ -62,6 +64,33 @@ npm run lint     # eslint (eslint-config-next, flat config)
 - **Mailing list**: `components/MailingListForm.tsx` posts `{ email }` to `/api/subscribe`. The
   route currently only validates and `console.log`s the address — wiring it up to a real provider
   (Mailchimp, Klaviyo, etc.) is a known TODO (see the comment in `app/api/subscribe/route.ts`).
+- **Press kits** (`/press/[slug]`, `/press/photos`): `lib/press.ts` holds each release's
+  `PressKit` (bio, quotes, credits, `heroImage`, `previewAudio`) joined to `lib/releases.ts` by
+  `slug`, plus two band-level exports reused across every kit — `ARTIST_BIO` and `SOCIAL_LINKS`
+  (the latter mirrors `components/Footer.tsx`; keep them in sync if those links change). Press
+  photos are a separate, non-release-specific `PRESS_PHOTOS` array, each tagged with a
+  `category` that `/press/photos` groups by. Real files live under `public/press/portraits/`
+  and `public/press/las-olas/`; large originals get a `sips`-resized copy for on-page display
+  (`downloadSrc` on the `PressPhoto` points at the full-res original for the actual press
+  download). `components/AudioPlayer.tsx` is a small hand-rolled `<audio>` player (no library)
+  for the stream section's preview track — browsers defer loading its metadata until the user
+  presses play, so a `0:00` duration before that is expected, not a bug.
+
+### Las Olas press kit — known placeholders
+
+`lib/press.ts`'s `las-olas` `PressKit` ships with lorem ipsum for content nobody's supplied yet.
+Replace before actually sending this to press:
+
+- `bio.es` / `bio.en` (the release description)
+- `quotes` (one placeholder quote/source)
+- `credits` (`WRITTEN BY` / `PRODUCED BY`, currently "Lorem Ipsum")
+- The four `PRESS_PHOTOS` entries with `category: "Las Olas"` still credit "Lorem Ipsum" — the
+  seven `category: "Portrait"` photos are real (Photo: Pablo Barrera)
+
+Also worth knowing: `lib/seo.ts`'s `SITE_URL` used to be `https://plasticlover.band`, which
+doesn't resolve — fixed to `https://plasticlover.mx` (the real live domain) across
+canonical/OG metadata and `app/contact/page.tsx`'s addresses. If any bundled skill reference
+under `.claude/skills/` still says `.band` is canonical, that's stale — trust `.mx`.
 
 ## Working in this repo
 
