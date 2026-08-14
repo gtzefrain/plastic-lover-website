@@ -13,6 +13,12 @@ Marketing site for the band Plastic Lover. Next.js 16 App Router, React 19, Type
 Modules — no UI or animation libraries; all motion is hand-written CSS keyframes triggered via
 inline `style`/`animationDelay` props. Deployed on Vercel.
 
+**Never run `next dev` at the same time as `next build`/`next start` in this repo.** Both read
+and write the same `.next/` directory; dev's incremental compiler will prune chunk files from a
+concurrent prod build that it doesn't recognize, and the prod server then either 500s on the
+missing chunks or silently renders with partial CSS. Stop dev first if you need a local prod
+build (e.g. for `capture/`, see its README).
+
 ## Layout
 
 - `app/` — one route per page (`live`, `releases`, `lyrics`, `videos`, `store`, `contact`,
@@ -37,6 +43,16 @@ inline `style`/`animationDelay` props. Deployed on Vercel.
 - `lib/photoSets.ts` — positions/timings for the looping photo collage
   (`components/PhotoCollage.tsx`).
 - `lib/nav.ts` — single source of truth for nav links, consumed by `SiteNav.tsx`.
+- `lib/press.ts` + `app/press/[slug]/page.tsx` (per-release EPK) and `app/press/photos/page.tsx`
+  (band-level photo library) — press-kit content, kept separate from `lib/releases.ts` so the
+  fan-facing `/releases/[slug]` page doesn't get cluttered with press copy. `PressKit.slug`
+  **must** match a `Release.slug` in `lib/releases.ts`. Bio/body copy always ship in both `es`
+  (write this one first — Spanish is the site's default) and `en`; `content` paragraphs support
+  inline `[label](url)` markdown-links via `renderRichText()` in the `[slug]` page. Photos
+  (`PressPhoto`) need `src` (web-sized, under `public/press/`) and grouping `category`;
+  `downloadSrc` is optional and falls back to `src`. `contactEmail` defaults to
+  `myplasticlover@gmail.com` when omitted. See the `plastic-lover-epk` skill for building a new
+  kit and drafting outreach email.
 
 See `README.md` for the full route table and architecture notes.
 

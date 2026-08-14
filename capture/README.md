@@ -39,6 +39,18 @@ machine speed, and no frame is ever skipped.
   corner, which then bakes into every frame. (Only relevant to `capture.js`;
   `capture-url-cta.js` loads a local HTML file and doesn't touch the dev
   server at all.)
+  - **Stop any running `next dev` first.** Dev and `next build`/`next start`
+    both read/write the same `.next/` directory, and dev's incremental
+    compiler will prune chunk files it doesn't recognize from a prod build
+    that lands in the directory while it's watching — the prod server then
+    500s on those missing chunks (or, worse, renders with partial/missing
+    CSS, which silently drops letter layers from the hero logo instead of
+    erroring). If you hit intermittent blank/broken captures, check for a
+    stray `next dev` first before suspecting the capture script itself.
+  - `next build` occasionally leaves a background compiler process running
+    past when the CLI reports success — if a capture run is unexpectedly
+    slow or flaky, check `ps aux | grep "next build"` for a stray process
+    still burning CPU and kill it.
 - `ffmpeg` on `PATH` (`brew install ffmpeg`).
 - Node 18+.
 
