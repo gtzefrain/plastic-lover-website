@@ -203,6 +203,13 @@
   border: 1.5px solid rgba(198, 12, 44, 0.5);
 }
 
+.tapHintLabel {
+  font-family: var(--pl-font-mono);
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  color: rgba(198, 12, 44, 0.65);
+}
+
 .depthMeterWrap {
   position: absolute;
   bottom: 40px;

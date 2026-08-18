@@ -223,7 +223,7 @@ export default function LasOlas({ locale = "en" }: LasOlasProps) {
             <span className={styles.tapRing} style={{ animation: "lasTapPulse 1.8s ease-out infinite" }} />
             <span className={styles.tapRing} style={{ animation: "lasTapPulse 1.8s ease-out 0.9s infinite" }} />
           </span>
-          <span className="visually-hidden">{dict.tapHint}</span>
+          <span className={styles.tapHintLabel}>{dict.tapHint}</span>
         </div>
       )}
 
