@@ -22,10 +22,16 @@ with them — you get real-time capture with dropped/uneven frames.
 Instead both scripts use the Web Animations API directly (`lib/video.js`):
 
 1. Load the page in a **fresh** browser context.
-2. Force-decode any CSS background-image (`img.decode()`) so nothing renders
+2. Wait for the hero's 12 letter layers to actually exist in the DOM.
+   `HeroLogo` doesn't mount them (or start their entrance animation) until
+   it's finished its own client-side image preload — see the progress-ring
+   loading state in `components/HeroLogo.tsx` — which happens *after* page
+   load, not during it, so `capture.js` has to wait for it explicitly
+   rather than assuming the letters are there as soon as the page loads.
+3. Force-decode any CSS background-image (`img.decode()`) so nothing renders
    blank on the first scrubbed frames.
-3. Call `document.getAnimations()` and `.pause()` every animation.
-4. For each output frame, set every animation's `.currentTime` to the exact
+4. Call `document.getAnimations()` and `.pause()` every animation.
+5. For each output frame, set every animation's `.currentTime` to the exact
    millisecond offset for that frame, then screenshot.
 
 This is deterministic — the same frames come out every run regardless of

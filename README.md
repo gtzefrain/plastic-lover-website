@@ -46,7 +46,15 @@ npm run lint     # eslint (eslint-config-next, flat config)
 - **Hero entrance choreography** lives in `lib/heroChoreography.ts`: per-letter scatter offsets
   and stagger delays for the 12-layer logo (`components/HeroLogo.tsx`, one absolutely-positioned
   PNG per letter in `public/logo/`), plus the delay constants that stagger the nav, tagline, and
-  CTA fade-ins on top of it.
+  CTA fade-ins on top of it. The letters must stay PNG — each is transparent except for its own
+  ink and they're alpha-stacked to spell the wordmark, so a format without alpha (JPEG) makes
+  each layer blot out the ones underneath it; the single static `LOGO_3D.jpg` (shown to repeat
+  visitors instead of the animated entrance, and reused for the OG image) doesn't have that
+  problem and is JPEG. `HeroLogo` preloads every image it needs client-side before mounting any
+  of it — on a slow connection that can take a moment, so it shows a `ProgressRing` in the logo's
+  place rather than starting the entrance animation on images that haven't arrived. Below the
+  860px breakpoint it preloads from a downsized `public/logo/mobile/` copy instead of the
+  desktop originals.
 - **Photo collage** (`components/PhotoCollage.tsx`): `lib/photoSets.ts` defines three sets of 8
   positioned photo placeholders that loop continuously and cross-fade on a 16s cycle, offset by a
   third of the cycle per set so the section is never empty.
@@ -60,7 +68,11 @@ npm run lint     # eslint (eslint-config-next, flat config)
   with no accompanying `.tsx` wrapper — pages assemble the markup inline using the shared class
   names.
 - **Navigation** is data-driven from `lib/nav.ts` (`NAV_LINKS`), consumed by `SiteNav` (desktop
-  links + a mobile slide-out drawer above 860px/below breakpoint).
+  links + a mobile slide-out drawer above 860px/below breakpoint). The desktop link row and the
+  mobile burger button are both always in the DOM and switched with a CSS media query
+  (`SiteNav.module.css`) rather than a JS `matchMedia` check — the latter defaults to desktop
+  until React hydrates, which on a slow connection left the burger button (and thus any way to
+  open the nav) simply not existing yet.
 - **Mailing list**: `components/MailingListForm.tsx` posts `{ email }` to `/api/subscribe`. The
   route currently only validates and `console.log`s the address — wiring it up to a real provider
   (Mailchimp, Klaviyo, etc.) is a known TODO (see the comment in `app/api/subscribe/route.ts`).
