@@ -80,6 +80,22 @@ ol {
   border: 0;
 }
 
+/* All motion on this site is hand-written keyframes/inline `animation` (see
+   AGENTS.md) rather than a single animation library, so there's no central
+   place to gate it — this blanket override collapses every animation/
+   transition to effectively nothing for users who've asked for reduced
+   motion, including the hero entrance and the infinite float/wave loops. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 @keyframes plDrop {
   0% {
     transform: translateY(-120vh) scale(0.55) rotate(-6deg);

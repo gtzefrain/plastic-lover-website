@@ -1,5 +1,6 @@
 "use client";
 
+import { prefersReducedMotion } from "@/lib/motion";
 import styles from "./ScrollArrow.module.css";
 
 type ScrollArrowProps = {
@@ -12,7 +13,7 @@ type ScrollArrowProps = {
 export default function ScrollArrow({ targetId, label, onWhite, fadeDelay }: ScrollArrowProps) {
   const scrollToTarget = () => {
     const el = document.getElementById(targetId);
-    if (el) window.scrollTo({ top: el.offsetTop, behavior: "smooth" });
+    if (el) window.scrollTo({ top: el.offsetTop, behavior: prefersReducedMotion() ? "auto" : "smooth" });
   };
 
   const wrapClass = onWhite

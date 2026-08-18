@@ -1,7 +1,15 @@
 "use client";
 
 import Image from "next/image";
-import { useRef, useState, useSyncExternalStore, type CSSProperties, type MouseEvent } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  useSyncExternalStore,
+  type CSSProperties,
+  type KeyboardEvent,
+  type MouseEvent,
+} from "react";
 import { getDictionary, type Locale } from "@/lib/i18n/dictionaries";
 import styles from "./LasOlas.module.css";
 
@@ -80,12 +88,28 @@ export default function LasOlas({ locale = "en" }: LasOlasProps) {
   const [revealed, setRevealed] = useState(false);
   const [ripples, setRipples] = useState<Ripple[]>([]);
   const revealedRef = useRef(false);
+  const sceneRef = useRef<HTMLDivElement>(null);
+  const presaveLinkRef = useRef<HTMLAnchorElement>(null);
 
   const isRevealed = revealed || persistedRevealed;
   const effectiveClicks = persistedRevealed ? REVEAL_AT : clicks;
 
-  const handleReveal = (event: MouseEvent<HTMLDivElement>) => {
-    const ripple = createRipple(event.clientX, event.clientY);
+  // Moves focus into the reveal panel when the reveal is triggered (keyboard
+  // or mouse) and back to the tap target after replay — but not on initial
+  // mount, so returning visitors with a persisted reveal don't get their
+  // focus stolen from the top of the page on load.
+  const wasRevealed = useRef(isRevealed);
+  useEffect(() => {
+    if (isRevealed && !wasRevealed.current) {
+      presaveLinkRef.current?.focus();
+    } else if (!isRevealed && wasRevealed.current) {
+      sceneRef.current?.focus();
+    }
+    wasRevealed.current = isRevealed;
+  }, [isRevealed]);
+
+  const advanceReveal = (x: number, y: number) => {
+    const ripple = createRipple(x, y);
     setRipples((prev) => [...prev, ripple]);
     setTimeout(() => {
       setRipples((prev) => prev.filter((r) => r.id !== ripple.id));
@@ -103,6 +127,21 @@ export default function LasOlas({ locale = "en" }: LasOlasProps) {
       }
       return next;
     });
+  };
+
+  const handleReveal = (event: MouseEvent<HTMLDivElement>) => {
+    advanceReveal(event.clientX, event.clientY);
+  };
+
+  // Mouse/touch users tap anywhere on the scene; keyboard users tab to it
+  // (it's a role="button" while unrevealed) and activate it with Enter/Space
+  // the same number of times — the ripple just centers on the element
+  // instead of a pointer position.
+  const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    if (event.key !== "Enter" && event.key !== " ") return;
+    event.preventDefault();
+    const rect = event.currentTarget.getBoundingClientRect();
+    advanceReveal(rect.left + rect.width / 2, rect.top + rect.height / 2);
   };
 
   const handleReplay = (event: MouseEvent<HTMLButtonElement>) => {
@@ -126,7 +165,15 @@ export default function LasOlas({ locale = "en" }: LasOlasProps) {
       : `lasSway${effectiveClicks % 2 ? "A" : "B"} 1.4s ease-in-out both`;
 
   return (
-    <div className={styles.scene} onClick={handleReveal}>
+    <div
+      ref={sceneRef}
+      className={styles.scene}
+      onClick={handleReveal}
+      onKeyDown={!isRevealed ? handleKeyDown : undefined}
+      role={!isRevealed ? "button" : undefined}
+      tabIndex={!isRevealed ? 0 : undefined}
+      aria-label={!isRevealed ? dict.tapHint : undefined}
+    >
       <div className={styles.logoWrap} style={{ animation: swayAnimation }}>
         <div className={styles.logoFrame}>
           <Image
@@ -202,6 +249,7 @@ export default function LasOlas({ locale = "en" }: LasOlasProps) {
         >
           <div className={styles.kicker}>{dict.kicker}</div>
           <a
+            ref={presaveLinkRef}
             href={PRESAVE_URL}
             target="_blank"
             rel="noopener"

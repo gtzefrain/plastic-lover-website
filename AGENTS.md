@@ -80,7 +80,24 @@ regressing back to div-soup:
   `role="dialog"` / `aria-modal="true"`, move focus to the close control on open, restore focus to
   the trigger on close, and close on `Escape`. Follow this pattern for any new modal/overlay.
 - Decorative-only elements (e.g. `HeroLogo`'s animated letter blobs) are `aria-hidden="true"` since
-  the band name is already exposed as real text elsewhere (nav wordmark, hero `<h1>`).
+  the band name is already exposed elsewhere — the nav wordmark's logo image carries it as `alt`
+  text, and it's real text again in the hero `<h1>`.
+- A non-form element with an `onClick` needs a keyboard equivalent, not just a bigger tap target:
+  `role="button"`, `tabIndex={0}`, and an `onKeyDown` that fires on Enter and Space
+  (`event.preventDefault()` on Space so the page doesn't scroll). See `LasOlas.tsx`'s tap-to-reveal
+  scene — the `role`/`tabIndex` are only applied while the control is still "live" (`!isRevealed`)
+  and dropped once the reveal panel's own focusable link/button render, since a `role="button"`
+  with focusable descendants inside it isn't valid. Move focus into whatever the action revealed,
+  and back to the control when it resets (see the `wasRevealed` ref there) — don't leave focus
+  stranded on an element that just left the DOM.
+- Animation must respect `prefers-reduced-motion: reduce`. `globals.css` has a blanket
+  `animation-duration`/`transition-duration` override for the CSS side of this — it catches every
+  keyframe regardless of whether it's applied via a class or an inline `style` prop, which is why a
+  single blanket rule was used instead of gating each animation individually (see the comment
+  above it). That override does *not* reach a JS-driven `scrollTo({ behavior: "smooth" })`, since an
+  explicit `behavior` option on the call beats the CSS `scroll-behavior` property — call
+  `lib/motion.ts`'s `prefersReducedMotion()` and pass `"auto"` instead when it's true (see
+  `ScrollArrow.tsx` and the replay handler in `HomeClient.tsx`).
 
 When adding new pages or components, keep to these patterns instead of introducing new
 unlabeled-div layouts.

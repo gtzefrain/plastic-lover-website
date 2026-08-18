@@ -11,6 +11,7 @@ import ScrollArrow from "@/components/ScrollArrow";
 import SiteNav from "@/components/SiteNav";
 import { getDictionary, type Locale } from "@/lib/i18n/dictionaries";
 import { CTA_DELAY, NAV_DELAY, TAGLINE_DELAY } from "@/lib/heroChoreography";
+import { prefersReducedMotion } from "@/lib/motion";
 import styles from "@/app/page.module.css";
 
 const HERO_SEEN_COOKIE = "pl_hero_seen";
@@ -37,7 +38,7 @@ export default function HomeClient({ heroSeen, locale }: HomeClientProps) {
   const ctaDelay = heroPlaying ? CTA_DELAY : "0s";
 
   const handleReplay = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({ top: 0, behavior: prefersReducedMotion() ? "auto" : "smooth" });
     setHeroPlaying(true);
     setRun((r) => r + 1);
   };

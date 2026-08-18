@@ -14,6 +14,11 @@
   -webkit-user-select: none;
 }
 
+.scene:focus-visible {
+  outline: 2px solid var(--pl-primary);
+  outline-offset: -4px;
+}
+
 .logoWrap {
   margin-bottom: 47vh;
   pointer-events: none;
