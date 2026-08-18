@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Footer from "@/components/Footer";
+import PressNav from "@/components/PressNav";
 import SiteNav from "@/components/SiteNav";
 import { getDictionary } from "@/lib/i18n/dictionaries";
 import { getServerLocale } from "@/lib/i18n/locale";
@@ -45,7 +46,7 @@ export default async function PressPhotosPage({ searchParams }: Props) {
 
   return (
     <div className={showChrome ? `${styles.page} ${styles.pageWithChrome}` : styles.page}>
-      {showChrome && <SiteNav locale={locale} />}
+      {showChrome ? <SiteNav locale={locale} /> : <PressNav locale={locale} maxWidth={960} />}
 
       <main id="main-content" className={styles.main}>
         <a href={`/press/las-olas${showChrome ? "?site=1" : ""}`} className={styles.backLink}>

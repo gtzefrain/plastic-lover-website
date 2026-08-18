@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -65,7 +66,7 @@ export default function SiteNav({ entranceDelay, locale = "en" }: SiteNavProps) 
     >
       <div className={styles.bar}>
         <Link href="/" className={styles.wordmark}>
-          PLASTIC&nbsp;LOVER
+          <Image src="/logo/logo-mini.png" alt="Plastic Lover" width={20} height={28} className={styles.logoMini} />
         </Link>
 
         <ul className={styles.links}>
@@ -105,7 +106,9 @@ export default function SiteNav({ entranceDelay, locale = "en" }: SiteNavProps) 
       {menuOpen && (
         <div className={styles.drawer} role="dialog" aria-modal="true" aria-label={dict.nav.openMenu}>
           <div className={styles.drawerBar}>
-            <span className={styles.wordmark}>PLASTIC&nbsp;LOVER</span>
+            <span className={styles.wordmark}>
+              <Image src="/logo/logo-mini.png" alt="Plastic Lover" width={20} height={28} className={styles.logoMini} />
+            </span>
             <button
               ref={drawerCloseRef}
               type="button"

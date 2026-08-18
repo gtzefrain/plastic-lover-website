@@ -31,8 +31,8 @@ npm run lint     # eslint (eslint-config-next, flat config)
 | `/store`      | `app/store/page.tsx`         | `PageShell` + `CardGrid`.                           |
 | `/contact`    | `app/contact/page.tsx`       | `PageShell` + `RowList`.                            |
 | `/subscribe`  | `app/subscribe/page.tsx`     | Standalone mailing-list page (nav + form + footer). |
-| `/press/[slug]` | `app/press/[slug]/page.tsx` | Electronic press kit for one release. Standalone — no `SiteNav`/`Footer` unless `?site=1`. Data in `lib/press.ts`, joined to `lib/releases.ts` by `slug`. |
-| `/press/photos` | `app/press/photos/page.tsx` | Shared press-photo library, grouped by category — not tied to one release. Data in `lib/press.ts`'s `PRESS_PHOTOS`. |
+| `/press/[slug]` | `app/press/[slug]/page.tsx` | Electronic press kit for one release. Shows the minimal `PressNav` (logo + language selector) by default; full `SiteNav`/`Footer` only with `?site=1`. Data in `lib/press.ts`, joined to `lib/releases.ts` by `slug`. |
+| `/press/photos` | `app/press/photos/page.tsx` | Shared press-photo library, grouped by category — not tied to one release. Same `PressNav`/`?site=1` chrome rule as above. Data in `lib/press.ts`'s `PRESS_PHOTOS`. |
 | `POST /api/subscribe` | `app/api/subscribe/route.ts` | Validates the email and logs it. **Not wired up to a real provider yet** — see below. |
 
 ## Architecture
@@ -72,15 +72,25 @@ npm run lint     # eslint (eslint-config-next, flat config)
   mobile burger button are both always in the DOM and switched with a CSS media query
   (`SiteNav.module.css`) rather than a JS `matchMedia` check — the latter defaults to desktop
   until React hydrates, which on a slow connection left the burger button (and thus any way to
-  open the nav) simply not existing yet.
+  open the nav) simply not existing yet. The brand mark in both the desktop bar and the drawer
+  header is `public/logo/logo-mini.png` — a tightly-trimmed crop of the existing `LOGO_PL_3D.png`
+  "PL" monogram art (produced once with `sharp`'s `.trim()`, not regenerated at build time) — used
+  on every page, homepage included; there's no separate text wordmark anymore.
+  `components/PressNav.tsx` (see Press kits below) renders the same image for its own bar.
 - **Mailing list**: `components/MailingListForm.tsx` posts `{ email }` to `/api/subscribe`. The
   route currently only validates and `console.log`s the address — wiring it up to a real provider
   (Mailchimp, Klaviyo, etc.) is a known TODO (see the comment in `app/api/subscribe/route.ts`).
 - **Press kits** (`/press/[slug]`, `/press/photos`): `lib/press.ts` holds each release's
   `PressKit` (bio, quotes, credits, `heroImage`, `previewAudio`) joined to `lib/releases.ts` by
   `slug`, plus two band-level exports reused across every kit — `ARTIST_BIO` and `SOCIAL_LINKS`
-  (the latter mirrors `components/Footer.tsx`; keep them in sync if those links change). Press
-  photos are a separate, non-release-specific `PRESS_PHOTOS` array, each tagged with a
+  (the latter mirrors `components/Footer.tsx`; keep them in sync if those links change). Both
+  press routes default to the minimal `PressNav` (logo + language selector, no other links)
+  instead of the full site nav — these pages get shared directly with journalists as a flat
+  one-pager, and the full `NAV_LINKS` list would just pull them into browsing the rest of the
+  site. `?site=1` swaps in the regular `SiteNav`/`Footer` instead, for browsing the kit from
+  within the site itself; `PressNav`'s `maxWidth` prop is set per page to match that page's own
+  `<main>` width so the bar lines up with the content below it. Press photos are a separate,
+  non-release-specific `PRESS_PHOTOS` array, each tagged with a
   `category` that `/press/photos` groups by. Real files live under `public/press/portraits/`
   and `public/press/las-olas/`; large originals get a `sips`-resized copy for on-page display
   (`downloadSrc` on the `PressPhoto` points at the full-res original for the actual press

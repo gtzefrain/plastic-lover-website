@@ -18,11 +18,19 @@
 }
 
 .wordmark {
+  display: flex;
+  align-items: center;
   font-size: 13px;
   letter-spacing: 0.18em;
   color: var(--pl-primary);
   text-decoration: none;
   white-space: nowrap;
+}
+
+.logoMini {
+  display: block;
+  height: 28px;
+  width: auto;
 }
 
 .links {

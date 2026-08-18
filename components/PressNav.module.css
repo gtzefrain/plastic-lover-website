@@ -1,0 +1,22 @@
+.nav {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 40px;
+  font-family: var(--pl-font-mono);
+}
+
+.wordmark {
+  display: flex;
+  align-items: center;
+  color: var(--pl-primary);
+  text-decoration: none;
+}
+
+.logoMini {
+  display: block;
+  height: 28px;
+  width: auto;
+}
