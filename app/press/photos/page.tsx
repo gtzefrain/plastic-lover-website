@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Footer from "@/components/Footer";
 import PressNav from "@/components/PressNav";
 import SiteNav from "@/components/SiteNav";
@@ -62,8 +63,16 @@ export default async function PressPhotosPage({ searchParams }: Props) {
             <ul className={styles.photoGrid}>
               {photos.map((photo) => (
                 <li key={photo.src} className={styles.photoCard}>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={photo.src} alt={photo.alt} className={styles.photoImage} />
+                  <div className={styles.photoImage}>
+                    <Image
+                      src={photo.src}
+                      alt={photo.alt}
+                      fill
+                      sizes="(max-width: 600px) 90vw, (max-width: 960px) 45vw, 300px"
+                      className={styles.photoImageEl}
+                      priority={photo.src === PRESS_PHOTOS[0].src}
+                    />
+                  </div>
                   <div className={styles.photoMeta}>
                     {photo.credit && <span className={styles.photoCredit}>{photo.credit}</span>}
                     <a href={photo.downloadSrc ?? photo.src} download className={styles.photoDownload}>

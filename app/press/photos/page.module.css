@@ -86,11 +86,15 @@
 }
 
 .photoImage {
+  position: relative;
   width: 100%;
   aspect-ratio: 4 / 5;
-  object-fit: cover;
   display: block;
   background: var(--pl-placeholder);
+}
+
+.photoImageEl {
+  object-fit: cover;
 }
 
 .photoMeta {

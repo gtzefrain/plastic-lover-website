@@ -80,6 +80,16 @@ npm run lint     # eslint (eslint-config-next, flat config)
 - **Mailing list**: `components/MailingListForm.tsx` posts `{ email }` to `/api/subscribe`. The
   route currently only validates and `console.log`s the address — wiring it up to a real provider
   (Mailchimp, Klaviyo, etc.) is a known TODO (see the comment in `app/api/subscribe/route.ts`).
+- **Performance**: a Lighthouse audit (production build, standard mobile throttling — the same
+  profile PageSpeed Insights uses) found Total Blocking Time is already ~0ms on every route
+  tested — no long tasks, lean per-page JS, and the video modals (`ReleasePlayer`,
+  `VideoCardPlayer`) already use a click-to-load facade instead of an eager YouTube iframe. The
+  routes that scored low were being dragged down by LCP from oversized images, not JS execution;
+  see the `next/image` note below for the fix applied on the press routes. `lib/releases.ts`'s
+  `las-olas` `cover` still points at `raw.githubusercontent.com` (a ~1.6MB fetch from a
+  non-CDN host, ~10s LCP on `/releases/las-olas`) — that's a deliberate, documented placeholder
+  (see the comment at its definition) tied to the Aug 20 2026 release, not something to "fix" by
+  swapping hosts before then.
 - **Press kits** (`/press/[slug]`, `/press/photos`): `lib/press.ts` holds each release's
   `PressKit` (bio, quotes, credits, `heroImage`, `previewAudio`) joined to `lib/releases.ts` by
   `slug`, plus two band-level exports reused across every kit — `ARTIST_BIO` and `SOCIAL_LINKS`
@@ -94,7 +104,13 @@ npm run lint     # eslint (eslint-config-next, flat config)
   `category` that `/press/photos` groups by. Real files live under `public/press/portraits/`
   and `public/press/las-olas/`; large originals get a `sips`-resized copy for on-page display
   (`downloadSrc` on the `PressPhoto` points at the full-res original for the actual press
-  download). `components/AudioPlayer.tsx` is a small hand-rolled `<audio>` player (no library)
+  download). Those "web-sized" copies are still full-frame (1600×1200) even though the grid/hero/
+  portrait slots that show them are 240–340px wide, so the photo grid, the kit's hero image, and
+  its bio portrait all render through `next/image` (`fill` + a `sizes` matching that layout's
+  actual column width, wrapped in a `position: relative` element carrying the aspect-ratio that
+  used to live on the `<img>` itself) rather than a plain `<img>` — Next generates a properly
+  sized/re-encoded asset instead of shipping the full original to a thumbnail slot. This is what
+  fixed the LCP regression noted above. `components/AudioPlayer.tsx` is a small hand-rolled `<audio>` player (no library)
   for the stream section's preview track — browsers defer loading its metadata until the user
   presses play, so a `0:00` duration before that is expected, not a bug.
 

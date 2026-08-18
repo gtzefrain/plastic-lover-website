@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import AudioPlayer from "@/components/AudioPlayer";
 import Footer from "@/components/Footer";
@@ -97,8 +98,16 @@ export default async function PressKitPage({ params, searchParams }: Props) {
         {/* Section 1 — left: hero image, right: rich text */}
         <section className={styles.heroSection}>
           <div className={styles.heroImageCol}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={heroPhoto.src} alt={heroPhoto.alt} className={styles.heroImage} />
+            <div className={styles.heroImage}>
+              <Image
+                src={heroPhoto.src}
+                alt={heroPhoto.alt}
+                fill
+                sizes="(max-width: 720px) 90vw, 340px"
+                className={styles.heroImageEl}
+                priority
+              />
+            </div>
           </div>
           <div className={styles.heroTextCol}>
             <div className={styles.heroTitleBlock}>
@@ -183,8 +192,15 @@ export default async function PressKitPage({ params, searchParams }: Props) {
 
           {portrait && (
             <div className={styles.bioImageCol}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={portrait.src} alt={portrait.alt} className={styles.bioImage} />
+              <div className={styles.bioImage}>
+                <Image
+                  src={portrait.src}
+                  alt={portrait.alt}
+                  fill
+                  sizes="(max-width: 720px) 90vw, 300px"
+                  className={styles.bioImageEl}
+                />
+              </div>
             </div>
           )}
         </section>
