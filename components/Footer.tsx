@@ -26,13 +26,13 @@ export default function Footer({ onReplay, entranceDelay, locale = "en" }: Foote
       <ul className={styles.socials}>
         <li>
           <a
-            href="https://www.facebook.com/myplasticlover"
+            href="https://www.instagram.com/myplasticlover"
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="Facebook"
+            aria-label="Instagram"
             className={styles.socialLink}
           >
-            <FaFacebookF size={18} />
+            <FaInstagram size={20} />
           </a>
         </li>
         <li>
@@ -48,17 +48,6 @@ export default function Footer({ onReplay, entranceDelay, locale = "en" }: Foote
         </li>
         <li>
           <a
-            href="https://www.instagram.com/myplasticlover"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Instagram"
-            className={styles.socialLink}
-          >
-            <FaInstagram size={20} />
-          </a>
-        </li>
-        <li>
-          <a
             href="https://www.youtube.com/@myplasticlover"
             target="_blank"
             rel="noopener noreferrer"
@@ -66,6 +55,17 @@ export default function Footer({ onReplay, entranceDelay, locale = "en" }: Foote
             className={styles.socialLink}
           >
             <FaYoutube size={22} />
+          </a>
+        </li>
+        <li>
+          <a
+            href="https://www.facebook.com/myplasticlover"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Facebook"
+            className={styles.socialLink}
+          >
+            <FaFacebookF size={18} />
           </a>
         </li>
       </ul>
