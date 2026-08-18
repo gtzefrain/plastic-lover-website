@@ -75,8 +75,8 @@ export function getPressKitBySlug(slug: string): PressKit | undefined {
 // one single. Real photos supplied by Efraín (portrait session + one live shot), uploaded to
 // public/press/portraits/. `src` is a web-sized copy (public/press/portraits/web/, generated
 // with `sips`, ~1600px/~250KB) for on-page display; `downloadSrc` is the original full-res
-// camera file (11-14MB) for the DOWNLOAD link. `credit` is lorem ipsum until a photographer
-// credit is confirmed.
+// camera file (11-14MB) for the DOWNLOAD link. `credit` is Pablo Barrera for both the
+// portrait session and the "Las Olas" video stills.
 export const PRESS_PHOTOS: PressPhoto[] = [
   {
     src: "/press/portraits/web/dscf5471.jpg",
@@ -134,28 +134,28 @@ export const PRESS_PHOTOS: PressPhoto[] = [
     downloadSrc: "/press/las-olas/vlcsnap-2026-08-13-14h05m50s166-cropped.png",
     alt: "Close-up of Plastic Lover with the animated 'Plastic Lover' wordmark over his face, in a grassy park",
     category: "Las Olas",
-    credit: "Photo: Lorem Ipsum",
+    credit: "Photo: Pablo Barrera",
   },
   {
     src: "/press/las-olas/web-vlcsnap-2026-08-13-14h05m57s114-cropped.jpg",
     downloadSrc: "/press/las-olas/vlcsnap-2026-08-13-14h05m57s114-cropped.png",
     alt: "Close-up of a white fabric mask draped over a black-suited figure lying in the grass",
     category: "Las Olas",
-    credit: "Photo: Lorem Ipsum",
+    credit: "Photo: Pablo Barrera",
   },
   {
     src: "/press/las-olas/web-vlcsnap-2026-08-13-14h06m02s008-cropped.jpg",
     downloadSrc: "/press/las-olas/vlcsnap-2026-08-13-14h06m02s008-cropped.png",
     alt: "Plastic Lover kneeling in a grassy park, flanked by two masked figures in black suits",
     category: "Las Olas",
-    credit: "Photo: Lorem Ipsum",
+    credit: "Photo: Pablo Barrera",
   },
   {
     src: "/press/las-olas/web-vlcsnap-2026-08-13-14h06m20s226-cropped.jpg",
     downloadSrc: "/press/las-olas/vlcsnap-2026-08-13-14h06m20s226-cropped.png",
     alt: "Overhead shot of Plastic Lover kneeling in grass, surrounded by two masked figures lying down",
     category: "Las Olas",
-    credit: "Photo: Lorem Ipsum",
+    credit: "Photo: Pablo Barrera",
   },
 ];
 
