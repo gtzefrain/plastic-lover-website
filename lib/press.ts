@@ -164,8 +164,8 @@ export const PRESS_PHOTOS: PressPhoto[] = [
 // text fixes two apparent typos in the source ("Inicalmente" -> "Inicialmente", "duo" -> "dúo").
 // `en` is a translation of that original — the source EPK didn't have a separate English version.
 export const ARTIST_BIO = {
-  es: "Formado a finales del 2018, Plastic Lover es el proyecto solista de Efraín Gutiérrez. Inicialmente un dúo, Plastic Lover es un proyecto de indie pop de Monterrey, México. Ha compartido escenario con Mené, Dromedarios Mágicos, Kiddie Gang, entre otros.",
-  en: "Formed in late 2018, Plastic Lover is Efraín Gutiérrez's solo project. Initially a duo, it's an indie pop project from Monterrey, Mexico. It has shared the stage with Mené, Dromedarios Mágicos, Kiddie Gang, and others.",
+  es: "Formado a finales del 2018, Plastic Lover es el proyecto solista de Efraín Gutiérrez. Inicialmente un dúo, Plastic Lover es un proyecto de indie pop de Monterrey, México. Ha compartido escenario con Mené, Tycho, Fármacos, entre otros.",
+  en: "Formed in late 2018, Plastic Lover is Efraín Gutiérrez's solo project. Initially a duo, it's an indie pop project from Monterrey, Mexico. It has shared the stage with Mené, Tycho, Fármacos, and others.",
 };
 
 // Sourced from components/Footer.tsx — keep in sync if those links change.
