@@ -47,8 +47,8 @@ build (e.g. for `capture/`, see its README).
   (band-level photo library) — press-kit content, kept separate from `lib/releases.ts` so the
   fan-facing `/releases/[slug]` page doesn't get cluttered with press copy. `PressKit.slug`
   **must** match a `Release.slug` in `lib/releases.ts`. Bio/body copy always ship in both `es`
-  (write this one first — Spanish is the site's default) and `en`; `content` paragraphs support
-  inline `[label](url)` markdown-links via `renderRichText()` in the `[slug]` page. Photos
+  (write this one first — Spanish is the site's default) and `en`; `bio` and `content` paragraphs
+  support inline `[label](url)` markdown-links via `renderRichText()` in the `[slug]` page. Photos
   (`PressPhoto`) need `src` (web-sized, under `public/press/`) and grouping `category`;
   `downloadSrc` is optional and falls back to `src`. `contactEmail` defaults to
   `myplasticlover@gmail.com` when omitted. See the `plastic-lover-epk` skill for building a new

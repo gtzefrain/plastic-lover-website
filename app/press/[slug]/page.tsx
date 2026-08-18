@@ -15,7 +15,7 @@ type Props = {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 };
 
-// Parses `[label](url)` markdown-link syntax out of PressKit.content paragraphs into real
+// Parses `[label](url)` markdown-link syntax out of PressKit.bio/content copy into real
 // anchor tags — the only rich-text feature press copy needs, so a full markdown parser is overkill.
 function renderRichText(text: string) {
   const pattern = /\[([^\]]+)\]\(([^)]+)\)/g;
@@ -106,7 +106,7 @@ export default async function PressKitPage({ params, searchParams }: Props) {
                 {release.artist} · {release.meta}
               </div>
             </div>
-            <p className={styles.bio}>{locale === "es" ? kit.bio.es : kit.bio.en}</p>
+            <p className={styles.bio}>{renderRichText(locale === "es" ? kit.bio.es : kit.bio.en)}</p>
           </div>
         </section>
 

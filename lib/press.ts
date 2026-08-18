@@ -41,8 +41,8 @@ export const PRESS_KITS: PressKit[] = [
   {
     slug: "las-olas",
     bio: {
-      es: "Las Olas es el nuevo sencillo de Plastic Lover. Un track de indie pop sobre el desamor, donde el mar se vuelve la metáfora para entender aquello que ya no está. Las Olas remite a referencias del proyecto como Indios, Little Jesus y Babasónicos.",
-      en: "Las Olas is the new single by Plastic Lover. An indie pop track about heartbreak, where the sea becomes a metaphor for understanding what's no longer there. Las Olas nods to the project's usual references, like Indios, Little Jesus, and Babasónicos.",
+      es: "Las Olas es el nuevo sencillo de Plastic Lover. Un track de indie pop sobre el desamor, donde el mar se vuelve la metáfora para entender aquello que ya no está. Las Olas remite a referencias del proyecto como Indios, Little Jesus y Babasónicos. El sencillo cuenta con un sitio interactivo promocional en [plasticlover.mx/las-olas](https://plasticlover.mx/las-olas).",
+      en: "Las Olas is the new single by Plastic Lover. An indie pop track about heartbreak, where the sea becomes a metaphor for understanding what's no longer there. Las Olas nods to the project's usual references, like Indios, Little Jesus, and Babasónicos. The single has a promotional interactive site at [plasticlover.mx/las-olas](https://plasticlover.mx/las-olas).",
     },
     content: {
       es: [
