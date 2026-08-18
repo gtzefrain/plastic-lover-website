@@ -5,7 +5,7 @@ import { useRef, useState, useSyncExternalStore, type CSSProperties, type MouseE
 import { getDictionary, type Locale } from "@/lib/i18n/dictionaries";
 import styles from "./LasOlas.module.css";
 
-const REVEAL_AT = 6;
+const REVEAL_AT = 4;
 const REVEAL_HOLD_MS = 3000;
 const STORAGE_KEY = "pl-las-olas-revealed";
 const PRESAVE_URL =
