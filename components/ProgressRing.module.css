@@ -1,0 +1,12 @@
+.ring {
+  display: block;
+}
+
+.track {
+  stroke: var(--pl-placeholder);
+}
+
+.indicator {
+  stroke: var(--pl-primary);
+  transition: stroke-dashoffset 0.2s ease;
+}

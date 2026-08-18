@@ -15,21 +15,26 @@ type SiteNavProps = {
 
 export default function SiteNav({ entranceDelay, locale = "en" }: SiteNavProps) {
   const pathname = usePathname();
-  const [isMobile, setIsMobile] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const dict = getDictionary(locale);
   const burgerRef = useRef<HTMLButtonElement>(null);
   const drawerCloseRef = useRef<HTMLButtonElement>(null);
 
+  // The desktop link row vs. the mobile burger button are both always in
+  // the DOM and switched with a CSS media query (see .links/.burger in
+  // SiteNav.module.css) rather than a JS matchMedia check — a JS-computed
+  // isMobile flag defaults to "desktop" until React hydrates, so on a slow
+  // connection the burger button (and thus any way to open the nav) simply
+  // wouldn't appear for as long as hydration was still pending. This effect
+  // now only has to close the drawer if the viewport crosses back over the
+  // breakpoint while it's open.
   useEffect(() => {
     const mq = window.matchMedia("(max-width: 860px)");
-    const update = () => {
-      setIsMobile(mq.matches);
+    const closeOnDesktop = () => {
       if (!mq.matches) setMenuOpen(false);
     };
-    update();
-    mq.addEventListener("change", update);
-    return () => mq.removeEventListener("change", update);
+    mq.addEventListener("change", closeOnDesktop);
+    return () => mq.removeEventListener("change", closeOnDesktop);
   }, []);
 
   useEffect(() => {
@@ -63,45 +68,41 @@ export default function SiteNav({ entranceDelay, locale = "en" }: SiteNavProps) 
           PLASTIC&nbsp;LOVER
         </Link>
 
-        {!isMobile && (
-          <ul className={styles.links}>
-            {NAV_LINKS.map((lnk) => {
-              const isActive = pathname === lnk.href;
-              return (
-                <li key={lnk.href}>
-                  <Link
-                    href={lnk.href}
-                    aria-current={isActive ? "page" : undefined}
-                    className={`${styles.link} ${isActive ? styles.linkActive : ""}`}
-                  >
-                    {dict.nav[lnk.key]}
-                  </Link>
-                </li>
-              );
-            })}
-            <li>
-              <LanguageSelector locale={locale} label={dict.languageSelector.label} />
-            </li>
-          </ul>
-        )}
+        <ul className={styles.links}>
+          {NAV_LINKS.map((lnk) => {
+            const isActive = pathname === lnk.href;
+            return (
+              <li key={lnk.href}>
+                <Link
+                  href={lnk.href}
+                  aria-current={isActive ? "page" : undefined}
+                  className={`${styles.link} ${isActive ? styles.linkActive : ""}`}
+                >
+                  {dict.nav[lnk.key]}
+                </Link>
+              </li>
+            );
+          })}
+          <li>
+            <LanguageSelector locale={locale} label={dict.languageSelector.label} />
+          </li>
+        </ul>
 
-        {isMobile && (
-          <button
-            ref={burgerRef}
-            type="button"
-            onClick={() => setMenuOpen((v) => !v)}
-            aria-label={dict.nav.openMenu}
-            aria-expanded={menuOpen}
-            className={styles.burger}
-          >
-            <div className={styles.burgerBar} />
-            <div className={styles.burgerBar} />
-            <div className={styles.burgerBar} />
-          </button>
-        )}
+        <button
+          ref={burgerRef}
+          type="button"
+          onClick={() => setMenuOpen((v) => !v)}
+          aria-label={dict.nav.openMenu}
+          aria-expanded={menuOpen}
+          className={styles.burger}
+        >
+          <div className={styles.burgerBar} />
+          <div className={styles.burgerBar} />
+          <div className={styles.burgerBar} />
+        </button>
       </div>
 
-      {isMobile && menuOpen && (
+      {menuOpen && (
         <div className={styles.drawer} role="dialog" aria-modal="true" aria-label={dict.nav.openMenu}>
           <div className={styles.drawerBar}>
             <span className={styles.wordmark}>PLASTIC&nbsp;LOVER</span>

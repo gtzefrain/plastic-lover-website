@@ -49,7 +49,7 @@ export default function HomeClient({ heroSeen, locale }: HomeClientProps) {
       <main id="main-content">
         <div data-screen-label="Hero" className={styles.hero}>
         <div className={styles.heroInner}>
-          <HeroLogo runKey={run} skipEntrance={!heroPlaying} />
+          <HeroLogo key={`hero-${run}-${heroPlaying}`} skipEntrance={!heroPlaying} />
 
           <div
             key={`tagline-${run}`}

@@ -33,6 +33,12 @@
   letter-spacing: 0.12em;
 }
 
+@media (max-width: 860px) {
+  .links {
+    display: none;
+  }
+}
+
 .link {
   color: var(--pl-primary);
   text-decoration: none;
@@ -44,7 +50,7 @@
 }
 
 .burger {
-  display: flex;
+  display: none;
   flex-direction: column;
   gap: 6px;
   padding: 12px;
@@ -52,6 +58,12 @@
   cursor: pointer;
   background: none;
   border: none;
+}
+
+@media (max-width: 860px) {
+  .burger {
+    display: flex;
+  }
 }
 
 .burgerBar {

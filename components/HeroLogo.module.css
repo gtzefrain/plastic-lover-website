@@ -11,6 +11,14 @@
   aspect-ratio: 3246 / 3226;
 }
 
+.ringOverlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .letter {
   position: absolute;
   inset: 0;
