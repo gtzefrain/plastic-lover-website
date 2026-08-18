@@ -16,7 +16,15 @@ export default function PressNav({ locale, maxWidth }: PressNavProps) {
   return (
     <nav aria-label={dict.nav.primaryLabel} className={styles.nav} style={{ maxWidth }}>
       <Link href="/" className={styles.wordmark}>
-        <Image src="/logo/logo-mini.png" alt="Plastic Lover" width={20} height={28} className={styles.logoMini} />
+        <Image
+          src="/logo/logo-mini.png"
+          alt="Plastic Lover"
+          width={20}
+          height={28}
+          className={styles.logoMini}
+          priority
+          fetchPriority="high"
+        />
       </Link>
       <LanguageSelector locale={locale} label={dict.languageSelector.label} />
     </nav>

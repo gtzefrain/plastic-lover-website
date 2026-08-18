@@ -66,7 +66,15 @@ export default function SiteNav({ entranceDelay, locale = "en" }: SiteNavProps) 
     >
       <div className={styles.bar}>
         <Link href="/" className={styles.wordmark}>
-          <Image src="/logo/logo-mini.png" alt="Plastic Lover" width={20} height={28} className={styles.logoMini} />
+          <Image
+            src="/logo/logo-mini.png"
+            alt="Plastic Lover"
+            width={20}
+            height={28}
+            className={styles.logoMini}
+            priority
+            fetchPriority="high"
+          />
         </Link>
 
         <ul className={styles.links}>
