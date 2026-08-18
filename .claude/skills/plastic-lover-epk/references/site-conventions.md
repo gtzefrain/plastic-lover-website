@@ -127,9 +127,11 @@ files (or a Drive/Dropbox link) rather than assuming stock images are available.
 
 - `public/logo/LOGO_2D.png` — clean flat logo mark, safest default for a press-kit header or
   email signature.
-- `public/logo/LOGO_3D.png`, `LOGO_PL_3D.png` — glossier variants.
-- `public/logo/{P,L,a,S,t,i,c,L,o,v,e,R,l1}.png` — individual hand-drawn letters used only by
-  the animated homepage wordmark (`components/HeroLogo.tsx`); not general-purpose assets.
+- `public/logo/LOGO_3D.jpg`, `LOGO_PL_3D.png` — glossier variants.
+- `public/logo/{P,L,a,S,t,i,c,L,o,v,e,R,l1}.png` (plus downsized copies under
+  `public/logo/mobile/`) — individual hand-drawn letters used only by the animated homepage
+  wordmark (`components/HeroLogo.tsx`); not general-purpose assets. Must stay PNG — each is
+  transparent except for that one letter's ink and they're alpha-stacked to spell the wordmark.
 
 New press photos for a release should live at `public/press/<slug>/`.
 

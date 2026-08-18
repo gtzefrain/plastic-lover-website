@@ -1,6 +1,10 @@
 // Choreography for the landing hero logo entrance ("blobs" — the handoff's
 // default): 12 individually-positioned full-canvas (3246x3226) letter PNGs
 // fly in from scattered offsets as blurred blobs and sharpen into place.
+// Must stay PNG (not JPEG): each layer is transparent except for that one
+// letter's ink, and they're stacked to spell the wordmark — filling the
+// transparency opaque (as JPEG conversion does) makes each later layer
+// blot out every layer beneath it.
 export const HERO_SPEED = 1;
 export const HERO_FLOATING = true;
 

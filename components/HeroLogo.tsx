@@ -37,7 +37,7 @@ export default function HeroLogo({ skipEntrance = false }: HeroLogoProps) {
     const mobile = window.matchMedia(MOBILE_QUERY).matches;
     const base = mobile ? "/logo/mobile" : "/logo";
     const urls = skipEntrance
-      ? [`${base}/LOGO_3D.png`]
+      ? [`${base}/LOGO_3D.jpg`]
       : LETTERS.map(([src]) => `${base}/${src}`);
     const total = urls.length;
 

@@ -49,7 +49,7 @@ const TARGETS = [
 async function preparePage(browser, width, height) {
   // Fresh, cookie-less context every time: the hero is gated behind the
   // pl_hero_seen cookie, and a stale cookie would skip straight to the
-  // static LOGO_3D.png fallback instead of playing the 12-letter entrance.
+  // static LOGO_3D.jpg fallback instead of playing the 12-letter entrance.
   const context = await browser.createBrowserContext();
   const page = await context.newPage();
   await page.setViewport({ width, height, deviceScaleFactor: DEVICE_SCALE_FACTOR });
@@ -60,6 +60,17 @@ async function preparePage(browser, width, height) {
   // — which was letting some frames get captured before every letter layer
   // had actually rasterized.
   await page.goto(BASE_URL, { waitUntil: "load" });
+
+  // HeroLogo doesn't mount the 12 letter layers (or start their entrance
+  // animation) until it's finished preloading their images client-side —
+  // see the progress-ring loading state in components/HeroLogo.tsx. That
+  // preload kicks off after hydration, outside anything the "load" event
+  // above tracks, so without this wait decodeBackgroundImages/
+  // pauseAllAnimations below could run before the letters even exist in
+  // the DOM.
+  await page.waitForFunction(() => document.querySelectorAll('[class*="__letter"]').length === 12, {
+    timeout: 15000,
+  });
 
   if (ISOLATE_LOGO) {
     // Social exports want just the animating logo, not the surrounding page
