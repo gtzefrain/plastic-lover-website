@@ -20,6 +20,7 @@ copy that script as your starting point rather than starting from a blank file.
 | Automatically at mount, no user interaction (e.g. the hero entrance) | Single declarative timeline — everything starts together, one shared `.currentTime` scrub | `capture.js` |
 | Only after real clicks/taps/timers (e.g. the original las-olas tap-to-reveal) | See below — this needs a decision, not just a template | `capture-las-olas.js` |
 | Copy/graphic that isn't a real route (e.g. a URL fading in) | Self-contained local HTML file, captured via `file://` | `capture-url-cta.js` + `assets/url-cta.html` |
+| A real video clip needs to appear in/finish the shot (e.g. crossfading into live-action footage) | `HTMLVideoElement`, seeked per frame — not part of `document.getAnimations()`, needs its own loop; see `references/capture-patterns.md` | `capture-las-olas.js`'s crossfade section |
 
 **For the interactive case**, there are two real options — ask the user if it's not obvious
 which they want:
@@ -53,6 +54,10 @@ real marketing consequences is the user's call — ask (`AskUserQuestion`) rathe
 - Pacing/duration, and whether smooth or faithful-replay (see above) is wanted.
 - Vertical (1080x1920, the default), square (1080x1080), or both.
 - Capture against a local prod build (default, reproducible) or the live site directly.
+- If compositing in a real clip: how its runtime should align with the capture's (e.g.
+  end-aligned so the clip's own ending lands on the capture's last frame — see
+  `references/capture-patterns.md`), and whether to keep its audio (the other clips in this
+  folder are all silent; keeping audio needs a different encode step, not just the frame scrub).
 
 ## 3. House conventions
 
