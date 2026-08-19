@@ -7,15 +7,20 @@ Exports Plastic Lover motion assets to high-quality MP4 for social media:
   `lib/heroChoreography.ts`).
 - `capture-url-cta.js` — a standalone "visit the site" clip: `www.plasticlover.mx`
   fading in with a mouse cursor swooping in and clicking it.
-- `capture-las-olas.js` — the `/las-olas` tap-to-reveal presave teaser
-  (`components/LasOlas.tsx`): 4 simulated taps part the waves and reveal the
-  logo + PRESAVE button. See "Capturing an interactive scene" below — this
-  one works differently from the other two because the scene is driven by
-  real click events and real `setTimeout`s, not a single animation that
-  starts at mount.
+- `capture-las-olas.js` — a centered, enlarged `/las-olas` shot
+  (`components/LasOlas.tsx`): waves rise and the logo sharpens into view in
+  one continuous eased motion, waves + logo only (no tap hint, depth meter,
+  or presave panel). See "Capturing /las-olas without the tap interaction"
+  below for why this doesn't just replay the page's real tap-to-reveal
+  interaction.
+- `quick-frame.js` — not an export script: a fast one-screenshot composition
+  check for `/las-olas` (jumps straight to the settled end state), for
+  iterating on logo size/position without waiting on a full 12s/720-frame
+  capture. See "Adjusting" below.
 
-All three use the same ffmpeg encode settings (`lib/video.js`), so output
-from any of them is drop-in compatible with the others for editing together.
+All three capture scripts use the same ffmpeg encode settings
+(`lib/video.js`), so output from any of them is drop-in compatible with the
+others for editing together.
 
 ## Why not a screen recorder / timecut / timesnap
 
@@ -24,8 +29,8 @@ browser's compositor thread, not the JS main-thread clock, so tools that
 "fake" `Date.now()`/`performance.now()` (timecut, timesnap, etc.) never sync
 with them — you get real-time capture with dropped/uneven frames.
 
-Instead `capture.js` and `capture-url-cta.js` use the Web Animations API
-directly (`lib/video.js`):
+Instead all three scripts use the Web Animations API directly
+(`lib/video.js`):
 
 1. Load the page in a **fresh** browser context.
 2. Wait for the hero's 12 letter layers to actually exist in the DOM.
@@ -43,31 +48,30 @@ directly (`lib/video.js`):
 This is deterministic — the same frames come out every run regardless of
 machine speed, and no frame is ever skipped.
 
-## Capturing an interactive scene
+## Capturing /las-olas without the tap interaction
 
-`capture-las-olas.js` captures `/las-olas`, which isn't a single animation
-that starts at mount — it's a real tap-to-reveal interaction
-(`components/LasOlas.tsx`). Each of the 4 required taps mounts a fresh
-ripple, retriggers a CSS transition on the logo/waves, and (on the 4th tap)
-mounts the presave panel and arms two real `setTimeout`s — one that unmounts
-each ripple 4.6s later, one that opens the presave link 3s after reveal.
+On the real page, the wave-parting/logo-reveal only happens through 4 real
+taps: each one jumps a `clicks` counter that snaps the logo/wave CSS to the
+next of 5 fixed states and plays a per-tap "sway" bounce plus a water
+ripple — the right interaction for a visitor's thumb, but stepped and
+touch-driven on video, not the smooth continuous motion a promo clip wants.
 
-The hero's "set one shared `.currentTime` on every animation, every frame"
-trick only works because every hero animation starts together at mount.
-Here, taps create new Animation objects at different points on the capture's
-simulated timeline, so `capture-las-olas.js` tags each one (via
-`page.evaluateOnNewDocument`) with the simulated ms offset it was created at,
-and drives `.currentTime = frameMs - itsOwnOffset` per animation instead of
-one global value.
+`capture-las-olas.js` never dispatches a click, so `clicks` stays 0 for the
+whole capture and none of that tap-driven styling (or the sway/ripples,
+which only ever get created by a click) ever engages. Instead it sets a
+hand-written `animation` directly on the logo `<img>` and the two wave-layer
+divs — one continuous eased run from the "just touched the water" look to
+"fully revealed" — via `page.evaluate`, bypassing React entirely. That's
+safe here because nothing in the capture ever changes React state, so React
+never re-renders (and never overwrites) those elements after the initial
+style is set. It also means capture is back to the same single shared
+`.currentTime` scrub `capture.js` uses — no per-animation offset tracking
+needed, since everything here starts together, same as the hero's letters.
 
-It also has to defuse the two real `setTimeout`s: capturing ~500 screenshots
-takes far longer in wall-clock time than the ~8 simulated seconds being
-scrubbed, so left alone those timers fire "early" relative to the simulated
-timeline — e.g. a ripple's cleanup can land while it's simulated to still be
-mid-fade, popping it out of the DOM instead of finishing its animation. The
-injected script stretches any `setTimeout` delay of 2s+ by 100x (short
-delays, e.g. anything React's own scheduler uses, are left alone) and stubs
-`window.open` so the presave tab never actually tries to open.
+Centering and enlarging the logo reuses `capture.js`'s `ISOLATE_LOGO`
+technique: an injected `<style>` tag overrides the wrapper's centering
+margin and caps the image's width, targeting classes by substring since CSS
+Modules hashes the exact name.
 
 ## Requirements
 
@@ -113,12 +117,12 @@ CAPTURE_URL=https://plasticlover.mx node capture-las-olas.js
 
 `capture-las-olas.js` always forces the `pl_locale` cookie to `es` before
 navigating, regardless of the machine's own Accept-Language — `/las-olas`
-otherwise falls back to whatever locale Chromium happens to send, and the
-capture is scripted around the Spanish copy ("EL NUEVO SENCILLO — 20 DE
-AGOSTO" / "PRESAVE"). Edit the cookie value in `preparePage()` for an English
-capture.
+otherwise falls back to whatever locale Chromium happens to send. The
+locale only affects metadata on this page though (there's no on-screen text
+in the capture — tap hint, depth meter, and the presave panel are all hidden,
+see above); edit the cookie value in `preparePage()` if that changes.
 
-By default the export is **logo-only**: nav, tagline, CTA, scroll arrow,
+By default `capture.js`'s export is **logo-only**: nav, tagline, CTA, scroll arrow,
 footer, and the mailing-list section are hidden via an injected `<style>`
 tag (see `ISOLATE_LOGO` / `preparePage()` in `capture.js`) rather than by
 adding a stripped-down route to the app. `Hero`'s padding (normally reserved
@@ -141,7 +145,7 @@ Written to `capture/out/` (gitignored):
 | `hero-vertical-loop.mp4` | 1080x1920 (9:16) | Seamless loop of one `plFloat` cycle, for use *after* the entrance clip or as a standalone looping background |
 | `url-cta-vertical.mp4` | 1080x1920 (9:16) | `www.plasticlover.mx` fades in, cursor double-clicks it, 0–4s |
 | `url-cta-square.mp4` | 1080x1080 (1:1) | Same, square |
-| `las-olas-vertical.mp4` | 1080x1920 (9:16) | 4 taps part the waves; reveal panel rises and holds on the PRESAVE button, 0–7.8s |
+| `las-olas-vertical.mp4` | 1080x1920 (9:16) | Waves rise and the centered, enlarged logo sharpens in one continuous ease, holds on the settled wordmark, 0–12s |
 | `hero-cues.mid` | — | MIDI click track for scoring the hero entrance (see below) |
 
 PNG frame sequences (`out/<variant>/frame_*.png`) are also left on disk in
@@ -176,12 +180,13 @@ wordmark only exist for P-l-a-s-t-i-c-L-o-v-e-r):
 **`capture-las-olas.js`** (`components/LasOlas.tsx`, 60fps,
 `deviceScaleFactor: 2`):
 
-- Taps land at 0.8s, 1.8s, 2.8s, 3.8s (simulated) — evenly spaced, each on an
-  exact frame boundary.
-- The 4th tap triggers the reveal; `lasRise` (0.6s delay + 1.2s rise) settles
-  at 3.8 + 1.8 = 5.6s.
-- Captured window extends to 7.8s, holding ~2.2s on the settled presave CTA
-  before the cut.
+- The `lasLogoReveal`/`lasWaveRiseA`/`lasWaveRiseB` keyframes (defined in the
+  script, not `app/globals.css`) ease continuously over `SMOOTH_MS` = 4s from
+  mount.
+- Captured window extends to `SMOOTH_MS + HOLD_MS` = 12s, holding ~8s on the
+  settled, centered wordmark before the cut — long enough that the ambient
+  motion (breathing sway, scrolling wave crests) carries the clip rather than
+  sitting on a dead static frame.
 
 ## MIDI click track
 
@@ -202,14 +207,30 @@ lengths at the top of the file to adjust.
 
 - **Duration / resolution**: edit `TARGETS` and `ENTRANCE_DURATION_MS` in
   `capture.js`, `TARGETS` and `CAPTURE_DURATION_MS` in `capture-url-cta.js`,
-  or `WIDTH`/`HEIGHT` and `CLICK_TIMES_MS`/`REVEAL_SETTLE_MS`/`HOLD_MS` in
-  `capture-las-olas.js`.
+  or `WIDTH`/`HEIGHT` and `SMOOTH_MS`/`HOLD_MS` in `capture-las-olas.js`.
 - **URL CTA look/timing**: all in `assets/url-cta.html` — it's plain
   CSS keyframes, same hand-written style as the rest of the site.
-- If `LasOlas.tsx`'s `REVEAL_AT` (taps required) or `REVEAL_HOLD_MS` changes,
-  update `CLICK_TIMES_MS`'s length/spacing in `capture-las-olas.js` to match;
-  if `lasRise`'s delay/duration in `app/globals.css` changes, update
-  `REVEAL_SETTLE_MS` too.
+- **Las Olas logo size/position**: the `min(72vh, 72vw)` width cap and the
+  `margin-bottom: 25vh` are in the injected `<style>` tag in
+  `capture-las-olas.js`'s `preparePage()`. That 25vh isn't derived from a
+  formula — true mathematical centering (`margin-bottom: 0`) looks *wrong*
+  once the logo's this large, because the waves fill roughly the bottom
+  third of the frame at full reveal, leaving a lopsided gap (huge above,
+  almost none below) that reads as "too high." Use `quick-frame.js` to
+  re-tune it by eye if the size or wave end-position changes:
+
+  ```sh
+  # requires the dev (or prod) server running on :3000
+  node quick-frame.js 25 /tmp/check.png   # jumps straight to the settled
+                                            # end state at margin-bottom: 25vh
+  ```
+
+  It's a one-screenshot tool (not a real capture), so it's safe to run
+  against `next dev` for fast iteration — no need to stop dev/build/start
+  just to check composition.
+- If `LasOlas.tsx`'s idle/revealed filter, opacity, or wave `top` values
+  change, update the matching `from`/`to` values in `capture-las-olas.js`'s
+  `lasLogoReveal`/`lasWaveRiseA`/`lasWaveRiseB` keyframes to match.
 - **Encode quality**: the ffmpeg args in `lib/video.js`'s `encode()`
   (currently `-crf 16 -preset slow`, visually lossless-ish H.264). Lower
   `-crf` = higher quality / bigger file.

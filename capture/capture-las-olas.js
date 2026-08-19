@@ -1,66 +1,54 @@
-// Frame-accurate export of the /las-olas "tap to reveal" presave teaser to
-// MP4, vertical only (matches capture.js's hero-vertical-entrance target).
+// Frame-accurate export of /las-olas to MP4, vertical only (matches
+// capture.js's hero-vertical targets): waves rise and the logo sharpens
+// into view in one continuous, centered, enlarged shot — no tap simulation.
 //
-// This scene is NOT a single declarative entrance like the landing hero
-// (see capture.js's header): it's driven by real click events. Each tap on
-// components/LasOlas.tsx bumps a click counter that (a) mounts a fresh
-// ripple (real CSS keyframe animations: lasRing/lasBloom/lasBubble), (b)
-// re-triggers a CSS *transition* on the logo's filter/opacity and the wave
-// layers' `top` (new value each tap, so a fresh Animation object each
-// time), and (c) on the 4th tap flips `revealed` to true, mounting the
-// presave panel (`lasRise`) and arming two real setTimeouts: one that
-// unmounts each ripple 4.6s after it was created, one that calls
-// `window.open()` on the presave link 3s after reveal.
+// The real /las-olas page (components/LasOlas.tsx) reveals this progress
+// through 4 discrete taps: each one jumps a `clicks` counter, which snaps
+// the logo/wave CSS to the next of 5 fixed states and plays a per-tap
+// "sway" bounce + water ripple. That's the right interaction for a visitor
+// tapping their phone, but it reads as stepped/touch-driven on video. This
+// script never dispatches a click — `clicks` stays 0 for the whole capture,
+// so React's own tap-driven styling never engages (and neither does the
+// per-tap sway or the ripples, which only ever get created by a click).
 //
-// Two consequences for a deterministic scrub capture like the hero's:
+// Instead, `preparePage()` below reaches past React and drives the same
+// visual properties (logo filter/opacity, wave `top`) directly via two
+// hand-written `@keyframes` set as inline `animation` on the actual
+// elements — one continuous ease from the "just tapped the water" state to
+// the "fully revealed" state. Because nothing here is React-driven, setting
+// `.style.animation` once and letting it run is enough; React never
+// re-renders these elements (nothing changes React state) so it never
+// overwrites what we set. This also means capture is back to the same
+// single-global-clock scrub `capture.js` uses (`lib/video.js`) — no
+// per-animation offset tracking needed, since unlike the old tap-driven
+// version, everything here starts together at mount.
 //
-// 1. The hero's approach sets ONE shared `.currentTime` on every
-//    `document.getAnimations()` result each frame, which only works
-//    because all of the hero's animations start together at mount. Here,
-//    each tap creates new Animation objects at a *different* point on our
-//    simulated timeline, so every animation needs `.currentTime` driven
-//    relative to *when it was created*, not the capture's global clock.
-//    `__tagNewAnimations`/`__scrubTo` below (injected into the page) track
-//    a per-animation offset for exactly this.
-//
-// 2. The two real `setTimeout`s run on the actual wall clock, not our
-//    simulated one — and capturing ~500 screenshots takes far longer in
-//    real time than the ~8 simulated seconds we're scrubbing through, so
-//    left alone they fire "early" relative to the simulated timeline
-//    (e.g. a ripple's cleanup timer can land while it's simulated to still
-//    be mid-fade, popping it out of the DOM instead of finishing its
-//    animation). `evaluateOnNewDocument` below stretches any setTimeout
-//    delay of 2s+ by 100x so neither timer can fire before a capture run
-//    finishes, and stubs `window.open` so the presave tab never actually
-//    tries to open from a headless capture context.
+// Centering/enlarging the logo uses the same technique as ISOLATE_LOGO in
+// capture.js: override the wrapper's centering margin and cap the image's
+// width via injected CSS, `!important`, targeting classes by substring
+// since CSS Modules hashes the exact name.
 //
 // See README.md in this folder for usage.
 
 const fs = require("fs");
 const path = require("path");
 const puppeteer = require("puppeteer");
-const { DEVICE_SCALE_FACTOR, frameTimes, encode } = require("./lib/video");
+const { DEVICE_SCALE_FACTOR, frameTimes, pauseAllAnimations, captureFrames, encode } = require("./lib/video");
 
 const BASE_URL = process.env.CAPTURE_URL || "http://localhost:3000";
 const OUT_DIR = path.join(__dirname, "out");
 const WIDTH = 1080;
 const HEIGHT = 1920;
 
-// Simulated ms (since mount) at which each of the 4 required taps fires.
-// Evenly spaced 1s apart, landing on exact 60fps frame boundaries.
-const CLICK_TIMES_MS = [800, 1800, 2800, 3800];
-// lasRise: 0.6s delay + 1.2s rise = 1.8s from the last tap to fully settled.
-const REVEAL_SETTLE_MS = 1800;
-// Hold on the settled presave CTA before the clip ends.
-const HOLD_MS = 2200;
-const CAPTURE_DURATION_MS =
-  CLICK_TIMES_MS[CLICK_TIMES_MS.length - 1] + REVEAL_SETTLE_MS + HOLD_MS;
+// Duration of the single continuous reveal ease.
+const SMOOTH_MS = 4000;
+// Hold on the settled, fully-revealed frame before the clip ends — long
+// enough that the ambient motion (breathing sway, scrolling wave crests)
+// carries a 12s clip instead of sitting on a dead static frame.
+const HOLD_MS = 8000;
+const CAPTURE_DURATION_MS = SMOOTH_MS + HOLD_MS;
 
 async function preparePage(browser) {
-  // Fresh, cookie-less/storage-less context every run: the reveal is
-  // persisted via localStorage (see STORAGE_KEY in LasOlas.tsx), and a
-  // stale value would skip straight to the revealed panel instead of
-  // playing the 4-tap build-up.
   const context = await browser.createBrowserContext();
   const page = await context.newPage();
   await page.setViewport({ width: WIDTH, height: HEIGHT, deviceScaleFactor: DEVICE_SCALE_FACTOR });
@@ -70,46 +58,42 @@ async function preparePage(browser) {
   // checks this cookie before falling back to the header.
   await page.setCookie({ name: "pl_locale", value: "es", url: BASE_URL });
 
-  await page.evaluateOnNewDocument(() => {
-    const LONG_DELAY_MS = 2000;
-    const STRETCH = 100;
-    const realSetTimeout = window.setTimeout.bind(window);
-    window.setTimeout = (fn, delay, ...args) => {
-      const d = typeof delay === "number" ? delay : 0;
-      return realSetTimeout(fn, d >= LONG_DELAY_MS ? d * STRETCH : d, ...args);
-    };
-    window.open = () => null;
-
-    const offsets = new WeakMap();
-    window.__scrubReset = () => {
-      document.getAnimations().forEach((a) => {
-        a.pause();
-        offsets.set(a, 0);
-      });
-    };
-    window.__tagNewAnimations = (offsetMs) => {
-      document.getAnimations().forEach((a) => {
-        if (offsets.has(a)) return;
-        a.pause();
-        a.currentTime = 0;
-        offsets.set(a, offsetMs);
-      });
-    };
-    window.__scrubTo = (frameMs) => {
-      document.getAnimations().forEach((a) => {
-        const offset = offsets.has(a) ? offsets.get(a) : 0;
-        a.currentTime = Math.max(0, frameMs - offset);
-      });
-      // Two rAFs to guarantee a real paint with the new currentTime has
-      // happened before the caller screenshots — see lib/video.js's
-      // setAnimationTime for why one isn't reliably enough.
-      return new Promise((resolve) => {
-        requestAnimationFrame(() => requestAnimationFrame(resolve));
-      });
-    };
-  });
-
   await page.goto(`${BASE_URL}/las-olas`, { waitUntil: "load" });
+
+  await page.addStyleTag({
+    content: `
+      @keyframes lasLogoReveal {
+        from { filter: blur(14px) brightness(0.9); opacity: 0.12; }
+        to { filter: blur(0px) brightness(1); opacity: 1; }
+      }
+      @keyframes lasWaveRiseA {
+        from { top: -20%; }
+        to { top: 44%; }
+      }
+      @keyframes lasWaveRiseB {
+        from { top: -14%; }
+        to { top: 46%; }
+      }
+      /* Mathematically centering logoWrap (margin-bottom: 0, letting the
+         scene's flex centering land it dead center) looks WRONG once the
+         logo is this large: the waves fill roughly the bottom third of the
+         frame at full reveal (waveTop settles at 44%), so a true center
+         leaves a huge gap above the wordmark and almost none below it
+         before the crest — reads as "too high," not centered. 25vh nudges
+         it up just enough to give the wordmark even breathing room between
+         the top edge and the wave crest instead of the full viewport edges
+         — checked empirically against several values with capture's
+         quick-frame.js-style still-shot approach, not derived from a
+         formula, since it's an optical-balance call. Re-check this if the
+         min(72vh, 72vw) width below or the wave keyframes' end values
+         change. */
+      [class*="__logoWrap"] { margin-bottom: 25vh !important; }
+      [class*="__logoImage"] { width: min(72vh, 72vw) !important; }
+      [class*="__tapHint"] { display: none !important; }
+      [class*="__depthMeterWrap"] { display: none !important; }
+      [class*="__revealPanel"] { display: none !important; }
+    `,
+  });
 
   await page.waitForSelector('img[alt="Las Olas"]', { timeout: 15000 });
   await page.evaluate(() => {
@@ -122,44 +106,24 @@ async function preparePage(browser) {
     });
   });
 
-  await page.evaluate(() => window.__scrubReset());
+  await page.evaluate((ms) => {
+    const img = document.querySelector('img[alt="Las Olas"]');
+    img.style.animation = `lasLogoReveal ${ms}ms ease both`;
+    const [waveA, waveB] = document.querySelectorAll('[class*="__waveLayer"]');
+    waveA.style.animation = `lasWaveRiseA ${ms}ms ease both`;
+    waveB.style.animation = `lasWaveRiseB ${ms}ms ease both`;
+  }, SMOOTH_MS);
 
-  return { context, page };
-}
-
-async function waitTwoFrames(page) {
+  // Two rAFs so the animations above (and the page's own idle lasBreath/
+  // lasWave loops) actually exist in document.getAnimations() before we
+  // pause everything — see lib/video.js's setAnimationTime for why one rAF
+  // isn't reliably enough.
   await page.evaluate(
     () => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)))
   );
-}
+  await pauseAllAnimations(page);
 
-async function captureScene(page, dir, label) {
-  fs.rmSync(dir, { recursive: true, force: true });
-  fs.mkdirSync(dir, { recursive: true });
-
-  const times = frameTimes(CAPTURE_DURATION_MS);
-  let nextClick = 0;
-
-  for (let i = 0; i < times.length; i++) {
-    const ms = times[i];
-
-    while (nextClick < CLICK_TIMES_MS.length && CLICK_TIMES_MS[nextClick] <= ms) {
-      const clickMs = CLICK_TIMES_MS[nextClick];
-      await page.mouse.click(WIDTH / 2, HEIGHT / 2);
-      await waitTwoFrames(page);
-      await page.evaluate((offset) => window.__tagNewAnimations(offset), clickMs);
-      nextClick++;
-    }
-
-    await page.evaluate((t) => window.__scrubTo(t), ms);
-    const framePath = path.join(dir, `frame_${String(i).padStart(5, "0")}.png`);
-    await page.screenshot({ path: framePath, type: "png" });
-    if (i % 30 === 0 || i === times.length - 1) {
-      process.stdout.write(`\r[${label}] frame ${i + 1}/${times.length}`);
-    }
-  }
-  process.stdout.write("\n");
-  return dir;
+  return { context, page };
 }
 
 async function main() {
@@ -172,7 +136,12 @@ async function main() {
 
   try {
     const { context, page } = await preparePage(browser);
-    const dir = await captureScene(page, path.join(OUT_DIR, "las-olas-vertical"), "las-olas vertical");
+    const dir = await captureFrames({
+      page,
+      dir: path.join(OUT_DIR, "las-olas-vertical"),
+      times: frameTimes(CAPTURE_DURATION_MS),
+      label: "las-olas vertical",
+    });
     await context.close();
     await encode(dir, path.join(OUT_DIR, "las-olas-vertical.mp4"), WIDTH, HEIGHT);
   } finally {
