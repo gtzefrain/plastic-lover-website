@@ -109,9 +109,11 @@ npm run lint     # eslint (eslint-config-next, flat config)
     ids can't be probed. A Listmonk-side failure returns 502 instead, kept distinct from 404
     because collapsing the two is what made an earlier permissions bug look like "subscriber not
     found" for weeks. Note `{{ .Subscriber.ID }}` is **not** in Listmonk's templating docs (that
-    table lists a subset) — it works because `models.Subscriber` embeds `Base`, which carries the
-    exported `ID int`, and Go templates promote embedded fields. Don't drop it from the link
-    because the docs page doesn't mention it.
+    table lists a subset) — it works because campaign templates render against
+    `manager.CampaignMessage`, whose `Subscriber` field is the full `models.Subscriber`, which
+    embeds `Base` carrying the exported `ID int`; Go templates promote embedded fields. Verified
+    against Listmonk's source, not just assumed. Don't drop it from the link because the docs page
+    doesn't mention it.
   - **The `subscribe-api` Listmonk user is intentionally minimal**: `subscribers:get` +
     `subscribers:manage`, plus view/manage on lists 4 (EN) and 5 (ES). Anything the site needs
     beyond that has to be designed around, not granted. `POST /api/tx` (the welcome email in
