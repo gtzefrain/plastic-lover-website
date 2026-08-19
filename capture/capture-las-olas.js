@@ -44,10 +44,12 @@
 // the very end — and the wave and logo are not on the same timer:
 //   1. CROSSFADE_STAGE1_MS: the clip fades in *behind* the logo and wave.
 //      The open "background" gaps around them reveal it immediately — no
-//      opaque content there to hold it back — so the wave (which otherwise
-//      hides it) is faded out on this exact same schedule, finishing
-//      together with the clip's own fade-in at the end of stage 1. The
-//      logo is untouched through all of stage 1.
+//      opaque content there to hold it back. The wave (which otherwise
+//      hides it) holds fully opaque for WAVE_FADE_HOLD_MS first — a beat
+//      where the clip is already visible in the background gaps while the
+//      wave still blocks it, making the DOM-stacking trick itself legible —
+//      then fades out over the same span the clip's fade-in uses, finishing
+//      at WAVE_FADE_END_MS. The logo is untouched through all of this.
 //   2. The clip is now fully faded in and the wave is gone; the logo stays
 //      put, sitting fully opaque over the clip's own footage, until the
 //      clip's own built-in fade to black begins (VIDEO_FADE_START_MS/
@@ -93,6 +95,20 @@ const CAPTURE_DURATION_MS = SMOOTH_MS + HOLD_MS;
 // not when the clip's own playback starts or ends (still end-aligned via
 // crossfadeStartMs below, so the rest of the clip's runtime is unaffected).
 const CROSSFADE_STAGE1_MS = 2000;
+// The wave holds fully opaque for this long after the clip starts fading in
+// behind it, before the wave itself starts fading out — a beat where the
+// clip is already visible through the open background gaps around the
+// wave/logo (the DOM-stacking trick, see header comment) while the wave is
+// still fully solid on top of it, so the layering itself reads as
+// intentional before the wave dissolves away and reveals the rest.
+const WAVE_FADE_HOLD_MS = 1000;
+// The wave then fades out over the same CROSSFADE_STAGE1_MS span as the
+// clip's own fade-in, just starting WAVE_FADE_HOLD_MS later — so it
+// finishes this long after elapsed=0. Everything downstream that used to
+// time itself off CROSSFADE_STAGE1_MS alone (the logo's move, below) now
+// times itself off this instead, since the wave — not the clip's fade-in —
+// is the thing it needs to sync with finishing.
+const WAVE_FADE_END_MS = WAVE_FADE_HOLD_MS + CROSSFADE_STAGE1_MS;
 // The logo's own fade-out is timed to the clip's *own* built-in fade to
 // black near its end, not to a fixed duration after stage 1 — so the logo
 // disappearing reads as part of the same fade rather than a separate,
@@ -109,15 +125,16 @@ const VIDEO_FADE_START_MS = 5800;
 const VIDEO_FADE_END_MS = 7550;
 // The logo slides from its reveal position down to the vertical center of
 // the bottom third of the frame over this long — timed backward from
-// CROSSFADE_STAGE1_MS (below) so the move always *finishes* exactly when
-// the wave's own fade does, landing in position right as stage 2 (the
-// logo's fade) begins, rather than starting only once the wave's gone.
+// WAVE_FADE_END_MS (above) so the move always *finishes* exactly when the
+// wave's own fade does, landing in position right as the logo's own fade
+// (tied to the clip's fade window, below) begins, rather than starting only
+// once the wave's gone.
 const LOGO_MOVE_DURATION_MS = 2000;
-// Currently 0 (2000 - 2000): with the move and stage 1 the same length,
-// the move runs the entirety of stage 1, concurrently with the wave fading
-// out and the clip fading in. If either duration changes, this re-derives
-// itself rather than needing to be hand-tuned back into sync.
-const LOGO_MOVE_START_MS = CROSSFADE_STAGE1_MS - LOGO_MOVE_DURATION_MS;
+// Currently 1000 (3000 - 2000): the move starts partway through the wave's
+// hold, once WAVE_FADE_HOLD_MS has been re-derived into WAVE_FADE_END_MS.
+// If any of these durations change, this re-derives itself rather than
+// needing to be hand-tuned back into sync.
+const LOGO_MOVE_START_MS = WAVE_FADE_END_MS - LOGO_MOVE_DURATION_MS;
 // Equivalent absolute `top` for the old `margin-bottom: 25vh` flex-centered
 // position (see the "optical vs mathematical centering" comment where that
 // 25vh was chosen) — `top: (100vh - 25vh) / 2` — expressed as `top` instead
@@ -359,14 +376,18 @@ async function captureScene(page, dir, label, videoDurationMs) {
       const videoMs = Math.min(elapsed, videoDurationMs);
       // Stage 1 (0..CROSSFADE_STAGE1_MS): clip fades in behind the
       // logo/waves. The "background" gaps around them reveal it as soon as
-      // it starts fading in — nothing opaque there to hold it back — so the
-      // wave (which otherwise stays fully opaque and hides it) fades out on
-      // the exact same schedule as the clip fading in, finishing together
-      // at the end of stage 1. The logo is unrelated to this and keeps its
-      // own timer (stage 2, below) — it and the wave are no longer tied to
-      // one shared value.
+      // it starts fading in — nothing opaque there to hold it back. The
+      // wave (which otherwise stays fully opaque and hides it) holds for
+      // WAVE_FADE_HOLD_MS before it starts fading too, so there's a beat
+      // where the clip is already visible in the background gaps while the
+      // wave still fully blocks it, then fades out over the same
+      // CROSSFADE_STAGE1_MS span the clip's own fade-in uses, just starting
+      // later — finishing at WAVE_FADE_END_MS, not at the end of stage 1.
+      // The logo is unrelated to either of these and keeps its own timer,
+      // below — it, the wave, and the clip are all on independent clocks.
       const videoOpacity = Math.min(elapsed / CROSSFADE_STAGE1_MS, 1);
-      const waveOpacity = 1 - videoOpacity;
+      const waveElapsed = Math.max(elapsed - WAVE_FADE_HOLD_MS, 0);
+      const waveOpacity = Math.max(1 - waveElapsed / CROSSFADE_STAGE1_MS, 0);
       // Logo fade: stays fully opaque, sitting over the clip's own footage,
       // until the clip's own built-in fade to black begins
       // (VIDEO_FADE_START_MS), then fades out on the exact same schedule as

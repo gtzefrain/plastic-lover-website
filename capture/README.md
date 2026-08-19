@@ -97,13 +97,19 @@ content (the waves). So for free, with no mask:
 
 1. **`CROSSFADE_STAGE1_MS`**: the clip fades in *behind* the logo/wave.
    The open "background" gaps around them reveal it immediately — no
-   opaque content there to hold it back — so the wave (which otherwise
-   hides it) is faded out on this exact same schedule, finishing together
-   with the clip's own fade-in by the end of stage 1. (Since the logo art
-   is a transparent PNG, the clip also shows faintly through its own
-   negative space during this stage — that reads as part of the look, not
-   a bug, once seen against motion rather than as a single still frame.)
-   The logo itself is untouched through all of stage 1.
+   opaque content there to hold it back. (Since the logo art is a
+   transparent PNG, the clip also shows faintly through its own negative
+   space during this stage — that reads as part of the look, not a bug,
+   once seen against motion rather than as a single still frame.) The wave
+   (which otherwise stays fully opaque and hides the clip) holds for
+   `WAVE_FADE_HOLD_MS` (1s) *after* the clip starts fading in, before it
+   starts fading itself — a deliberate beat where the clip is already
+   visible in the background gaps while the wave still fully blocks it, so
+   the DOM-stacking trick (see above) is legible on screen before the wave
+   dissolves away and reveals the rest. It then fades out over the same
+   `CROSSFADE_STAGE1_MS` span the clip's own fade-in uses, just starting
+   later, finishing at `WAVE_FADE_END_MS = WAVE_FADE_HOLD_MS +
+   CROSSFADE_STAGE1_MS`. The logo itself is untouched through all of this.
 2. The clip is now fully faded in and the wave is gone; the logo stays put,
    fully opaque over the clip's own footage, until the clip's own built-in
    fade to black begins — then the logo fades out on that *exact same
@@ -142,7 +148,7 @@ instead keeps everything reading as one continuous reveal.
 Independent of its fade, the logo also *moves*: it slides from its reveal
 position to the vertical center of the frame's bottom third over
 `LOGO_MOVE_DURATION_MS` (2s), timed backward via `LOGO_MOVE_START_MS =
-CROSSFADE_STAGE1_MS - LOGO_MOVE_DURATION_MS` so the move always *finishes*
+WAVE_FADE_END_MS - LOGO_MOVE_DURATION_MS` so the move always *finishes*
 exactly when stage 1 (the wave's fade) does — well before the logo's own
 fade (tied to the clip's fade window, above) begins. The logo's positioning switched from a
 flex-centered `margin-bottom` (see the "optical vs mathematical centering"
@@ -307,8 +313,9 @@ wordmark only exist for P-l-a-s-t-i-c-L-o-v-e-r):
   hardcoded), so the clip plays once, straight through, and its last frame
   lands exactly on the capture's last frame — swap in a differently-timed
   clip and this re-derives itself, no constant to update. `CROSSFADE_STAGE1_MS`
-  (2s) controls how long the wave takes to fade out as the clip fades in;
-  the logo's own fade is tied to the clip's *own* fade window instead
+  (2s) controls both the clip's own fade-in speed and the wave's fade-out
+  speed once it starts (see `WAVE_FADE_HOLD_MS` above for the 1s delay before
+  it does); the logo's own fade is tied to the clip's *own* fade window instead
   (`VIDEO_FADE_START_MS`/`VIDEO_FADE_END_MS`, measured per clip — see
   above), not a separate duration of its own.
 
