@@ -132,6 +132,31 @@ npm run lint     # eslint (eslint-config-next, flat config)
     vars to Preview. Note Vercel marks all these vars *Sensitive*, which makes them write-only —
     `vercel env pull` yields `[SENSITIVE]`, so their values can't be read back from the CLI or
     dashboard, only overwritten.
+  - **Verifying changes to these routes means testing against production.** There is no staging
+    Listmonk: local dev has no `LISTMONK_*` credentials and takes the `console.log` fallback, and
+    even a preview deploy talks to the live instance. So `/api/subscribe` and
+    `/api/subscribe/language` can only really be exercised against production, with a subscriber
+    known to exist.
+
+    That's why a standing test subscriber is kept on the ES list (a `+langtest` alias of the
+    owner's own address; get its uuid and numeric id from the Listmonk admin). Every failure this
+    flow has hit was invisible without one: a missing `subscribers:sql_query` returned a
+    plausible-looking `404 Subscriber not found`, and a missing `tx:send` let signups return
+    `200 {"ok":true}` while no welcome email was ever sent. Telling those apart from a genuinely
+    bad link needs a uuid/id pair you know is good. Verify with:
+
+    ```bash
+    curl -s -X POST https://plasticlover.mx/api/subscribe/language \
+      -H 'Content-Type: application/json' \
+      -d '{"uuid":"<uuid>","id":<id>,"locale":"en"}'
+    ```
+
+    `200 {"ok":true}` is a real pass — check the admin to confirm the lists actually moved. `404`
+    means the link was rejected (bad uuid/id pair, or no such subscriber); `502` means Listmonk
+    refused us, which in practice means a permission regression. Switch back to `"es"` afterwards
+    so the record ends where it started. The trade-off of keeping it: it's a live subscriber, so
+    it receives real campaigns and shows up in campaign analytics — name it something obviously
+    non-real so it isn't mistaken for a fan later.
 - **Performance**: a Lighthouse audit (production build, standard mobile throttling — the same
   profile PageSpeed Insights uses) found Total Blocking Time is already ~0ms on every route
   tested — no long tasks, lean per-page JS, and the video modals (`ReleasePlayer`,
