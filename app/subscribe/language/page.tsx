@@ -32,8 +32,9 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function SubscribeLanguagePage({ searchParams }: Props) {
   const locale = await getServerLocale();
   const dict = getDictionary(locale);
-  const { u } = await searchParams;
+  const { u, id } = await searchParams;
   const uuid = typeof u === "string" ? u : null;
+  const subscriberId = typeof id === "string" ? id : null;
 
   return (
     <div className={styles.page}>
@@ -44,7 +45,7 @@ export default async function SubscribeLanguagePage({ searchParams }: Props) {
         className={styles.content}
         style={{ animation: "plFadeUp 0.7s cubic-bezier(0.2,0.8,0.2,1) both" }}
       >
-        <LanguagePreferenceForm uuid={uuid} />
+        <LanguagePreferenceForm uuid={uuid} subscriberId={subscriberId} />
       </main>
       <Footer locale={locale} />
     </div>

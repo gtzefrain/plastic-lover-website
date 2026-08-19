@@ -22,9 +22,13 @@ const TX_TEMPLATE_ID_BY_LOCALE: Record<Locale, string | undefined> = {
   es: LISTMONK_TX_TEMPLATE_ID_ES,
 };
 
-async function sendWelcomeEmail(name: string, email: string, locale: Locale) {
+// Returns whether a welcome email is actually on its way, so the form doesn't tell
+// someone to check an inbox nothing was sent to. `POST /api/tx` needs the `tx:send`
+// permission on the Listmonk API user — when that's missing this 403s, and the signup
+// itself still succeeds, so this is the only signal that anything went wrong.
+async function sendWelcomeEmail(name: string, email: string, locale: Locale): Promise<boolean> {
   const templateId = TX_TEMPLATE_ID_BY_LOCALE[locale];
-  if (!templateId) return;
+  if (!templateId) return false;
 
   const res = await fetch(`${LISTMONK_URL}/api/tx`, {
     method: "POST",
@@ -41,7 +45,10 @@ async function sendWelcomeEmail(name: string, email: string, locale: Locale) {
 
   if (!res.ok) {
     console.error("Listmonk welcome email failed:", res.status, await res.text());
+    return false;
   }
+
+  return true;
 }
 
 export async function POST(request: Request) {
@@ -61,7 +68,7 @@ export async function POST(request: Request) {
   if (!LISTMONK_URL || !LISTMONK_API_USER || !LISTMONK_API_TOKEN || !listId) {
     // Listmonk instance isn't deployed yet — see AGENTS.md for status.
     console.log("New subscriber (Listmonk not configured):", name, email, subscriberLocale);
-    return NextResponse.json({ ok: true });
+    return NextResponse.json({ ok: true, welcomeEmail: false });
   }
 
   const res = await fetch(`${LISTMONK_URL}/api/subscribers`, {
@@ -83,14 +90,15 @@ export async function POST(request: Request) {
     const body = await res.text();
     if (res.status === 409) {
       // Subscriber already exists — from the visitor's perspective they're already
-      // on the list, so this isn't a failure.
-      return NextResponse.json({ ok: true });
+      // on the list, so this isn't a failure. No welcome email goes out for a repeat
+      // signup, so don't promise one.
+      return NextResponse.json({ ok: true, welcomeEmail: false });
     }
     console.error("Listmonk subscribe failed:", res.status, body);
     return NextResponse.json({ error: "Subscription failed" }, { status: 502 });
   }
 
-  await sendWelcomeEmail(name.trim(), email, subscriberLocale);
+  const welcomeEmail = await sendWelcomeEmail(name.trim(), email, subscriberLocale);
 
-  return NextResponse.json({ ok: true });
+  return NextResponse.json({ ok: true, welcomeEmail });
 }

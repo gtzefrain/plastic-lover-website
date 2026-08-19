@@ -87,16 +87,49 @@ npm run lint     # eslint (eslint-config-next, flat config)
   have them in `.env.local`).
   - **Newsletter language switch**: since a Listmonk subscriber can't change their own list from
     inside the newsletter, campaign emails should link to
-    `https://plasticlover.mx/subscribe/language?u={{ .Subscriber.UUID }}` (a merge tag Listmonk
-    exposes in every campaign template). `app/subscribe/language/page.tsx` renders a bilingual
-    EN/ES chooser (not driven by site locale, since the whole point is picking the *other*
-    language) via `components/LanguagePreferenceForm.tsx`, which posts `{ uuid, locale }` to
-    `POST /api/subscribe/language`. That route resolves the subscriber by UUID
-    (`GET /api/subscribers?query=subscribers.uuid='...'`, with the UUID regex-validated before
-    interpolation) and moves them between lists via two `PUT /api/subscribers/lists` calls
-    (add target list confirmed, remove the other). The UUID-based endpoint shapes come from
-    Listmonk's documented admin API and haven't been smoke-tested against the live instance yet —
-    verify with a real campaign send/test subscriber before trusting it in production.
+    `https://plasticlover.mx/subscribe/language?u={{ .Subscriber.UUID }}&id={{ .Subscriber.ID }}`
+    (both are merge tags Listmonk exposes in every campaign template).
+    `app/subscribe/language/page.tsx` renders a bilingual EN/ES chooser (not driven by site
+    locale, since the whole point is picking the *other* language) via
+    `components/LanguagePreferenceForm.tsx`, which posts `{ uuid, id, locale }` to
+    `POST /api/subscribe/language`. That route fetches `GET /api/subscribers/:id`, requires the
+    returned record's `uuid` to match the link's, and only then moves the subscriber between
+    lists via two `PUT /api/subscribers/lists` calls (add target list confirmed, remove the
+    other).
+  - **Why the link carries both an id and a UUID.** The obvious design — look the subscriber up
+    by UUID alone — needs `GET /api/subscribers?query=subscribers.uuid='...'`, and Listmonk
+    rejects that `query` parameter with a 403 unless the API user holds `subscribers:sql_query`.
+    That permission lets this public-facing key run arbitrary SQL expressions against the
+    subscribers table, so it is deliberately **not** granted (see the API-user note below). The
+    admin API otherwise addresses subscribers only by numeric id — UUIDs appear just on Listmonk's
+    public `/subscription/:campUUID/:subUUID` routes — so the link carries both: the id does the
+    lookup (only needs `subscribers:get`), and the unguessable UUID is what authorizes the change,
+    since a sequential integer id on its own would let anyone iterate ids and flip other people's
+    language. A mismatched pair and a nonexistent subscriber return the same 404 on purpose, so
+    ids can't be probed. A Listmonk-side failure returns 502 instead, kept distinct from 404
+    because collapsing the two is what made an earlier permissions bug look like "subscriber not
+    found" for weeks. Note `{{ .Subscriber.ID }}` is **not** in Listmonk's templating docs (that
+    table lists a subset) — it works because `models.Subscriber` embeds `Base`, which carries the
+    exported `ID int`, and Go templates promote embedded fields. Don't drop it from the link
+    because the docs page doesn't mention it.
+  - **The `subscribe-api` Listmonk user is intentionally minimal**: `subscribers:get` +
+    `subscribers:manage`, plus view/manage on lists 4 (EN) and 5 (ES). Anything the site needs
+    beyond that has to be designed around, not granted. `POST /api/tx` (the welcome email in
+    `app/api/subscribe/route.ts`) is the one call that genuinely needs a permission outside that
+    set — `tx:send` — so it has to stay granted for welcome emails to work at all. It used to fail
+    silently: the signup still succeeded, `sendWelcomeEmail` logged and swallowed the error, and
+    the form still told people to check an inbox nothing was sent to. Now `sendWelcomeEmail`
+    returns whether the send actually happened, `POST /api/subscribe` passes it back as
+    `welcomeEmail`, and `MailingListForm` falls back to the `joinedNoEmail` copy ("YOU'RE ON THE
+    LIST", no inbox promise) whenever it's false — which also covers repeat signups (Listmonk 409)
+    and local dev, neither of which sends anything.
+  - **Preview deployments can't send welcome emails.** `LISTMONK_TX_TEMPLATE_ID_EN`/`_ES` are set
+    on Vercel Production only; the list IDs and credentials exist on both. So a preview deploy
+    exercises signup and the language switch fully, but `sendWelcomeEmail` returns false and the
+    form shows the no-inbox copy. Verify welcome emails on production, or add the two template
+    vars to Preview. Note Vercel marks all these vars *Sensitive*, which makes them write-only —
+    `vercel env pull` yields `[SENSITIVE]`, so their values can't be read back from the CLI or
+    dashboard, only overwritten.
 - **Performance**: a Lighthouse audit (production build, standard mobile throttling — the same
   profile PageSpeed Insights uses) found Total Blocking Time is already ~0ms on every route
   tested — no long tasks, lean per-page JS, and the video modals (`ReleasePlayer`,

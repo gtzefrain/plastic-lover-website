@@ -10,9 +10,10 @@ const LIST_ID_BY_LOCALE: Record<Locale, string | undefined> = {
 };
 
 // Matches the subscriber UUID Listmonk exposes to campaign templates as
-// {{ .Subscriber.UUID }} — validating the shape lets us interpolate it into the
-// admin API's SQL `query` filter below without risking injection.
+// {{ .Subscriber.UUID }}.
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+type Lookup = { ok: true; id: number } | { ok: false; reason: "not-found" | "upstream" };
 
 function authHeaders() {
   return {
@@ -21,18 +22,44 @@ function authHeaders() {
   };
 }
 
-async function findSubscriberId(uuid: string): Promise<number | null> {
-  const res = await fetch(
-    `${LISTMONK_URL}/api/subscribers?query=${encodeURIComponent(`subscribers.uuid='${uuid}'`)}`,
-    { headers: authHeaders() },
-  );
+// Listmonk's admin API addresses subscribers by numeric id only — subscriber UUIDs
+// appear solely on its *public* /subscription/:campUUID/:subUUID routes. Resolving a
+// UUID through the admin API would mean `GET /api/subscribers?query=<SQL>`, and that
+// endpoint rejects the `query` parameter unless the API user holds
+// `subscribers:sql_query` — a permission that lets this public-facing key evaluate
+// arbitrary SQL against the subscribers table, which we deliberately don't grant.
+//
+// So the campaign link carries both values (`?u=<uuid>&id=<id>`): we fetch by id,
+// which only needs `subscribers:get`, then require the record's own uuid to match
+// before touching any list. The id alone is a guessable sequential integer — it's the
+// unguessable UUID that actually authorizes the change.
+async function fetchSubscriber(id: number, uuid: string): Promise<Lookup> {
+  const res = await fetch(`${LISTMONK_URL}/api/subscribers/${id}`, { headers: authHeaders() });
+
+  if (res.status === 404) return { ok: false, reason: "not-found" };
   if (!res.ok) {
+    // A 403 here means the API user lost `subscribers:get`; anything else is Listmonk
+    // being unreachable. Either way it's our problem, not a bad link — keep it
+    // distinguishable from not-found so it surfaces as a 502 rather than silently
+    // looking like a subscriber who doesn't exist.
     console.error("Listmonk subscriber lookup failed:", res.status, await res.text());
-    return null;
+    return { ok: false, reason: "upstream" };
   }
-  const body = await res.json();
-  const id = body?.data?.results?.[0]?.id;
-  return typeof id === "number" ? id : null;
+
+  const record = (await res.json())?.data;
+  if (typeof record?.id !== "number" || typeof record?.uuid !== "string") {
+    console.error("Listmonk subscriber lookup returned an unexpected shape");
+    return { ok: false, reason: "upstream" };
+  }
+
+  // Postgres renders uuids lowercase; compare case-insensitively so a link that got
+  // upper-cased somewhere in transit still works.
+  if (record.uuid.toLowerCase() !== uuid.toLowerCase()) {
+    console.warn("Newsletter language link: id/uuid mismatch for subscriber", id);
+    return { ok: false, reason: "not-found" };
+  }
+
+  return { ok: true, id: record.id };
 }
 
 async function moveToList(subscriberId: number, addListId: number, removeListId: number | null) {
@@ -63,9 +90,13 @@ async function moveToList(subscriberId: number, addListId: number, removeListId:
 }
 
 export async function POST(request: Request) {
-  const { uuid, locale } = await request.json();
+  const { uuid, id, locale } = await request.json();
 
   if (typeof uuid !== "string" || !UUID_RE.test(uuid)) {
+    return NextResponse.json({ error: "Invalid link" }, { status: 400 });
+  }
+  const subscriberId = Number(id);
+  if (!Number.isInteger(subscriberId) || subscriberId <= 0) {
     return NextResponse.json({ error: "Invalid link" }, { status: 400 });
   }
   if (!isLocale(locale)) {
@@ -78,17 +109,21 @@ export async function POST(request: Request) {
 
   if (!LISTMONK_URL || !LISTMONK_API_USER || !LISTMONK_API_TOKEN || !targetListId) {
     // Listmonk instance isn't configured in this environment — see AGENTS.md for status.
-    console.log("Newsletter language change (Listmonk not configured):", uuid, locale);
+    console.log("Newsletter language change (Listmonk not configured):", subscriberId, uuid, locale);
     return NextResponse.json({ ok: true });
   }
 
-  const subscriberId = await findSubscriberId(uuid);
-  if (!subscriberId) {
-    return NextResponse.json({ error: "Subscriber not found" }, { status: 404 });
+  const lookup = await fetchSubscriber(subscriberId, uuid);
+  if (!lookup.ok) {
+    // A mismatched id/uuid pair and a genuinely missing subscriber deliberately return
+    // the same thing, so iterating ids can't be used to probe which ones exist.
+    return lookup.reason === "upstream"
+      ? NextResponse.json({ error: "Lookup failed" }, { status: 502 })
+      : NextResponse.json({ error: "Invalid link" }, { status: 404 });
   }
 
   try {
-    await moveToList(subscriberId, Number(targetListId), otherListId ? Number(otherListId) : null);
+    await moveToList(lookup.id, Number(targetListId), otherListId ? Number(otherListId) : null);
   } catch (err) {
     console.error("Listmonk language update failed:", err);
     return NextResponse.json({ error: "Update failed" }, { status: 502 });

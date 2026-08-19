@@ -32,8 +32,10 @@ build (e.g. for `capture/`, see its README).
   from `MailingListForm`'s `locale` prop); the route maps it to a per-language Listmonk list via
   `LISTMONK_LIST_ID_EN` / `LISTMONK_LIST_ID_ES`, falling back to `LISTMONK_LIST_ID`.
   `app/subscribe/language/page.tsx` + `app/api/subscribe/language/route.ts` let a subscriber move
-  between the EN/ES lists via a `?u=<uuid>` link meant for campaign emails — see README for the
-  full flow.
+  between the EN/ES lists via a `?u=<uuid>&id=<id>` link meant for campaign emails. Both params are
+  required: the id does the lookup and the uuid authorizes it, because the Listmonk API user
+  deliberately lacks `subscribers:sql_query` and so can't resolve a UUID on its own — see README
+  for the full reasoning before "simplifying" it back to a UUID-only lookup.
 - `app/page.tsx` is a server component that reads the `pl_hero_seen` cookie and hands off to
   `components/HomeClient.tsx` (client component) to decide whether to play or skip the hero
   entrance animation.
