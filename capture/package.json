@@ -6,6 +6,7 @@
   "scripts": {
     "capture": "node capture.js",
     "capture:url-cta": "node capture-url-cta.js",
+    "capture:las-olas": "node capture-las-olas.js",
     "midi": "node generate-midi.js"
   },
   "dependencies": {
