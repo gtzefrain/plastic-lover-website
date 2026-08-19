@@ -25,12 +25,15 @@ build (e.g. for `capture/`, see its README).
   `subscribe`), plus `app/api/subscribe/route.ts` (POST, validates an email and posts it to a
   self-hosted [Listmonk](https://listmonk.app) instance via `LISTMONK_URL`,
   `LISTMONK_API_USER`, `LISTMONK_API_TOKEN` env vars — falls back to `console.log` when those
-  aren't set. **Listmonk itself is not deployed/self-hosted yet**; that's still TODO, so the env
-  vars are unset in every environment for now). The request body includes the subscriber's
-  `locale` (`"en" | "es"`, from `MailingListForm`'s `locale` prop); the route maps it to a
-  per-language Listmonk list via `LISTMONK_LIST_ID_EN` / `LISTMONK_LIST_ID_ES`, falling back to
-  `LISTMONK_LIST_ID` for an unset/unrecognized locale — set that as a default list, or set both
-  per-language vars, when Listmonk is finally deployed.
+  aren't set, which is currently every local dev environment since they're only in Vercel
+  Production/Preview). **Listmonk is live** at `https://list.plasticlover.mx` (deployed 2026-07-21;
+  see `README.md`'s mailing-list section) — treat it as a real production system with real
+  subscriber data, not a stub. The request body includes the subscriber's `locale` (`"en" | "es"`,
+  from `MailingListForm`'s `locale` prop); the route maps it to a per-language Listmonk list via
+  `LISTMONK_LIST_ID_EN` / `LISTMONK_LIST_ID_ES`, falling back to `LISTMONK_LIST_ID`.
+  `app/subscribe/language/page.tsx` + `app/api/subscribe/language/route.ts` let a subscriber move
+  between the EN/ES lists via a `?u=<uuid>` link meant for campaign emails — see README for the
+  full flow.
 - `app/page.tsx` is a server component that reads the `pl_hero_seen` cookie and hands off to
   `components/HomeClient.tsx` (client component) to decide whether to play or skip the hero
   entrance animation.

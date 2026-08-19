@@ -1,7 +1,8 @@
 # Plastic Lover
 
 Marketing site for the band Plastic Lover — a Next.js App Router site with an animated hero
-entrance, tour dates, releases, and a mailing-list signup.
+entrance, tour dates, releases, and a mailing-list signup backed by a live, self-hosted Listmonk
+instance (not a stub — see the `/api/subscribe` row in the route table below).
 
 ## Stack
 
@@ -31,9 +32,11 @@ npm run lint     # eslint (eslint-config-next, flat config)
 | `/store`      | `app/store/page.tsx`         | `PageShell` + `CardGrid`.                           |
 | `/contact`    | `app/contact/page.tsx`       | `PageShell` + `RowList`.                            |
 | `/subscribe`  | `app/subscribe/page.tsx`     | Standalone mailing-list page (nav + form + footer). |
+| `/subscribe/language` | `app/subscribe/language/page.tsx` | Newsletter language-switch page, linked from campaign emails (`?u=<subscriber uuid>`). Bilingual EN/ES chooser — see below. |
 | `/press/[slug]` | `app/press/[slug]/page.tsx` | Electronic press kit for one release. Shows the minimal `PressNav` (logo + language selector) by default; full `SiteNav`/`Footer` only with `?site=1`. Data in `lib/press.ts`, joined to `lib/releases.ts` by `slug`. |
 | `/press/photos` | `app/press/photos/page.tsx` | Shared press-photo library, grouped by category — not tied to one release. Same `PressNav`/`?site=1` chrome rule as above. Data in `lib/press.ts`'s `PRESS_PHOTOS`. |
-| `POST /api/subscribe` | `app/api/subscribe/route.ts` | Validates the email and logs it. **Not wired up to a real provider yet** — see below. |
+| `POST /api/subscribe` | `app/api/subscribe/route.ts` | Validates the email, creates/enrolls the subscriber in Listmonk. Live in production — see below. |
+| `POST /api/subscribe/language` | `app/api/subscribe/language/route.ts` | Moves a subscriber between the EN/ES Listmonk lists by UUID. See below. |
 
 ## Architecture
 
@@ -77,9 +80,23 @@ npm run lint     # eslint (eslint-config-next, flat config)
   "PL" monogram art (produced once with `sharp`'s `.trim()`, not regenerated at build time) — used
   on every page, homepage included; there's no separate text wordmark anymore.
   `components/PressNav.tsx` (see Press kits below) renders the same image for its own bar.
-- **Mailing list**: `components/MailingListForm.tsx` posts `{ email }` to `/api/subscribe`. The
-  route currently only validates and `console.log`s the address — wiring it up to a real provider
-  (Mailchimp, Klaviyo, etc.) is a known TODO (see the comment in `app/api/subscribe/route.ts`).
+- **Mailing list**: `components/MailingListForm.tsx` posts `{ name, email, locale }` to
+  `/api/subscribe`, which enrolls the subscriber in a self-hosted Listmonk instance
+  (`https://list.plasticlover.mx`, live as of 2026-07-21) on the EN or ES list per `locale`. Falls
+  back to `console.log` when the `LISTMONK_*` env vars aren't set (e.g. local dev, which doesn't
+  have them in `.env.local`).
+  - **Newsletter language switch**: since a Listmonk subscriber can't change their own list from
+    inside the newsletter, campaign emails should link to
+    `https://plasticlover.mx/subscribe/language?u={{ .Subscriber.UUID }}` (a merge tag Listmonk
+    exposes in every campaign template). `app/subscribe/language/page.tsx` renders a bilingual
+    EN/ES chooser (not driven by site locale, since the whole point is picking the *other*
+    language) via `components/LanguagePreferenceForm.tsx`, which posts `{ uuid, locale }` to
+    `POST /api/subscribe/language`. That route resolves the subscriber by UUID
+    (`GET /api/subscribers?query=subscribers.uuid='...'`, with the UUID regex-validated before
+    interpolation) and moves them between lists via two `PUT /api/subscribers/lists` calls
+    (add target list confirmed, remove the other). The UUID-based endpoint shapes come from
+    Listmonk's documented admin API and haven't been smoke-tested against the live instance yet —
+    verify with a real campaign send/test subscriber before trusting it in production.
 - **Performance**: a Lighthouse audit (production build, standard mobile throttling — the same
   profile PageSpeed Insights uses) found Total Blocking Time is already ~0ms on every route
   tested — no long tasks, lean per-page JS, and the video modals (`ReleasePlayer`,

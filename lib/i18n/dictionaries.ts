@@ -103,6 +103,11 @@ type Dictionary = {
       description: string;
       screenLabel: string;
     };
+    subscribeLanguage: {
+      title: string;
+      description: string;
+      screenLabel: string;
+    };
     lasOlas: {
       title: string;
       description: string;
@@ -233,6 +238,11 @@ const dictionaries: Record<Locale, Dictionary> = {
         description: "Join the Plastic Lover mailing list for new singles, tour dates, and secret shows.",
         screenLabel: "Subscribe",
       },
+      subscribeLanguage: {
+        title: "Newsletter language — Plastic Lover",
+        description: "Change which language you get the Plastic Lover newsletter in.",
+        screenLabel: "Newsletter language",
+      },
       lasOlas: {
         title: "Las Olas — Plastic Lover",
         description: "The new single — August 20. Tap to reveal.",
@@ -360,6 +370,11 @@ const dictionaries: Record<Locale, Dictionary> = {
         title: "Suscríbete — Plastic Lover",
         description: "Únete a la lista de correo de Plastic Lover: nuevos sencillos, fechas y shows secretos.",
         screenLabel: "Suscribirse",
+      },
+      subscribeLanguage: {
+        title: "Idioma del boletín — Plastic Lover",
+        description: "Cambia el idioma en el que recibes el boletín de Plastic Lover.",
+        screenLabel: "Idioma del boletín",
       },
       lasOlas: {
         title: "Las Olas — Plastic Lover",

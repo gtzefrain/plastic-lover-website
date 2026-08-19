@@ -1,0 +1,22 @@
+.page {
+  background: var(--pl-bg);
+  font-family: var(--pl-font-display);
+  color: var(--pl-primary);
+  height: 100vh;
+  height: 100dvh;
+  box-sizing: border-box;
+  padding: 70px 0 64px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0 24px;
+}
