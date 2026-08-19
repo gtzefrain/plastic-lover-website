@@ -16,6 +16,8 @@ export default function MailingListForm({ locale = "en", headingLevel = "h2" }: 
   const [joined, setJoined] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [failed, setFailed] = useState(false);
+  // False unless Listmonk confirmed the welcome email went out — see the API route.
+  const [welcomeEmailSent, setWelcomeEmailSent] = useState(false);
   const dict = getDictionary(locale);
   const Headline = headingLevel;
 
@@ -31,6 +33,8 @@ export default function MailingListForm({ locale = "en", headingLevel = "h2" }: 
         body: JSON.stringify({ name, email, locale }),
       });
       if (!res.ok) throw new Error("Subscription failed");
+      const body = await res.json().catch(() => ({}));
+      setWelcomeEmailSent(body?.welcomeEmail === true);
       setJoined(true);
     } catch {
       setFailed(true);
@@ -81,7 +85,7 @@ export default function MailingListForm({ locale = "en", headingLevel = "h2" }: 
           </form>
         ) : (
           <div className={styles.joined} role="status">
-            {dict.mailingList.joined}
+            {welcomeEmailSent ? dict.mailingList.joined : dict.mailingList.joinedNoEmail}
           </div>
         )}
       </div>

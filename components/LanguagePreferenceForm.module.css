@@ -67,6 +67,16 @@
   margin: 20px 0 0;
 }
 
+/* The EN and ES lines are separate <p>s so they stack instead of reading as
+   one run-on sentence — reset the UA margin and space them by hand. */
+.error p {
+  margin: 0;
+}
+
+.error p + p {
+  margin-top: 6px;
+}
+
 .backLink {
   display: inline-block;
   margin-top: 32px;

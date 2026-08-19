@@ -6,6 +6,9 @@ import styles from "./LanguagePreferenceForm.module.css";
 
 type LanguagePreferenceFormProps = {
   uuid: string | null;
+  // Listmonk's admin API only looks subscribers up by numeric id; the uuid is what
+  // proves the link is really theirs. The campaign link carries both — see the route.
+  subscriberId: string | null;
 };
 
 const OPTIONS: { locale: Locale; label: string; confirmed: string }[] = [
@@ -15,19 +18,23 @@ const OPTIONS: { locale: Locale; label: string; confirmed: string }[] = [
 
 type Status = "idle" | "saving" | "done" | "error";
 
-export default function LanguagePreferenceForm({ uuid }: LanguagePreferenceFormProps) {
+export default function LanguagePreferenceForm({
+  uuid,
+  subscriberId,
+}: LanguagePreferenceFormProps) {
   const [status, setStatus] = useState<Status>("idle");
   const [chosen, setChosen] = useState<Locale | null>(null);
+  const isLinkComplete = Boolean(uuid && subscriberId);
 
   const onChoose = async (locale: Locale) => {
-    if (!uuid || status === "saving") return;
+    if (!isLinkComplete || status === "saving") return;
     setChosen(locale);
     setStatus("saving");
     try {
       const res = await fetch("/api/subscribe/language", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ uuid, locale }),
+        body: JSON.stringify({ uuid, id: subscriberId, locale }),
       });
       if (!res.ok) throw new Error("Update failed");
       setStatus("done");
@@ -44,7 +51,7 @@ export default function LanguagePreferenceForm({ uuid }: LanguagePreferenceFormP
         <span lang="es">Elige el idioma de tu boletín</span>
       </h1>
 
-      {!uuid ? (
+      {!isLinkComplete ? (
         <>
           <p className={styles.message}>
             This link is missing information — please use the link from your newsletter email.
@@ -74,10 +81,10 @@ export default function LanguagePreferenceForm({ uuid }: LanguagePreferenceFormP
             ))}
           </div>
           {status === "error" && (
-            <p className={styles.error} role="alert">
-              Something went wrong. Please try again.{" "}
-              <span lang="es">Algo salió mal. Inténtalo de nuevo.</span>
-            </p>
+            <div className={styles.error} role="alert">
+              <p>Something went wrong. Please try again.</p>
+              <p lang="es">Algo salió mal. Inténtalo de nuevo.</p>
+            </div>
           )}
         </>
       )}

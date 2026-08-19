@@ -40,6 +40,7 @@ type Dictionary = {
     emailPlaceholder: string;
     submit: string;
     joined: string;
+    joinedNoEmail: string;
     error: string;
     footnote: string;
   };
@@ -175,6 +176,7 @@ const dictionaries: Record<Locale, Dictionary> = {
       emailPlaceholder: "your@email.com",
       submit: "JOIN THE LIST",
       joined: "YOU'RE ON THE LIST. CHECK YOUR INBOX",
+      joinedNoEmail: "YOU'RE ON THE LIST",
       error: "SOMETHING WENT WRONG. PLEASE TRY AGAIN.",
       footnote: "NO SPAM. UNSUBSCRIBE ANYTIME.",
     },
@@ -308,6 +310,7 @@ const dictionaries: Record<Locale, Dictionary> = {
       emailPlaceholder: "tu@correo.com",
       submit: "UNIRSE A LA LISTA",
       joined: "YA ESTÁS EN LA LISTA. REVISA TU BANDEJA",
+      joinedNoEmail: "YA ESTÁS EN LA LISTA",
       error: "ALGO SALIÓ MAL. INTÉNTALO DE NUEVO.",
       footnote: "SIN SPAM. CANCELA CUANDO QUIERAS.",
     },
