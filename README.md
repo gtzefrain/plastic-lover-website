@@ -106,7 +106,8 @@ npm run lint     # eslint (eslint-config-next, flat config)
     lookup (only needs `subscribers:get`), and the unguessable UUID is what authorizes the change,
     since a sequential integer id on its own would let anyone iterate ids and flip other people's
     language. A mismatched pair and a nonexistent subscriber return the same 404 on purpose, so
-    ids can't be probed. A Listmonk-side failure returns 502 instead, kept distinct from 404
+    ids can't be probed — note Listmonk reports a missing subscriber id as **400**, not 404, so
+    the route treats any non-403 4xx as not-found. A Listmonk-side failure returns 502 instead, kept distinct from 404
     because collapsing the two is what made an earlier permissions bug look like "subscriber not
     found" for weeks. Note `{{ .Subscriber.ID }}` is **not** in Listmonk's templating docs (that
     table lists a subset) — it works because `models.Subscriber` embeds `Base`, which carries the

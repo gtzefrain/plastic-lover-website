@@ -36,12 +36,19 @@ function authHeaders() {
 async function fetchSubscriber(id: number, uuid: string): Promise<Lookup> {
   const res = await fetch(`${LISTMONK_URL}/api/subscribers/${id}`, { headers: authHeaders() });
 
-  if (res.status === 404) return { ok: false, reason: "not-found" };
+  // Listmonk answers a nonexistent subscriber id with 400, not 404 — its core layer
+  // raises StatusBadRequest for the empty result. Since we've already validated the id's
+  // shape ourselves, any 4xx other than 403 means "no such subscriber", and it has to map
+  // to the same not-found as a uuid mismatch: if a stale id were distinguishable from a
+  // wrong uuid, ids could be probed one at a time, which is exactly what returning one
+  // shared 404 is meant to prevent.
+  if (res.status >= 400 && res.status < 500 && res.status !== 403) {
+    return { ok: false, reason: "not-found" };
+  }
   if (!res.ok) {
-    // A 403 here means the API user lost `subscribers:get`; anything else is Listmonk
-    // being unreachable. Either way it's our problem, not a bad link — keep it
-    // distinguishable from not-found so it surfaces as a 502 rather than silently
-    // looking like a subscriber who doesn't exist.
+    // 403 means the API user lost `subscribers:get`; 5xx means Listmonk is unwell. Either
+    // way it's our problem, not a bad link — keep it distinguishable from not-found so it
+    // surfaces as a 502 rather than looking like a subscriber who doesn't exist.
     console.error("Listmonk subscriber lookup failed:", res.status, await res.text());
     return { ok: false, reason: "upstream" };
   }
