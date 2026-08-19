@@ -264,7 +264,7 @@ export default function LasOlas({ locale = "en" }: LasOlasProps) {
         </div>
       )}
 
-      {!isRevealed && effectiveClicks === 0 && (
+      {!isRevealed && (
         <div className={styles.tapHint}>
           <span className={styles.tapPulseWrap} aria-hidden="true">
             <span className={styles.tapDot} />
