@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/next";
+import SkipToFooter from "@/components/SkipToFooter";
 import { getDictionary } from "@/lib/i18n/dictionaries";
 import { getServerLocale } from "@/lib/i18n/locale";
 import { buildOpenGraph, buildTwitter, SITE_NAME, SITE_URL } from "@/lib/seo";
@@ -26,13 +27,15 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const locale = await getServerLocale();
+  const dict = getDictionary(locale);
 
   return (
     <html lang={locale}>
       <body>
         <a href="#main-content" className="skip-link">
-          Skip to content
+          {dict.nav.skipToContent}
         </a>
+        <SkipToFooter locale={locale} />
         {children}
         <Analytics />
       </body>

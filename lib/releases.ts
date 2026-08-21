@@ -22,22 +22,40 @@ export const RELEASES: Release[] = [
     slug: "las-olas",
     title: "Las Olas",
     artist: "Plastic Lover",
-    // Presave stage — release date confirmed by the artist as August 20, 2026.
+    // Out now — released August 20, 2026 (Deezer stamps it 2026-08-21 UTC).
     meta: "Single — 2026",
-    // Real single cover art (public/press/las-olas/cover-web.jpg). Must be an absolute URL —
-    // opengraph-image.tsx and twitter-image.tsx `fetch()` this directly and can't resolve a
-    // relative /public path. Deliberately NOT a plasticlover.mx URL: that self-references the
-    // site's own domain, which 404s during this very build (the new file only exists once the
-    // build that adds it has already deployed — a circular dependency that fails every time).
-    // Using GitHub's raw content CDN instead breaks that cycle. Swap for the real per-DSP CDN
-    // cover once the single is actually released.
-    cover: "https://raw.githubusercontent.com/gtzefrain/plastic-lover-website/main/public/press/las-olas/cover-web.jpg",
+    // Spotify's CDN cover, same source as the other released singles. (Before release this
+    // pointed at GitHub's raw content CDN for public/press/las-olas/cover-web.jpg, because
+    // opengraph-image.tsx / twitter-image.tsx `fetch()` this URL directly during the build and
+    // a plasticlover.mx self-reference 404s in the very build that adds the file. Any absolute
+    // URL that already exists works; the DSP CDN is the stable one now that the single is up.)
+    cover: "https://i.scdn.co/image/ab67616d0000b2735a48ec76ad23a3790b5cb653",
+    embed: {
+      provider: "youtube",
+      videoId: "M33BJUQeDCM",
+    },
     links: [
-      // Presave-only — same URL wired into components/LasOlas.tsx. Replace with real
-      // per-DSP links once the single is out.
+      // Real per-DSP links, replacing the old ditto.fm presave callback URL.
+      // Apple Music hadn't indexed the single yet on release day (2026-08-20) — add it here
+      // once it does.
+      { label: "Spotify", href: "https://open.spotify.com/album/3CsrhRC81pZMACzEzsVDVV" },
+      // Two separate YouTube destinations on purpose: the visualizer on the band's own channel
+      // (same video as `embed` above), and the auto-generated "Plastic Lover - Topic" track that
+      // the older releases link to as YouTube Music.
+      { label: "YouTube", href: "https://www.youtube.com/watch?v=M33BJUQeDCM" },
       {
-        label: "Presave (Spotify)",
-        href: "https://ditto.fm/las-olas-plastic-lover/presavecallback?context=pre_save&service=spotify&redirecturl&actionid&order=6a7a28054700001200d01b91&fpEnabled=false&user=Efra%C3%ADn%20Fernando%20Guti%C3%A9rrez&status=success&origin=presavecallback",
+        label: "YouTube Music",
+        href: "https://music.youtube.com/watch?v=-jGgpAOT_n8&list=OLAK5uy_lyuWY6WGj8-Kyc00-7TvY7RiTDrIDZmIc",
+      },
+      { label: "Deezer", href: "https://www.deezer.com/album/1024193601" },
+      // Bare tidal.com (not listen.tidal.com like the older entries) — it serves the album page
+      // directly with no redirect, and it's the form Tidal hands out when you share now.
+      { label: "Tidal", href: "https://tidal.com/album/541320226" },
+      // `fi-en`, not the `us-en` locale the older entries use: the US store 404s on this album
+      // (it isn't in that region's catalog yet), while the Finnish/English one serves it.
+      {
+        label: "Qobuz",
+        href: "https://www.qobuz.com/fi-en/album/las-olas-plastic-lover/fx62fnmaj8nas",
       },
     ],
   },

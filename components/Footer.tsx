@@ -16,6 +16,8 @@ export default function Footer({ onReplay, entranceDelay, locale = "en" }: Foote
 
   return (
     <footer
+      id="site-footer"
+      tabIndex={-1}
       className={entranceDelay ? `${styles.footer} ${styles.footerEntrance}` : styles.footer}
       style={
         entranceDelay

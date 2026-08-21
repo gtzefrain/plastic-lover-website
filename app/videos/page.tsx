@@ -19,8 +19,10 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-// Sourced from youtube.com/@myplasticlover, ordered by view count (most to least).
+// Sourced from youtube.com/@myplasticlover. The current single is pinned first; everything
+// below it is ordered by view count (most to least).
 const VIDEOS = [
+  { id: "M33BJUQeDCM", title: "Plastic Lover - Las Olas [Visualizer]", duration: "2:16" },
   { id: "1FgRCnTdwIo", title: "Plastic Lover - Visión [MV]", duration: "4:48" },
   { id: "iH14HLzseKU", title: "Plastic Lover - Detalles ft. Sam Vazquez [MV]", duration: "4:02" },
   { id: "cIzuD1r4vIQ", title: "Plastic Lover - Como Tú [Visualizer]", duration: "2:45" },

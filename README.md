@@ -58,6 +58,49 @@ npm run lint     # eslint (eslint-config-next, flat config)
   place rather than starting the entrance animation on images that haven't arrived. Below the
   860px breakpoint it preloads from a downsized `public/logo/mobile/` copy instead of the
   desktop originals.
+- **Hero copy on launch day (2026-08-20)**: the tagline and CTA were flipped from the pre-release
+  "new single coming soon / JOIN THE LIST → `/subscribe`" pair to "new single out now" with a
+  **LAS OLAS** button pointing at `/las-olas`, the interactive teaser scene. The hero therefore
+  sends people to the teaser and the promo section below it sends them to the streaming links —
+  two different destinations on purpose. The old dictionary key `home.listenNow` was renamed to
+  `home.heroCta` since it now holds a song title rather than a "listen" label.
+- **Las Olas streaming links on release day (2026-08-20)**: `lib/releases.ts`'s `las-olas`
+  `links` array was a single `Presave (Spotify)` entry pointing at a `ditto.fm` presave-callback
+  URL. Now that the single is live it holds real links: **Spotify**
+  (`open.spotify.com/album/3CsrhRC81pZMACzEzsVDVV`), **YouTube** (the visualizer `M33BJUQeDCM` on
+  the band's own channel — the same video as the entry's `embed`), **YouTube Music**
+  (`-jGgpAOT_n8`, the auto-generated "Plastic Lover - Topic" track, with its `OLAK5uy_…` album
+  playlist id — this is the one that matches what the older releases link to, and it's listed
+  *alongside* the visualizer rather than instead of it), **Deezer** (`album/1024193601`, found
+  via `api.deezer.com/search/album`) and **Tidal** (`tidal.com/album/541320226` — bare
+  `tidal.com`, which serves the album with no redirect, rather than the `listen.tidal.com` host
+  the older entries use) and **Qobuz** (`fi-en/album/las-olas-plastic-lover/fx62fnmaj8nas` —
+  note the `fi-en` locale rather than the `us-en` the older entries carry; the US store 404s on
+  this album because it isn't in that region's catalog). Only Apple Music still returned nothing
+  (the iTunes lookup for artist `1485651209` had no Las Olas row, and the ditto.fm smart link was
+  still showing "coming soon"), so it was left out rather than guessed at — add it to the array
+  once the store indexes the single. `components/LasOlas.tsx`'s reveal CTA already points at
+  `/releases/las-olas?site=1` and needs no change.
+- **New-single promo section** (the `pl-release` screen in `HomeClient.tsx`): full-height panel
+  directly below the hero — video frame on the left, kicker/headline/body/CTA on the right, copy
+  from `dict.home.release*`. It was commented out from July 2026 until the August release and was
+  restored on 2026-08-19 to front **Las Olas**. The frame plays the Las Olas visualizer
+  (`PROMO_VIDEO_ID` in `HomeClient.tsx`, also wired into the `/videos` grid and as the `las-olas`
+  entry's `embed` in `lib/releases.ts`), replacing the stock YouTube placeholder the section
+  originally shipped with. **The copy is written for launch day (2026-08-20), not the day it was
+  authored** — it says the single is out now and the CTA goes to
+  `/releases/las-olas?site=1`, so this is staged to deploy on release day rather than before it.
+  The `?site=1` matters: `/releases/[slug]` is a chrome-less smart link by default (built for
+  bio-links and ads), so an on-site button that omits the param strands the visitor on a page
+  with no nav or footer. Any link to a release page *from inside the site* should carry it — the
+  `/releases` grid already does. The grid is two-up above 820px and
+  stacked-and-centred below it — the breakpoint is written out explicitly in `page.module.css`
+  because the old `auto-fit` track list collapsed at an implicit ~805px, leaving nowhere to hang
+  the stacked styles, so the copy sat left-anchored on mobile while the hero and mailing-list
+  screens either side of it were centred. Restoring the section also gave
+  the hero's `ScrollArrow` its `pl-release` target back; the arrow that lands on the mailing list
+  now uses a `scrollToJoin` label instead of the stale "scroll to photos" one (the photo collage
+  it named is still disabled).
 - **Photo collage** (`components/PhotoCollage.tsx`): `lib/photoSets.ts` defines three sets of 8
   positioned photo placeholders that loop continuously and cross-fade on a 16s cycle, offset by a
   third of the cycle per set so the section is never empty.
@@ -137,10 +180,11 @@ npm run lint     # eslint (eslint-config-next, flat config)
   `VideoCardPlayer`) already use a click-to-load facade instead of an eager YouTube iframe. The
   routes that scored low were being dragged down by LCP from oversized images, not JS execution;
   see the `next/image` note below for the fix applied on the press routes. `lib/releases.ts`'s
-  `las-olas` `cover` still points at `raw.githubusercontent.com` (a ~1.6MB fetch from a
-  non-CDN host, ~10s LCP on `/releases/las-olas`) — that's a deliberate, documented placeholder
-  (see the comment at its definition) tied to the Aug 20 2026 release, not something to "fix" by
-  swapping hosts before then.
+  `las-olas` `cover` used to point at `raw.githubusercontent.com` (a ~1.6MB fetch from a
+  non-CDN host, ~10s LCP on `/releases/las-olas`) as a deliberate pre-release placeholder; on
+  release day (2026-08-20) it was swapped for the Spotify CDN cover
+  (`i.scdn.co/image/ab67616d0000b273…`), matching every other released single, which retires
+  that LCP problem.
 - **Press kits** (`/press/[slug]`, `/press/photos`): `lib/press.ts` holds each release's
   `PressKit` (bio, quotes, credits, `heroImage`, `previewAudio`) joined to `lib/releases.ts` by
   `slug`, plus two band-level exports reused across every kit — `ARTIST_BIO` and `SOCIAL_LINKS`

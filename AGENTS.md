@@ -74,7 +74,16 @@ regressing back to div-soup:
   the active link; `Footer` is a `<footer>`. Card/row grids (`CardGrid.module.css`,
   `RowList.module.css`) render as `<ul>/<li>`, not `<div>` soup — the global `ul, ol` reset in
   `globals.css` keeps them unstyled by default, so no bullets/indentation to fight.
-  `app/layout.tsx` has a skip-to-content link targeting `#main-content`.
+  `app/layout.tsx` renders two skip links, both using the shared `.skip-link` class
+  (off-screen until `:focus`): a skip-to-content link targeting `#main-content`, and
+  `components/SkipToFooter.tsx` targeting the `<footer id="site-footer" tabIndex={-1}>` in
+  `Footer.tsx` (the `tabIndex={-1}` is what lets focus actually land on a non-focusable
+  landmark). The footer one is a client component because `Footer` is per-page and some routes
+  (`/las-olas`, `/releases/[slug]` and the press pages without `?site=1`) have none — it renders
+  by default so the link is in the server HTML on the pages that do, and removes itself after
+  mount when there's no `#site-footer`. Both link labels are localized (`nav.skipToContent`,
+  `nav.skipToFooter`) — the site's default locale is Spanish, so hardcoded English strings here
+  get announced under `<html lang="es">`.
   When converting a `<div>` to a heading or list element, add an explicit CSS reset
   (`margin`, `font-weight`) on that class so it doesn't pick up the browser's default heading/list
   styling.

@@ -59,7 +59,7 @@
 .releaseGrid {
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(340px, 100%), 1fr));
+  grid-template-columns: 1fr 1fr;
   gap: clamp(28px, 4vw, 64px);
   align-items: center;
 }
@@ -94,7 +94,10 @@
   letter-spacing: 0.22em;
 }
 
+/* Rendered as an <h2>, so reset the browser's default heading margin/weight. */
 .releaseHeadline {
+  margin: 0;
+  font-weight: 400;
   font-size: clamp(28px, 3.2vw, 46px);
   line-height: 1.15;
   text-wrap: pretty;
@@ -105,6 +108,24 @@
   line-height: 1.55;
   color: rgba(198, 12, 44, 0.8);
   text-wrap: pretty;
+}
+
+/* Two-up until the columns can no longer hold their ~340px minimum, then stack. This used to be
+   an `auto-fit` + `minmax()` track list, which collapsed on its own at ~805px — but that number
+   was implicit, so there was nowhere to hang the stacked-layout styles below. Made explicit so
+   the collapse point and the centering below share one breakpoint. */
+@media (max-width: 820px) {
+  .releaseGrid {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+
+  /* Stacked, the copy is a 480px block in a full-width column: left-anchored it reads as
+     off-centre beside the hero and mailing-list screens, which are both centred. */
+  .releaseCopy {
+    align-items: center;
+    text-align: center;
+  }
 }
 
 .join {

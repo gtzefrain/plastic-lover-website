@@ -15,6 +15,8 @@ type Dictionary = {
     openMenu: string;
     closeMenu: string;
     primaryLabel: string;
+    skipToContent: string;
+    skipToFooter: string;
   };
   languageSelector: {
     label: string;
@@ -25,13 +27,15 @@ type Dictionary = {
   };
   home: {
     tagline: string;
-    listenNow: string;
+    heroCta: string;
     scrollToRelease: string;
     scrollToPhotos: string;
-    latestRelease: string;
+    scrollToJoin: string;
+    releaseKicker: string;
     releaseHeadline: string;
     releaseBody: string;
-    streamEverywhere: string;
+    releaseCta: string;
+    releaseVideoTitle: string;
   };
   mailingList: {
     kicker: string;
@@ -115,7 +119,7 @@ type Dictionary = {
       hiddenHeading: string;
       kicker: string;
       tapHint: string;
-      presaveButton: string;
+      listenButton: string;
       revealedStatus: string;
       replayButton: string;
     };
@@ -151,6 +155,8 @@ const dictionaries: Record<Locale, Dictionary> = {
       openMenu: "Menu",
       closeMenu: "Close menu",
       primaryLabel: "Main navigation",
+      skipToContent: "Skip to content",
+      skipToFooter: "Skip to footer",
     },
     languageSelector: {
       label: "Language",
@@ -160,14 +166,16 @@ const dictionaries: Record<Locale, Dictionary> = {
       replay: "↻ REPLAY",
     },
     home: {
-      tagline: "New single coming soon. Be the first to hear it.",
-      listenNow: "JOIN THE LIST",
-      scrollToRelease: "Scroll to latest release",
+      tagline: "New single out now. Listen now!",
+      heroCta: "LAS OLAS",
+      scrollToRelease: "Scroll to the new single",
       scrollToPhotos: "Scroll to photos",
-      latestRelease: "LATEST RELEASE",
-      releaseHeadline: "Plastic Lover — the new single, out now.",
-      releaseBody: "Watch the official video, then take it with you — streaming on every platform.",
-      streamEverywhere: "STREAM EVERYWHERE",
+      scrollToJoin: "Scroll to the mailing list",
+      releaseKicker: "NEW SINGLE",
+      releaseHeadline: "Las Olas — the new single, out now.",
+      releaseBody: "Hit play on the visualizer, then take it with you — streaming on every platform.",
+      releaseCta: "STREAM IT NOW",
+      releaseVideoTitle: "Plastic Lover — Las Olas [Visualizer]",
     },
     mailingList: {
       kicker: "MAILING LIST",
@@ -247,12 +255,12 @@ const dictionaries: Record<Locale, Dictionary> = {
       },
       lasOlas: {
         title: "Las Olas — Plastic Lover",
-        description: "The new single — August 20. Tap to reveal.",
+        description: "The new single — out now. Tap to reveal.",
         hiddenHeading: "Las Olas — the new single",
-        kicker: "THE NEW SINGLE — AUGUST 20",
+        kicker: "🌊🌊🌊 — OUT NOW",
         tapHint: "TAP THE WATER",
-        presaveButton: "PRESAVE",
-        revealedStatus: "Las Olas revealed. Presave link available below.",
+        listenButton: "LISTEN NOW",
+        revealedStatus: "Las Olas revealed. Listen link available below.",
         replayButton: "REPLAY",
       },
       press: {
@@ -285,6 +293,8 @@ const dictionaries: Record<Locale, Dictionary> = {
       openMenu: "Menú",
       closeMenu: "Cerrar menú",
       primaryLabel: "Navegación principal",
+      skipToContent: "Saltar al contenido",
+      skipToFooter: "Saltar al pie de página",
     },
     languageSelector: {
       label: "Idioma",
@@ -294,14 +304,16 @@ const dictionaries: Record<Locale, Dictionary> = {
       replay: "↻ REPETIR",
     },
     home: {
-      tagline: "Nuevo sencillo muy pronto. Sé el primero en escucharlo.",
-      listenNow: "UNIRSE A LA LISTA",
-      scrollToRelease: "Ir al último lanzamiento",
+      tagline: "Nuevo sencillo ya disponible. Escúchalo.",
+      heroCta: "LAS OLAS",
+      scrollToRelease: "Ir al nuevo sencillo",
       scrollToPhotos: "Ir a las fotos",
-      latestRelease: "ÚLTIMO LANZAMIENTO",
-      releaseHeadline: "Plastic Lover — el nuevo sencillo, ya disponible.",
-      releaseBody: "Mira el video oficial y lleva la canción contigo — disponible en todas las plataformas.",
-      streamEverywhere: "ESCUCHAR EN TODAS PARTES",
+      scrollToJoin: "Ir a la lista de correo",
+      releaseKicker: "NUEVO SENCILLO",
+      releaseHeadline: "Las Olas — el nuevo sencillo, ya disponible.",
+      releaseBody: "Dale play al visualizer y llévate la canción contigo — en todas las plataformas.",
+      releaseCta: "ESCÚCHALO YA",
+      releaseVideoTitle: "Plastic Lover — Las Olas [Visualizer]",
     },
     mailingList: {
       kicker: "LISTA DE CORREO",
@@ -381,12 +393,12 @@ const dictionaries: Record<Locale, Dictionary> = {
       },
       lasOlas: {
         title: "Las Olas — Plastic Lover",
-        description: "El nuevo sencillo — 20 de agosto. Toca para revelar.",
+        description: "El nuevo sencillo — ya disponible. Toca para revelar.",
         hiddenHeading: "Las Olas — el nuevo sencillo",
-        kicker: "EL NUEVO SENCILLO — 20 DE AGOSTO",
+        kicker: "🌊🌊🌊 — YA DISPONIBLE",
         tapHint: "TOCA EL AGUA",
-        presaveButton: "PRESAVE",
-        revealedStatus: "Las Olas revelado. Enlace de presave disponible abajo.",
+        listenButton: "ESCUCHAR AHORA",
+        revealedStatus: "Las Olas revelado. Enlace para escuchar disponible abajo.",
         replayButton: "REPETIR",
       },
       press: {

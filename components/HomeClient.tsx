@@ -14,6 +14,10 @@ import { CTA_DELAY, NAV_DELAY, TAGLINE_DELAY } from "@/lib/heroChoreography";
 import { prefersReducedMotion } from "@/lib/motion";
 import styles from "@/app/page.module.css";
 
+// "Las Olas - Plastic Lover (Visualizer)" on youtube.com/@myplasticlover — the promo section's
+// video frame.
+const PROMO_VIDEO_ID = "M33BJUQeDCM";
+
 const HERO_SEEN_COOKIE = "pl_hero_seen";
 const HERO_SEEN_MAX_AGE = 60 * 60 * 24 * 365; // 1 year
 
@@ -71,39 +75,39 @@ export default function HomeClient({ heroSeen, locale }: HomeClientProps) {
               animationDelay: ctaDelay,
             }}
           >
-            <Button href="/subscribe">{dict.home.listenNow}</Button>
+            <Button href="/las-olas">{dict.home.heroCta}</Button>
           </div>
         </div>
 
         <ScrollArrow
           key={`arrow-${run}`}
-          targetId="pl-join"
-          label={dict.home.scrollToPhotos}
+          targetId="pl-release"
+          label={dict.home.scrollToRelease}
           fadeDelay={ctaDelay}
         />
       </div>
 
-      {/* TODO: Latest Release section hidden until the August release — re-enable then */}
-      {/* <div data-screen-label="Latest Release" id="pl-release" className={styles.release}>
+      <div data-screen-label="New Single" id="pl-release" className={styles.release}>
         <div className={styles.releaseGrid}>
           <div className={styles.videoFrame}>
             <iframe
-              src="https://www.youtube.com/embed/jNQXAC9IVRw"
-              title="Latest release video"
+              src={`https://www.youtube.com/embed/${PROMO_VIDEO_ID}`}
+              title={dict.home.releaseVideoTitle}
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
+              loading="lazy"
             />
           </div>
           <div className={styles.releaseCopy}>
-            <div className={styles.kicker}>{dict.home.latestRelease}</div>
-            <div className={styles.releaseHeadline}>{dict.home.releaseHeadline}</div>
+            <div className={styles.kicker}>{dict.home.releaseKicker}</div>
+            <h2 className={styles.releaseHeadline}>{dict.home.releaseHeadline}</h2>
             <div className={styles.releaseBody}>{dict.home.releaseBody}</div>
-            <Button href="/releases">{dict.home.streamEverywhere}</Button>
+            <Button href="/releases/las-olas?site=1">{dict.home.releaseCta}</Button>
           </div>
         </div>
 
-        <ScrollArrow targetId="pl-join" label={dict.home.scrollToPhotos} onWhite />
-      </div> */}
+        <ScrollArrow targetId="pl-join" label={dict.home.scrollToJoin} onWhite />
+      </div>
 
       {/* TODO: PhotoCollage section disabled pending a better photo selection — re-enable when ready */}
       {/* <PhotoCollage scrollTargetId="pl-join" /> */}

@@ -47,11 +47,11 @@ export const PRESS_KITS: PressKit[] = [
     content: {
       es: [
         "Las Olas fue escrita por Efraín Gutiérrez junto a [Sam Vazquez](https://www.instagram.com/vamsazquez/), [Ivan Ivengo](https://www.instagram.com/ivan.ivengo/) y [Omar Guajardo](https://www.instagram.com/omaar_guajardo/), y forma parte del próximo EP de Plastic Lover, producido en su totalidad por Omar Guajardo. Las voces y la batería fueron grabadas en [El Nido Records](https://www.instagram.com/elnidorecordsmx/), con [Carlos Reyna](https://www.instagram.com/creynar_/) en la batería. El arte y diseño de la portada son de Efraín Gutiérrez, con fotografía de Pablo Barrera.",
-        "El sencillo llega acompañado de un visualizer dirigido por [JJ Smartz](https://www.instagram.com/jjsmartz), disponible a partir del día de su lanzamiento, el 20 de agosto de 2026.",
+        "El sencillo llega acompañado de un visualizer dirigido por [JJ Smartz](https://www.instagram.com/jjsmartz), disponible desde su lanzamiento el 20 de agosto de 2026.",
       ],
       en: [
         "Las Olas was written by Efraín Gutiérrez alongside [Sam Vazquez](https://www.instagram.com/vamsazquez/), [Ivan Ivengo](https://www.instagram.com/ivan.ivengo/), and [Omar Guajardo](https://www.instagram.com/omaar_guajardo/), and is part of Plastic Lover's upcoming EP, produced entirely by Omar Guajardo. Vocals and drums were recorded at [El Nido Records](https://www.instagram.com/elnidorecordsmx/), with [Carlos Reyna](https://www.instagram.com/creynar_/) on drums. Cover art and design are by Efraín Gutiérrez, with photography by Pablo Barrera.",
-        "The single arrives with a visualizer directed by [JJ Smartz](https://www.instagram.com/jjsmartz), out starting on release day, August 20, 2026.",
+        "The single arrives with a visualizer directed by [JJ Smartz](https://www.instagram.com/jjsmartz), out since its release on August 20, 2026.",
       ],
     },
     // Real master audio, supplied by Efraín — public/press/las-olas/las-olas-master.mp3.

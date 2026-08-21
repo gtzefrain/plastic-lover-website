@@ -1,6 +1,8 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   useEffect,
   useRef,
@@ -16,8 +18,9 @@ import styles from "./LasOlas.module.css";
 const REVEAL_AT = 4;
 const REVEAL_HOLD_MS = 3000;
 const STORAGE_KEY = "pl-las-olas-revealed";
-const PRESAVE_URL =
-  "https://ditto.fm/las-olas-plastic-lover/presavecallback?context=pre_save&service=spotify&redirecturl&actionid&order=6a7a28054700001200d01b91&fpEnabled=false&user=Efra%C3%ADn%20Fernando%20Guti%C3%A9rrez&status=success&origin=presavecallback";
+// The single is out — the reveal now hands off to the on-site release page
+// (?site=1 keeps the nav/footer chrome, same as the /releases index links).
+const LISTEN_URL = "/releases/las-olas?site=1";
 
 type Bubble = {
   ox: string;
@@ -82,6 +85,7 @@ type LasOlasProps = {
 };
 
 export default function LasOlas({ locale = "en" }: LasOlasProps) {
+  const router = useRouter();
   const dict = getDictionary(locale).pages.lasOlas;
   const persistedRevealed = useSyncExternalStore(subscribeNoop, getPersistedRevealed, getServerRevealed);
   const [clicks, setClicks] = useState(0);
@@ -89,7 +93,7 @@ export default function LasOlas({ locale = "en" }: LasOlasProps) {
   const [ripples, setRipples] = useState<Ripple[]>([]);
   const revealedRef = useRef(false);
   const sceneRef = useRef<HTMLDivElement>(null);
-  const presaveLinkRef = useRef<HTMLAnchorElement>(null);
+  const listenLinkRef = useRef<HTMLAnchorElement>(null);
 
   const isRevealed = revealed || persistedRevealed;
   const effectiveClicks = persistedRevealed ? REVEAL_AT : clicks;
@@ -101,7 +105,7 @@ export default function LasOlas({ locale = "en" }: LasOlasProps) {
   const wasRevealed = useRef(isRevealed);
   useEffect(() => {
     if (isRevealed && !wasRevealed.current) {
-      presaveLinkRef.current?.focus();
+      listenLinkRef.current?.focus();
     } else if (!isRevealed && wasRevealed.current) {
       sceneRef.current?.focus();
     }
@@ -122,7 +126,7 @@ export default function LasOlas({ locale = "en" }: LasOlasProps) {
         window.localStorage.setItem(STORAGE_KEY, "1");
         setRevealed(true);
         setTimeout(() => {
-          window.open(PRESAVE_URL, "_blank");
+          router.push(LISTEN_URL);
         }, REVEAL_HOLD_MS);
       }
       return next;
@@ -248,16 +252,14 @@ export default function LasOlas({ locale = "en" }: LasOlasProps) {
           style={{ animation: "lasRise 1.2s cubic-bezier(0.25,0.8,0.3,1) 0.6s both" }}
         >
           <div className={styles.kicker}>{dict.kicker}</div>
-          <a
-            ref={presaveLinkRef}
-            href={PRESAVE_URL}
-            target="_blank"
-            rel="noopener"
+          <Link
+            ref={listenLinkRef}
+            href={LISTEN_URL}
             onClick={(e) => e.stopPropagation()}
-            className={styles.presaveButton}
+            className={styles.listenButton}
           >
-            {dict.presaveButton}
-          </a>
+            {dict.listenButton}
+          </Link>
           <button type="button" onClick={handleReplay} className={styles.replayButton}>
             {dict.replayButton}
           </button>

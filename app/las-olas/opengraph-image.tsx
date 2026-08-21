@@ -25,16 +25,21 @@ export default async function Image() {
         }}
       >
         <img src={logoSrc} width={980} height={551} alt="" />
-        <span
-          style={{
-            fontSize: 26,
-            fontFamily: "monospace",
-            letterSpacing: 6,
-            color: "rgba(198, 12, 44, 0.8)",
-          }}
-        >
-          EL NUEVO SENCILLO — 20 DE AGOSTO
-        </span>
+        {/* Emoji and label are separate spans: the label's wide letter-spacing
+            crowds the Twemoji glyphs into each other when they share a run. */}
+        <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+          <span style={{ fontSize: 34, letterSpacing: 4 }}>🌊🌊🌊</span>
+          <span
+            style={{
+              fontSize: 26,
+              fontFamily: "monospace",
+              letterSpacing: 6,
+              color: "rgba(198, 12, 44, 0.8)",
+            }}
+          >
+            — YA DISPONIBLE
+          </span>
+        </div>
       </div>
     ),
     { ...size },
