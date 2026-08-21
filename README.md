@@ -76,11 +76,14 @@ npm run lint     # eslint (eslint-config-next, flat config)
   `tidal.com`, which serves the album with no redirect, rather than the `listen.tidal.com` host
   the older entries use) and **Qobuz** (`fi-en/album/las-olas-plastic-lover/fx62fnmaj8nas` —
   note the `fi-en` locale rather than the `us-en` the older entries carry; the US store 404s on
-  this album because it isn't in that region's catalog). Only Apple Music still returned nothing
-  (the iTunes lookup for artist `1485651209` had no Las Olas row, and the ditto.fm smart link was
-  still showing "coming soon"), so it was left out rather than guessed at — add it to the array
-  once the store indexes the single. `components/LasOlas.tsx`'s reveal CTA already points at
-  `/releases/las-olas?site=1` and needs no change.
+  this album because it isn't in that region's catalog) and **Apple Music**
+  (`mx/album/las-olas-single/6788773483` — normalized to the `mx` storefront and the canonical
+  `-single` slug the other entries use, rather than the `us` share link with its `?i=` track
+  param; Apple redirects listeners to their own storefront anyway). Apple came last: it was
+  missing from every catalog lookup for hours after release, and even once the album id resolved,
+  the `itunes.apple.com` artist lookup for `1485651209` still didn't list it — that index lags, so
+  don't treat it as proof a release is absent. `components/LasOlas.tsx`'s reveal CTA already
+  points at `/releases/las-olas?site=1` and needs no change.
 - **New-single promo section** (the `pl-release` screen in `HomeClient.tsx`): full-height panel
   directly below the hero — video frame on the left, kicker/headline/body/CTA on the right, copy
   from `dict.home.release*`. It was commented out from July 2026 until the August release and was

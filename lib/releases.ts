@@ -36,9 +36,11 @@ export const RELEASES: Release[] = [
     },
     links: [
       // Real per-DSP links, replacing the old ditto.fm presave callback URL.
-      // Apple Music hadn't indexed the single yet on release day (2026-08-20) — add it here
-      // once it does.
       { label: "Spotify", href: "https://open.spotify.com/album/3CsrhRC81pZMACzEzsVDVV" },
+      {
+        label: "Apple Music",
+        href: "https://music.apple.com/mx/album/las-olas-single/6788773483",
+      },
       // Two separate YouTube destinations on purpose: the visualizer on the band's own channel
       // (same video as `embed` above), and the auto-generated "Plastic Lover - Topic" track that
       // the older releases link to as YouTube Music.
