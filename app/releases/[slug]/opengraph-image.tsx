@@ -12,7 +12,13 @@ export function generateStaticParams() {
 export default async function Image({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const release = getReleaseBySlug(slug);
-  const coverBuffer = release ? await fetch(release.cover).then((res) => res.arrayBuffer()) : null;
+  // A cover URL that 404s (e.g. a pre-release raw.githubusercontent.com cover not yet on `main`)
+  // renders the card without art instead of failing the whole build.
+  const coverBuffer = release
+    ? await fetch(release.cover)
+        .then((res) => (res.ok ? res.arrayBuffer() : null))
+        .catch(() => null)
+    : null;
 
   return new ImageResponse(
     (

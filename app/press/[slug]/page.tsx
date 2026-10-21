@@ -139,27 +139,33 @@ export default async function PressKitPage({ params, searchParams }: Props) {
         </section>
 
         {/* Section 2 (Content) — left: release text, right: image, two-column grid on desktop */}
-        <section className={styles.contentSection}>
-          <div className={styles.contentTextCol}>
-            {(locale === "es" ? kit.content?.es : kit.content?.en)?.map((paragraph, i) => (
-              <p key={i} className={styles.bio}>
-                {renderRichText(paragraph)}
-              </p>
-            ))}
-          </div>
-
-          <div className={styles.contentImageCol}>
-            <div className={styles.contentVideo}>
-              <iframe
-                src="https://www.youtube.com/embed/QfgRF2Kfsos"
-                title={`${release.title} video`}
-                allow="autoplay; encrypted-media; picture-in-picture"
-                allowFullScreen
-                className={styles.contentVideoFrame}
-              />
+        {(kit.content || kit.videoId) && (
+          <section
+            className={kit.videoId ? styles.contentSection : `${styles.contentSection} ${styles.contentSectionTextOnly}`}
+          >
+            <div className={styles.contentTextCol}>
+              {(locale === "es" ? kit.content?.es : kit.content?.en)?.map((paragraph, i) => (
+                <p key={i} className={styles.bio}>
+                  {renderRichText(paragraph)}
+                </p>
+              ))}
             </div>
-          </div>
-        </section>
+
+            {kit.videoId && (
+              <div className={styles.contentImageCol}>
+                <div className={styles.contentVideo}>
+                  <iframe
+                    src={`https://www.youtube.com/embed/${kit.videoId}`}
+                    title={`${release.title} video`}
+                    allow="autoplay; encrypted-media; picture-in-picture"
+                    allowFullScreen
+                    className={styles.contentVideoFrame}
+                  />
+                </div>
+              </div>
+            )}
+          </section>
+        )}
 
         {/* Section 3 (BIO) — left: bio text + social links, right: portrait image */}
         <section className={styles.bioSection}>
