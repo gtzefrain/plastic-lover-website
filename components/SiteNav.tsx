@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import LanguageSelector from "@/components/LanguageSelector";
 import { getDictionary, type Locale } from "@/lib/i18n/dictionaries";
-import { NAV_LINKS } from "@/lib/nav";
+import { NAV_LINKS, navLinkCurrent } from "@/lib/nav";
 import styles from "./SiteNav.module.css";
 
 type SiteNavProps = {
@@ -79,13 +79,13 @@ export default function SiteNav({ entranceDelay, locale = "en" }: SiteNavProps) 
 
         <ul className={styles.links}>
           {NAV_LINKS.map((lnk) => {
-            const isActive = pathname === lnk.href;
+            const current = navLinkCurrent(pathname, lnk.href);
             return (
               <li key={lnk.href}>
                 <Link
                   href={lnk.href}
-                  aria-current={isActive ? "page" : undefined}
-                  className={`${styles.link} ${isActive ? styles.linkActive : ""}`}
+                  aria-current={current}
+                  className={`${styles.link} ${current ? styles.linkActive : ""}`}
                 >
                   {dict.nav[lnk.key]}
                 </Link>
@@ -129,14 +129,14 @@ export default function SiteNav({ entranceDelay, locale = "en" }: SiteNavProps) 
           </div>
           <ul className={styles.drawerLinks}>
             {NAV_LINKS.map((lnk) => {
-              const isActive = pathname === lnk.href;
+              const current = navLinkCurrent(pathname, lnk.href);
               return (
                 <li key={lnk.href}>
                   <Link
                     href={lnk.href}
                     onClick={() => setMenuOpen(false)}
-                    aria-current={isActive ? "page" : undefined}
-                    className={`${styles.drawerLink} ${isActive ? styles.drawerLinkActive : ""}`}
+                    aria-current={current}
+                    className={`${styles.drawerLink} ${current ? styles.drawerLinkActive : ""}`}
                   >
                     {dict.nav[lnk.key]}
                   </Link>

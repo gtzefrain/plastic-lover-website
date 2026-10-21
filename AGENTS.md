@@ -70,8 +70,12 @@ regressing back to div-soup:
   exactly one `<main id="main-content">`. `PageShell` renders the kicker as an `<h1>` by default;
   pass `kickerAs="p"` when the page already has its own `<h1>` (see `lyrics/[slug]`, `live`).
   `MailingListForm` takes a `headingLevel` prop for the same reason.
-- `SiteNav` is a `<nav aria-label>` with real `<ul>/<li>` link lists and `aria-current="page"` on
-  the active link; `Footer` is a `<footer>`. Card/row grids (`CardGrid.module.css`,
+- `SiteNav` is a `<nav aria-label>` with real `<ul>/<li>` link lists and `aria-current` on the
+  active link, computed by `navLinkCurrent()` in `lib/nav.ts`: a nav link highlights on its own
+  page *and* on anything nested under it, so `/releases/[slug]` and `/lyrics/[slug]` still light
+  up their section (an exact match is `aria-current="page"`, an ancestor section is
+  `aria-current="true"`). Keep new nested routes under an existing nav href rather than
+  reintroducing an exact `pathname === href` check. `Footer` is a `<footer>`. Card/row grids (`CardGrid.module.css`,
   `RowList.module.css`) render as `<ul>/<li>`, not `<div>` soup — the global `ul, ol` reset in
   `globals.css` keeps them unstyled by default, so no bullets/indentation to fight.
   `app/layout.tsx` renders two skip links, both using the shared `.skip-link` class
