@@ -17,12 +17,21 @@
 
 .heroInner {
   flex: 1;
+  /* Lifts the hero content above HeroWaves, which is absolutely positioned and
+     would otherwise paint over this non-positioned block. */
+  position: relative;
+  z-index: 1;
   min-height: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 0 24px;
+  /* The extra bottom padding pulls the centred stack (logo, tagline, CTA) up
+     off the exact vertical middle by half its value — padding rather than a
+     transform so the block stays in normal flow. HeroWaves' `bottom` offset
+     lifts the sea by the same amount, so the waterline keeps its distance
+     below the CTA. */
+  padding: 0 24px 8vh;
 }
 
 .tagline {

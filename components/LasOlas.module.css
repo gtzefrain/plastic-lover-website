@@ -55,12 +55,6 @@
   height: 26%;
 }
 
-.waveSvg {
-  width: 50%;
-  height: 100%;
-  display: block;
-}
-
 .waveBodyA {
   flex: 1;
   background: #ffe0e4;

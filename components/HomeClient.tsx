@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Button from "@/components/Button";
 import Footer from "@/components/Footer";
 import HeroLogo from "@/components/HeroLogo";
+import HeroWaves from "@/components/HeroWaves";
 import MailingListForm from "@/components/MailingListForm";
 // TODO: re-enable once PhotoCollage is back (see below)
 // import PhotoCollage from "@/components/PhotoCollage";
@@ -53,6 +54,8 @@ export default function HomeClient({ heroSeen, locale }: HomeClientProps) {
 
       <main id="main-content">
         <div data-screen-label="Hero" className={styles.hero}>
+        <HeroWaves key={`waves-${run}`} entranceDelay={navDelay} />
+
         <div className={styles.heroInner}>
           <HeroLogo key={`hero-${run}-${heroPlaying}`} skipEntrance={!heroPlaying} />
 

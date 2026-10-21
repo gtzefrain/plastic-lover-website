@@ -12,6 +12,7 @@ import {
   type KeyboardEvent,
   type MouseEvent,
 } from "react";
+import WaveCrest, { CREST_PATH, CREST_PATH_B } from "@/components/WaveCrest";
 import { getDictionary, type Locale } from "@/lib/i18n/dictionaries";
 import styles from "./LasOlas.module.css";
 
@@ -54,11 +55,6 @@ function createRipple(x: number, y: number): Ripple {
   };
 }
 
-const CREST_PATH =
-  "M0,192C120,150 240,150 360,192C480,234 600,234 720,192C840,150 960,150 1080,192C1200,234 1320,234 1440,192";
-const CREST_PATH_B =
-  "M0,224C120,264 240,264 360,224C480,184 600,184 720,224C840,264 960,264 1080,224C1200,184 1320,184 1440,224";
-
 function subscribeNoop() {
   return () => {};
 }
@@ -69,15 +65,6 @@ function getPersistedRevealed() {
 
 function getServerRevealed() {
   return false;
-}
-
-function WaveSvg({ fill, fillOpacity, path, stroke, strokeWidth }: { fill: string; fillOpacity?: number; path: string; stroke: string; strokeWidth: number }) {
-  return (
-    <svg viewBox="0 0 1440 320" preserveAspectRatio="none" className={styles.waveSvg}>
-      <path fill={fill} fillOpacity={fillOpacity} d={`${path}L1440,320L0,320Z`} />
-      <path fill="none" stroke={stroke} strokeWidth={strokeWidth} d={path} />
-    </svg>
-  );
 }
 
 type LasOlasProps = {
@@ -195,16 +182,16 @@ export default function LasOlas({ locale = "en" }: LasOlasProps) {
 
       <div className={styles.waveLayer} style={{ top: waveTop }}>
         <div className={styles.waveCrestRow} style={{ animation: "lasWave 9s linear infinite" }}>
-          <WaveSvg fill="#FFE0E4" path={CREST_PATH} stroke="rgba(198,12,44,0.6)" strokeWidth={5} />
-          <WaveSvg fill="#FFE0E4" path={CREST_PATH} stroke="rgba(198,12,44,0.6)" strokeWidth={5} />
+          <WaveCrest fill="#FFE0E4" path={CREST_PATH} stroke="rgba(198,12,44,0.6)" strokeWidth={5} />
+          <WaveCrest fill="#FFE0E4" path={CREST_PATH} stroke="rgba(198,12,44,0.6)" strokeWidth={5} />
         </div>
         <div className={styles.waveBodyA} />
       </div>
 
       <div className={styles.waveLayer} style={{ top: waveTop2 }}>
         <div className={styles.waveCrestRow} style={{ animation: "lasWave 15s linear infinite reverse" }}>
-          <WaveSvg fill="#FFD1D7" fillOpacity={0.92} path={CREST_PATH_B} stroke="rgba(198,12,44,0.38)" strokeWidth={4} />
-          <WaveSvg fill="#FFD1D7" fillOpacity={0.92} path={CREST_PATH_B} stroke="rgba(198,12,44,0.38)" strokeWidth={4} />
+          <WaveCrest fill="#FFD1D7" fillOpacity={0.92} path={CREST_PATH_B} stroke="rgba(198,12,44,0.38)" strokeWidth={4} />
+          <WaveCrest fill="#FFD1D7" fillOpacity={0.92} path={CREST_PATH_B} stroke="rgba(198,12,44,0.38)" strokeWidth={4} />
         </div>
         <div className={styles.waveBodyB} />
       </div>

@@ -43,6 +43,13 @@ build (e.g. for `capture/`, see its README).
   used by every inner page) and two presentational CSS-module "kits" with no `.tsx` wrapper —
   `RowList.module.css` (list rows: live dates, lyrics, contact) and `CardGrid.module.css` (card
   grids: releases, store, videos) — imported directly by pages.
+- `components/HeroWaves.tsx` — the home hero's background sea, a muted restatement of the
+  finished `/las-olas` scene. It and `LasOlas.tsx` share the crest silhouettes via
+  `components/WaveCrest.tsx`; change the paths there, not in either scene. Its wave geometry is
+  fixed in px (a 1272×204 crest period) and it rides its own `plHeroWave` keyframe so the scale
+  and scroll speed are identical at every viewport width — don't "simplify" it back to the
+  viewport-relative `lasWave`/`200%` row that `/las-olas` uses. See README for that and for why
+  the sea is masked out at the bottom.
 - `lib/heroChoreography.ts` — scatter offsets/delays for the 12-layer hero logo
   (`components/HeroLogo.tsx`, one PNG per letter in `public/logo/`).
 - `lib/photoSets.ts` — positions/timings for the looping photo collage

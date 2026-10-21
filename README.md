@@ -46,6 +46,24 @@ npm run lint     # eslint (eslint-config-next, flat config)
   sets the cookie so repeat visits skip the intro). A "↻ REPLAY" control in the footer lets a
   visitor re-trigger the entrance via a `run` counter that re-mounts the animated pieces
   (`SiteNav`, `HeroLogo`, footer) with fresh `key`s.
+- **Hero waves** (`components/HeroWaves.tsx`): the home hero's first section carries a quiet
+  version of the settled `/las-olas` sea behind its content — the same two crest silhouettes
+  (`components/WaveCrest.tsx`, shared with `LasOlas.tsx` so the shape has one source of truth)
+  scrolling in opposite directions, but washed down to pale translucent pinks and masked out
+  toward the bottom of the section. The mask is the point: `.hero` clips at the section boundary,
+  so a solid sea would end in a hard pink band against the white release section below.
+  The wave is pinned to the proportions it has in a 1272px-wide window — one crest period is
+  always 1272px across and 204px tall — instead of stretching with the viewport, so the swell
+  can't get steep on a phone or flat on an ultrawide. That's why it animates on its own
+  `plHeroWave` keyframe (a fixed -2544px slide) rather than `/las-olas`' viewport-relative
+  `lasWave` (-50%): a fixed slide keeps the scroll speed at the same ~98px/s everywhere, and
+  leaves the tile count free — six tiles per layer, enough to stay wider than the viewport
+  through the whole slide up to 5088px. Only the sea's *height* is viewport-relative (40vh on
+  mobile, 48vh from 861px up, `SiteNav`'s breakpoint), and it has to stay clear of the fixed
+  204px crest band or the band eats the container and the water reads as a thin diagonal.
+  It fades/rises in on `NAV_DELAY` with the rest of the hero (0s when the entrance is skipped)
+  and is `aria-hidden` decoration; `.heroInner` carries `position: relative` + `z-index: 1` to
+  stay above it, and its bottom padding lifts the hero stack off the exact vertical middle.
 - **Hero entrance choreography** lives in `lib/heroChoreography.ts`: per-letter scatter offsets
   and stagger delays for the 12-layer logo (`components/HeroLogo.tsx`, one absolutely-positioned
   PNG per letter in `public/logo/`), plus the delay constants that stagger the nav, tagline, and
