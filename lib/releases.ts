@@ -19,6 +19,28 @@ export type Release = {
 
 export const RELEASES: Release[] = [
   {
+    slug: "seria-mas-facil-odiarte",
+    title: "Sería Más Fácil Odiarte",
+    // Co-written with Ivan Ivengo, but a Plastic Lover release — so main discography, no
+    // `collaboration` flag (unlike "hair down" / "Corriendo Hacia Ti", which are the other
+    // artist's releases).
+    artist: "Plastic Lover & Ivan Ivengo",
+    // Releases Friday, October 23, 2026.
+    meta: "Single — 2026",
+    // PRE-RELEASE placeholder, same approach Las Olas used before its release day: GitHub's raw
+    // content CDN for public/press/seria-mas-facil-odiarte/cover-web.jpg (1000px, ~180KB). Not a
+    // plasticlover.mx URL — opengraph-image.tsx fetches this during the build, and a self-reference
+    // 404s in the very build that adds the file. Swap for the Spotify CDN cover on release day
+    // (see README: raw.githubusercontent.com is slow, it was an LCP problem for Las Olas).
+    cover:
+      "https://raw.githubusercontent.com/gtzefrain/plastic-lover-website/main/public/press/seria-mas-facil-odiarte/cover-web.jpg",
+    // No `embed` yet — the video ID is still to come.
+    links: [
+      // PRE-RELEASE: ditto.fm presave landing page. Replace with real per-DSP links on release day.
+      { label: "Presave", href: "https://ditto.fm/seria-mas-facil-odiarte" },
+    ],
+  },
+  {
     slug: "las-olas",
     title: "Las Olas",
     artist: "Plastic Lover",

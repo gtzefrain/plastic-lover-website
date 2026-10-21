@@ -122,6 +122,11 @@
   align-items: start;
 }
 
+/* No video yet (PressKit.videoId omitted) — let the text take the full width */
+.contentSectionTextOnly {
+  grid-template-columns: 1fr;
+}
+
 @media (max-width: 720px) {
   .contentSection {
     grid-template-columns: 1fr;

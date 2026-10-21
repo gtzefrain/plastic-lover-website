@@ -230,6 +230,22 @@ npm run lint     # eslint (eslint-config-next, flat config)
   for the stream section's preview track — browsers defer loading its metadata until the user
   presses play, so a `0:00` duration before that is expected, not a bug.
 
+### Sería Más Fácil Odiarte — pre-release state (releases 2026-10-23)
+
+Added 2026-10-20 as a `RELEASES` entry (main discography: co-written with Ivan Ivengo but a
+Plastic Lover release, so no `collaboration` flag) plus a `PressKit`. Built ahead of release the
+same way Las Olas was, so it needs a release-day pass:
+
+- `links` is a single ditto.fm **Presave** link — replace with real per-DSP links.
+- `cover` points at `raw.githubusercontent.com/.../public/press/seria-mas-facil-odiarte/cover-web.jpg`
+  (not plasticlover.mx, which 404s during the very build that adds the file). Swap for the
+  Spotify CDN cover — the raw GitHub host is slow (see the LCP note above). Until the file is on
+  `main`, that URL 404s; `opengraph-image.tsx` now checks `res.ok` and renders the card without
+  art instead of failing the whole build, which it previously would have.
+- No YouTube video yet: add `embed` on the release and `videoId` on the press kit when it exists.
+  `PressKit.videoId` is new — the press page used to hardcode one embed (`QfgRF2Kfsos`, the Las
+  Olas video) for every kit; now a kit without one renders its `content` full width.
+
 ### Las Olas press kit — known placeholders
 
 `lib/press.ts`'s `las-olas` `PressKit` ships with lorem ipsum for content nobody's supplied yet.
