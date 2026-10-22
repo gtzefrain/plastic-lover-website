@@ -43,35 +43,49 @@ npm run lint     # eslint (eslint-config-next, flat config)
 - **Home page** (`app/page.tsx` → `components/HomeClient.tsx`): the server component checks
   for the `pl_hero_seen` cookie and passes `heroSeen` into the client component, which decides
   whether to play the full hero entrance animation or skip straight to the settled state (and
-  sets the cookie so repeat visits skip the intro). A "↻ REPLAY" control in the footer lets a
+  sets the cookie so repeat visits skip the intro). An icon-only ↻ replay button in the footer (the word "Replay"/"Repetir" is visually
+  hidden, kept as its accessible name and tooltip) lets a
   visitor re-trigger the entrance via a `run` counter that re-mounts the animated pieces
   (`SiteNav`, `HeroLogo`, footer) with fresh `key`s.
-- **Hero waves** (`components/HeroWaves.tsx`): the home hero's first section carries a quiet
-  version of the settled `/las-olas` sea behind its content — the same two crest silhouettes
-  (`components/WaveCrest.tsx`, shared with `LasOlas.tsx` so the shape has one source of truth)
-  scrolling in opposite directions, but washed down to pale translucent pinks and masked out
-  toward the bottom of the section. The mask is the point: `.hero` clips at the section boundary,
-  so a solid sea would end in a hard pink band against the white release section below.
-  The wave is pinned to the proportions it has in a 1272px-wide window — one crest period is
-  always 1272px across and 204px tall — instead of stretching with the viewport, so the swell
-  can't get steep on a phone or flat on an ultrawide. That's why it animates on its own
-  `plHeroWave` keyframe (a fixed -2544px slide) rather than `/las-olas`' viewport-relative
-  `lasWave` (-50%): a fixed slide keeps the scroll speed at the same ~98px/s everywhere, and
-  leaves the tile count free — six tiles per layer, enough to stay wider than the viewport
-  through the whole slide up to 5088px. Only the sea's *height* is viewport-relative (40vh on
-  mobile, 48vh from 861px up, `SiteNav`'s breakpoint), and it has to stay clear of the fixed
-  204px crest band or the band eats the container and the water reads as a thin diagonal.
-  It fades/rises in on `NAV_DELAY` with the rest of the hero (0s when the entrance is skipped)
-  and is `aria-hidden` decoration; `.heroInner` carries `position: relative` + `z-index: 1` to
-  stay above it, and its bottom padding lifts the hero stack off the exact vertical middle.
+- **Hero video** (`components/HeroVideo.tsx`): since 2026-10-21 the home hero fronts
+  **Sería Más Fácil Odiarte** — headline `aún siento algo por ti pero…`, CTA to
+  `/releases/seria-mas-facil-odiarte?site=1` — over a full-bleed looping clip from the song's
+  video. It replaced the `HeroWaves` sea (a muted `/las-olas` restatement; it's in git history
+  before this change if it's ever wanted back — `WaveCrest.tsx` still exists for `LasOlas.tsx`).
+  The headline keeps the old tagline's size (the user didn't want it enlarged). The headline and CTA are a lyric and the song title, so both locales carry the same Spanish
+  strings and `HomeClient` marks them `lang="es"` for screen readers on the English site.
+  The clip is 0:09–0:15 of `Seria mas facil odiarte - Resolve slowed 2_35 v2.mp4`, played forward
+  and then backward so it loops with no seam. The boomerang is baked into the file
+  (286 frames: 144 forward + the reverse with both endpoint frames dropped, so the turnarounds
+  don't hold a doubled frame). It's cropped of the source's pillarbox bars and downscaled to 1440px:
+  ```sh
+  ffmpeg -ss 9 -t 6 -i "<source>.mp4" -an -filter_complex \
+    "[0:v]crop=2820:2160:510:0,scale=1440:-2,setsar=1,split[f][r0];[r0]reverse,trim=start_frame=1:end_frame=143,setpts=PTS-STARTPTS[r];[f][r]concat=n=2:v=1[out]" \
+    -map "[out]" -c:v prores_ks -profile:v 1 boom.mov
+  # then: libx264 -crf 27 -movflags +faststart → public/home/seria-loop.mp4 (~0.9MB),
+  #       libvpx-vp9 -crf 40 → seria-loop.webm (~0.7MB), first frame → seria-loop-poster.jpg
+  ```
+  It ships as `<video>`, not a GIF: the GIF cut of the same loop was 12.5MB at 640px.
+  Reduced-motion visitors get no video at all, only the plain page background (not a still
+  frame; that was the user's call). The blanket reduced-motion CSS override can't pause a video,
+  so there's no `autoPlay` attribute: `HeroVideo` calls `play()` from an effect unless
+  `prefersReducedMotion()`. The CSS module also hides the whole layer under the media query so
+  it's right in the server HTML, and `preload="none"` keeps the hidden player from downloading.
+  A blocked autoplay (e.g. iOS Low Power Mode) leaves the poster frame up. A flat black overlay (`rgba(0,0,0,0.45)`, uniform, no gradients or fade to white, per the
+  user) dims the footage so the hero's red type and CTA sit on top of it; on desktop the tagline has
+  no halo/outline; on phones (≤860px) it gets a white glow and weight 600 (same size), since there it lands on the
+  dark table and chips, and the CTA label is centred for when the long title wraps. It fades in on `NAV_DELAY` with the rest of the hero, is `aria-hidden` decoration, and
+  `.heroInner` carries `position: relative` + `z-index: 1` to stay above it.
 - **Hero entrance choreography** lives in `lib/heroChoreography.ts`: per-letter scatter offsets
   and stagger delays for the 12-layer logo (`components/HeroLogo.tsx`, one absolutely-positioned
   PNG per letter in `public/logo/`), plus the delay constants that stagger the nav, tagline, and
   CTA fade-ins on top of it. The letters must stay PNG — each is transparent except for its own
   ink and they're alpha-stacked to spell the wordmark, so a format without alpha (JPEG) makes
-  each layer blot out the ones underneath it; the single static `LOGO_3D.jpg` (shown to repeat
-  visitors instead of the animated entrance, and reused for the OG image) doesn't have that
-  problem and is JPEG. `HeroLogo` preloads every image it needs client-side before mounting any
+  each layer blot out the ones underneath it. Repeat visitors, who skip the animated entrance,
+  get the single static `LOGO_3D.webp` instead: the 12 letters flattened in `LETTERS` order into
+  one transparent image (1200px desktop, 700px `mobile/`). It needs alpha because the hero now
+  sits on a video; the older `LOGO_3D.jpg` has a white background that showed as a box over it,
+  and is kept only for the OG image. `HeroLogo` preloads every image it needs client-side before mounting any
   of it — on a slow connection that can take a moment, so it shows a `ProgressRing` in the logo's
   place rather than starting the entrance animation on images that haven't arrived. Below the
   860px breakpoint it preloads from a downsized `public/logo/mobile/` copy instead of the
@@ -104,13 +118,14 @@ npm run lint     # eslint (eslint-config-next, flat config)
   points at `/releases/las-olas?site=1` and needs no change.
 - **New-single promo section** (the `pl-release` screen in `HomeClient.tsx`): full-height panel
   directly below the hero — video frame on the left, kicker/headline/body/CTA on the right, copy
-  from `dict.home.release*`. It was commented out from July 2026 until the August release and was
-  restored on 2026-08-19 to front **Las Olas**. The frame plays the Las Olas visualizer
-  (`PROMO_VIDEO_ID` in `HomeClient.tsx`, also wired into the `/videos` grid and as the `las-olas`
-  entry's `embed` in `lib/releases.ts`), replacing the stock YouTube placeholder the section
-  originally shipped with. **The copy is written for launch day (2026-08-20), not the day it was
-  authored** — it says the single is out now and the CTA goes to
-  `/releases/las-olas?site=1`, so this is staged to deploy on release day rather than before it.
+  from `dict.home.release*`. Since 2026-10-21 it fronts **Sería Más Fácil Odiarte**, the same
+  release as the hero (`PROMO_RELEASE_SLUG`). It fronted Las Olas from 2026-08-19, when it was
+  restored after being commented out from July. The frame no longer hardcodes a YouTube id: it
+  plays the release's `embed` from `lib/releases.ts`, so the video lives in one place for both
+  `/releases/[slug]` and the home page. Until the release has an `embed`, the frame shows its square
+  cover art (`.coverFrame`) instead. **The current copy is pre-release** ("out October 23",
+  presave CTA, matching the release page's ditto.fm presave link), so it needs a release-day
+  pass along with the DSP links. The CTA goes to `/releases/seria-mas-facil-odiarte?site=1`.
   The `?site=1` matters: `/releases/[slug]` is a chrome-less smart link by default (built for
   bio-links and ads), so an on-site button that omits the param strands the visitor on a page
   with no nav or footer. Any link to a release page *from inside the site* should carry it — the
@@ -118,10 +133,9 @@ npm run lint     # eslint (eslint-config-next, flat config)
   stacked-and-centred below it — the breakpoint is written out explicitly in `page.module.css`
   because the old `auto-fit` track list collapsed at an implicit ~805px, leaving nowhere to hang
   the stacked styles, so the copy sat left-anchored on mobile while the hero and mailing-list
-  screens either side of it were centred. Restoring the section also gave
-  the hero's `ScrollArrow` its `pl-release` target back; the arrow that lands on the mailing list
-  now uses a `scrollToJoin` label instead of the stale "scroll to photos" one (the photo collage
-  it named is still disabled).
+  screens either side of it were centred. The hero's `ScrollArrow` targets `pl-release`; the
+  arrow that lands on the mailing list uses the `scrollToJoin` label (the photo collage the old
+  "scroll to photos" label named is still disabled).
 - **Photo collage** (`components/PhotoCollage.tsx`): `lib/photoSets.ts` defines three sets of 8
   positioned photo placeholders that loop continuously and cross-fade on a 16s cycle, offset by a
   third of the cycle per set so the section is never empty.

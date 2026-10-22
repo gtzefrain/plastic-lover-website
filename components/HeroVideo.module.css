@@ -1,0 +1,39 @@
+.wrap {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  opacity: 0;
+}
+
+/* `cover` crops the 4:3-ish clip to whatever the viewport is. Centred on the table between the
+   two of them, which is where the wordmark sits, so the people stay in frame on wide screens
+   (top/bottom crop) and the table stays centred on phones (side crop). */
+.video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 55%;
+  display: block;
+}
+
+/* One flat, uniform black tint over the whole clip — no gradients, no fade to white — so the
+   footage sits back and the hero's red type and CTA read on top of it. */
+.scrim {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+}
+
+/* Reduced motion gets no footage at all — just the page background, like the old hero. Hidden
+   here rather than in JS so it's right in the server HTML with no flash, and the <video> is
+   `preload="none"` so a hidden player never downloads anything (HeroVideo only calls play() when
+   motion is allowed). */
+@media (prefers-reduced-motion: reduce) {
+  .wrap {
+    display: none;
+  }
+}

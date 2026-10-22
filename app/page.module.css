@@ -17,7 +17,7 @@
 
 .heroInner {
   flex: 1;
-  /* Lifts the hero content above HeroWaves, which is absolutely positioned and
+  /* Lifts the hero content above HeroVideo, which is absolutely positioned and
      would otherwise paint over this non-positioned block. */
   position: relative;
   z-index: 1;
@@ -28,9 +28,7 @@
   justify-content: center;
   /* The extra bottom padding pulls the centred stack (logo, tagline, CTA) up
      off the exact vertical middle by half its value — padding rather than a
-     transform so the block stays in normal flow. HeroWaves' `bottom` offset
-     lifts the sea by the same amount, so the waterline keeps its distance
-     below the CTA. */
+     transform so the block stays in normal flow. */
   padding: 0 24px 8vh;
 }
 
@@ -53,6 +51,25 @@
 .ctaWrap {
   opacity: 0;
   margin-top: 24px;
+}
+
+/* Phones (SiteNav's 860px breakpoint): the tagline lands on the darkest part of HeroVideo — the
+   table and chips under the black overlay — so it gets a white glow and a heavier weight there
+   (same size: the user didn't want it enlarged; a lighter glow alone wasn't readable). The CTA label
+   is centred because the long release title can wrap onto two lines in the button, and the
+   wrapped lines otherwise sit left-aligned. */
+@media (max-width: 860px) {
+  .taglineText {
+    font-weight: 600;
+    text-shadow:
+      0 0 3px rgba(255, 255, 255, 0.9),
+      0 0 8px rgba(255, 255, 255, 0.75),
+      0 0 16px rgba(255, 255, 255, 0.5);
+  }
+
+  .ctaWrap {
+    text-align: center;
+  }
 }
 
 .release {
@@ -86,6 +103,21 @@
   width: 100%;
   height: 100%;
   border: none;
+  display: block;
+}
+
+/* Before the release has a video, the frame holds its square cover art instead — capped so it
+   doesn't tower over the copy column beside it. */
+.coverFrame {
+  aspect-ratio: 1;
+  max-width: 480px;
+  justify-self: center;
+}
+
+.coverFrame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   display: block;
 }
 

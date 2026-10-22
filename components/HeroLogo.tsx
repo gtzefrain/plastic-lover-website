@@ -36,8 +36,10 @@ export default function HeroLogo({ skipEntrance = false }: HeroLogoProps) {
   useEffect(() => {
     const mobile = window.matchMedia(MOBILE_QUERY).matches;
     const base = mobile ? "/logo/mobile" : "/logo";
+    // The static logo is the 12 letter PNGs pre-flattened into one transparent WebP — not
+    // LOGO_3D.jpg, whose white background showed as a box over the hero video.
     const urls = skipEntrance
-      ? [`${base}/LOGO_3D.jpg`]
+      ? [`${base}/LOGO_3D.webp`]
       : LETTERS.map(([src]) => `${base}/${src}`);
     const total = urls.length;
 

@@ -1,6 +1,6 @@
 /* One tile of the row that scrolls under `lasWave`. The default 50% is the
    /las-olas case: two copies in a 200%-wide row, i.e. one viewport width each.
-   A consumer that wants a viewport-independent wave (see HeroWaves) overrides
+   A consumer that wants a viewport-independent wave can override
    `--pl-crest-width` with a fixed px width instead. */
 .waveSvg {
   width: var(--pl-crest-width, 50%);

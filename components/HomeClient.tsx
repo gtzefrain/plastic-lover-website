@@ -4,20 +4,23 @@ import { useEffect, useState } from "react";
 import Button from "@/components/Button";
 import Footer from "@/components/Footer";
 import HeroLogo from "@/components/HeroLogo";
-import HeroWaves from "@/components/HeroWaves";
+import HeroVideo from "@/components/HeroVideo";
 import MailingListForm from "@/components/MailingListForm";
 // TODO: re-enable once PhotoCollage is back (see below)
 // import PhotoCollage from "@/components/PhotoCollage";
 import ScrollArrow from "@/components/ScrollArrow";
 import SiteNav from "@/components/SiteNav";
 import { getDictionary, type Locale } from "@/lib/i18n/dictionaries";
+import { RELEASES } from "@/lib/releases";
 import { CTA_DELAY, NAV_DELAY, TAGLINE_DELAY } from "@/lib/heroChoreography";
 import { prefersReducedMotion } from "@/lib/motion";
 import styles from "@/app/page.module.css";
 
-// "Las Olas - Plastic Lover (Visualizer)" on youtube.com/@myplasticlover — the promo section's
-// video frame.
-const PROMO_VIDEO_ID = "M33BJUQeDCM";
+// The release the hero and the promo section front. The promo frame plays that release's `embed`
+// video — the same one its /releases page uses — and shows the cover until it has one.
+const PROMO_RELEASE_SLUG = "seria-mas-facil-odiarte";
+const promoRelease = RELEASES.find((r) => r.slug === PROMO_RELEASE_SLUG)!;
+const PROMO_HREF = `/releases/${PROMO_RELEASE_SLUG}?site=1`;
 
 const HERO_SEEN_COOKIE = "pl_hero_seen";
 const HERO_SEEN_MAX_AGE = 60 * 60 * 24 * 365; // 1 year
@@ -54,7 +57,7 @@ export default function HomeClient({ heroSeen, locale }: HomeClientProps) {
 
       <main id="main-content">
         <div data-screen-label="Hero" className={styles.hero}>
-        <HeroWaves key={`waves-${run}`} entranceDelay={navDelay} />
+        <HeroVideo key={`video-${run}`} entranceDelay={navDelay} />
 
         <div className={styles.heroInner}>
           <HeroLogo key={`hero-${run}-${heroPlaying}`} skipEntrance={!heroPlaying} />
@@ -67,7 +70,9 @@ export default function HomeClient({ heroSeen, locale }: HomeClientProps) {
               animationDelay: taglineDelay,
             }}
           >
-            <h1 className={styles.taglineText}>{dict.home.tagline}</h1>
+            <h1 className={styles.taglineText} lang="es">
+              {dict.home.tagline}
+            </h1>
           </div>
 
           <div
@@ -78,7 +83,9 @@ export default function HomeClient({ heroSeen, locale }: HomeClientProps) {
               animationDelay: ctaDelay,
             }}
           >
-            <Button href="/las-olas">{dict.home.heroCta}</Button>
+            <Button href={PROMO_HREF} lang="es">
+              {dict.home.heroCta}
+            </Button>
           </div>
         </div>
 
@@ -92,20 +99,26 @@ export default function HomeClient({ heroSeen, locale }: HomeClientProps) {
 
       <div data-screen-label="New Single" id="pl-release" className={styles.release}>
         <div className={styles.releaseGrid}>
-          <div className={styles.videoFrame}>
-            <iframe
-              src={`https://www.youtube.com/embed/${PROMO_VIDEO_ID}`}
-              title={dict.home.releaseVideoTitle}
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-              loading="lazy"
-            />
-          </div>
+          {promoRelease.embed ? (
+            <div className={styles.videoFrame}>
+              <iframe
+                src={`https://www.youtube.com/embed/${promoRelease.embed.videoId}`}
+                title={dict.home.releaseVideoTitle}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                loading="lazy"
+              />
+            </div>
+          ) : (
+            <div className={`${styles.videoFrame} ${styles.coverFrame}`}>
+              <img src={promoRelease.cover} alt={`${promoRelease.title} cover art`} loading="lazy" />
+            </div>
+          )}
           <div className={styles.releaseCopy}>
             <div className={styles.kicker}>{dict.home.releaseKicker}</div>
             <h2 className={styles.releaseHeadline}>{dict.home.releaseHeadline}</h2>
             <div className={styles.releaseBody}>{dict.home.releaseBody}</div>
-            <Button href="/releases/las-olas?site=1">{dict.home.releaseCta}</Button>
+            <Button href={PROMO_HREF}>{dict.home.releaseCta}</Button>
           </div>
         </div>
 

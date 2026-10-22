@@ -42,3 +42,18 @@
   cursor: pointer;
   padding: 0;
 }
+
+/* The replay control is just the ↻ glyph, so it's sized up from the 11px text links and given a
+   44px tap target. The negative block margin keeps that target from making the footer taller, and
+   the glyph sits at the target's right edge so it still lines up with the page gutter. */
+.replay {
+  font-size: 22px;
+  letter-spacing: 0;
+  line-height: 1;
+  min-width: 44px;
+  min-height: 44px;
+  margin-block: -12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+}

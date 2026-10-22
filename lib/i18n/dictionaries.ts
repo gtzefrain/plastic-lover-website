@@ -163,19 +163,22 @@ const dictionaries: Record<Locale, Dictionary> = {
     },
     footer: {
       home: "← HOME",
-      replay: "↻ REPLAY",
+      // Screen-reader label (and tooltip) for the icon-only ↻ button — not shown on screen.
+      replay: "Replay",
     },
     home: {
-      tagline: "New single out now. Listen now!",
-      heroCta: "LAS OLAS",
+      // The headline and CTA are a lyric and the song title, so they stay in Spanish in both locales
+      // (HomeClient marks them lang="es").
+      tagline: "aún siento algo por ti pero…",
+      heroCta: "SERÍA MÁS FÁCIL ODIARTE",
       scrollToRelease: "Scroll to the new single",
       scrollToPhotos: "Scroll to photos",
       scrollToJoin: "Scroll to the mailing list",
       releaseKicker: "NEW SINGLE",
-      releaseHeadline: "Las Olas — the new single, out now.",
-      releaseBody: "Hit play on the visualizer, then take it with you — streaming on every platform.",
-      releaseCta: "STREAM IT NOW",
-      releaseVideoTitle: "Plastic Lover — Las Olas [Visualizer]",
+      releaseHeadline: "Sería Más Fácil Odiarte — the new single with Ivan Ivengo, out October 23.",
+      releaseBody: "Presave it now and it'll be in your library the moment it drops.",
+      releaseCta: "PRESAVE NOW",
+      releaseVideoTitle: "Plastic Lover & Ivan Ivengo — Sería Más Fácil Odiarte",
     },
     mailingList: {
       kicker: "MAILING LIST",
@@ -301,19 +304,19 @@ const dictionaries: Record<Locale, Dictionary> = {
     },
     footer: {
       home: "← INICIO",
-      replay: "↻ REPETIR",
+      replay: "Repetir",
     },
     home: {
-      tagline: "Nuevo sencillo ya disponible. Escúchalo.",
-      heroCta: "LAS OLAS",
+      tagline: "aún siento algo por ti pero…",
+      heroCta: "SERÍA MÁS FÁCIL ODIARTE",
       scrollToRelease: "Ir al nuevo sencillo",
       scrollToPhotos: "Ir a las fotos",
       scrollToJoin: "Ir a la lista de correo",
       releaseKicker: "NUEVO SENCILLO",
-      releaseHeadline: "Las Olas — el nuevo sencillo, ya disponible.",
-      releaseBody: "Dale play al visualizer y llévate la canción contigo — en todas las plataformas.",
-      releaseCta: "ESCÚCHALO YA",
-      releaseVideoTitle: "Plastic Lover — Las Olas [Visualizer]",
+      releaseHeadline: "Sería Más Fácil Odiarte — el nuevo sencillo con Ivan Ivengo, sale el 23 de octubre.",
+      releaseBody: "Guárdalo ya y estará en tu biblioteca en cuanto salga.",
+      releaseCta: "GUÁRDALO YA",
+      releaseVideoTitle: "Plastic Lover & Ivan Ivengo — Sería Más Fácil Odiarte",
     },
     mailingList: {
       kicker: "LISTA DE CORREO",

@@ -74,8 +74,15 @@ export default function Footer({ onReplay, entranceDelay, locale = "en" }: Foote
 
       <div className={styles.right}>
         {onReplay ? (
-          <button type="button" onClick={onReplay} className={styles.rightLink}>
-            {dict.footer.replay}
+          // Icon-only on screen: the word stays as the button's accessible name (and hover tooltip).
+          <button
+            type="button"
+            onClick={onReplay}
+            className={`${styles.rightLink} ${styles.replay}`}
+            title={dict.footer.replay}
+          >
+            <span aria-hidden="true">↻</span>
+            <span className="visually-hidden">{dict.footer.replay}</span>
           </button>
         ) : (
           <Link href="/" className={styles.rightLink}>

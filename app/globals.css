@@ -376,19 +376,6 @@ ol {
   }
 }
 
-/* The home hero's background sea (components/HeroWaves.tsx). Unlike `lasWave`'s
-   viewport-relative -50%, this slides a fixed two tiles (2 × 1272px), so the
-   sea scrolls at the same speed on every screen and the tile count can grow to
-   cover ultrawides without changing that speed. */
-@keyframes plHeroWave {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-2544px);
-  }
-}
-
 /* Las Olas secret page (/las-olas) */
 @keyframes lasRing {
   from {
