@@ -242,8 +242,9 @@ same way Las Olas was, so it needs a release-day pass:
   Spotify CDN cover — the raw GitHub host is slow (see the LCP note above). Until the file is on
   `main`, that URL 404s; `opengraph-image.tsx` now checks `res.ok` and renders the card without
   art instead of failing the whole build, which it previously would have.
-- No YouTube video yet: add `embed` on the release and `videoId` on the press kit when it exists.
-  `PressKit.videoId` is new — the press page used to hardcode one embed (`QfgRF2Kfsos`, the Las
+- Two different videos: the press kit's `videoId` is an EPK-only video (`2GyIjIxQaZs`, added
+  2026-10-21); the release page's `embed` is a separate video that's still to come — don't copy the
+  EPK one over. `PressKit.videoId` is new — the press page used to hardcode one embed (`QfgRF2Kfsos`, the Las
   Olas video) for every kit; now a kit without one renders its `content` full width.
 
 ### Las Olas press kit — known placeholders

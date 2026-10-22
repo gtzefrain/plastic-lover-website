@@ -34,7 +34,8 @@ export const RELEASES: Release[] = [
     // (see README: raw.githubusercontent.com is slow, it was an LCP problem for Las Olas).
     cover:
       "https://raw.githubusercontent.com/gtzefrain/plastic-lover-website/main/public/press/seria-mas-facil-odiarte/cover-web.jpg",
-    // No `embed` yet — the video ID is still to come.
+    // No `embed` yet — the release-page video is still to come. (2GyIjIxQaZs is the EPK-only
+    // video, see lib/press.ts — don't reuse it here.)
     links: [
       // PRE-RELEASE: ditto.fm presave landing page. Replace with real per-DSP links on release day.
       { label: "Presave", href: "https://ditto.fm/seria-mas-facil-odiarte" },

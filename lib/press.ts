@@ -94,7 +94,9 @@ export const PRESS_KITS: PressKit[] = [
       src: "/press/seria-mas-facil-odiarte/cover-web.jpg",
       alt: "Sería Más Fácil Odiarte cover art: Plastic Lover and Ivan Ivengo slumped over a card table of poker chips",
     },
-    // No `videoId` yet — video still to come.
+    // EPK-only video — the release page gets a different one (still to come), so this is
+    // deliberately not mirrored into lib/releases.ts's `embed`.
+    videoId: "2GyIjIxQaZs",
   },
 ];
 
@@ -156,6 +158,31 @@ export const PRESS_PHOTOS: PressPhoto[] = [
     downloadSrc: "/press/portraits/IMG_6544.JPG",
     alt: "Plastic Lover performing live on guitar under blue stage lighting",
     category: "Portrait",
+    credit: "Photo: Pablo Barrera",
+  },
+  // "Sería Más Fácil Odiarte" category — cover art plus two shots from the cover shoot, supplied by
+  // Efraín in public/press/seria-mas-facil-odiarte/. Placed before "Las Olas" so the newest release
+  // shows first on /press/photos (categories render in array order). Web-sized copies are
+  // `sips -Z 1600`; the cover's web copy is cover-web.jpg (1000px). Shot by Pablo Barrera.
+  {
+    src: "/press/seria-mas-facil-odiarte/cover-web.jpg",
+    downloadSrc: "/press/seria-mas-facil-odiarte/cover.jpg",
+    alt: "Sería Más Fácil Odiarte cover art: Plastic Lover and Ivan Ivengo slumped over a card table of poker chips",
+    category: "Sería Más Fácil Odiarte",
+    credit: "Photo: Pablo Barrera",
+  },
+  {
+    src: "/press/seria-mas-facil-odiarte/web-dscf6694.jpg",
+    downloadSrc: "/press/seria-mas-facil-odiarte/DSCF6694_clean_v2.jpg",
+    alt: "Plastic Lover and Ivan Ivengo in denim and sunglasses, leaning on a small card table covered in poker chips, a draped figure between them",
+    category: "Sería Más Fácil Odiarte",
+    credit: "Photo: Pablo Barrera",
+  },
+  {
+    src: "/press/seria-mas-facil-odiarte/web-dscf6704.jpg",
+    downloadSrc: "/press/seria-mas-facil-odiarte/DSCF6704_clean_v2.jpg",
+    alt: "Plastic Lover and Ivan Ivengo eyeing each other across a card table of poker chips against a white backdrop",
+    category: "Sería Más Fácil Odiarte",
     credit: "Photo: Pablo Barrera",
   },
   // "Las Olas" category — stills captured from the music video (VLC screenshots), uploaded to
