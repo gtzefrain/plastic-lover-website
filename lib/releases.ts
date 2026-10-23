@@ -21,24 +21,43 @@ export const RELEASES: Release[] = [
   {
     slug: "seria-mas-facil-odiarte",
     title: "Sería Más Fácil Odiarte",
-    // Co-written with Ivan Ivengo, but a Plastic Lover release — so main discography, no
+    // Co-written with Iván Ivengo, but a Plastic Lover release — so main discography, no
     // `collaboration` flag (unlike "hair down" / "Corriendo Hacia Ti", which are the other
     // artist's releases).
-    artist: "Plastic Lover & Ivan Ivengo",
-    // Releases Friday, October 23, 2026.
+    artist: "Plastic Lover & Iván Ivengo",
+    // Out now — released Friday, October 23, 2026.
     meta: "Single — 2026",
-    // PRE-RELEASE placeholder, same approach Las Olas used before its release day: GitHub's raw
-    // content CDN for public/press/seria-mas-facil-odiarte/cover-web.jpg (1000px, ~180KB). Not a
-    // plasticlover.mx URL — opengraph-image.tsx fetches this during the build, and a self-reference
-    // 404s in the very build that adds the file. Swap for the Spotify CDN cover on release day
-    // (see README: raw.githubusercontent.com is slow, it was an LCP problem for Las Olas).
-    cover:
-      "https://raw.githubusercontent.com/gtzefrain/plastic-lover-website/main/public/press/seria-mas-facil-odiarte/cover-web.jpg",
-    // No `embed` yet — the release-page video is still to come. (2GyIjIxQaZs is the EPK-only
-    // video, see lib/press.ts — don't reuse it here.)
+    // Spotify's CDN cover, same source as the other released singles. (Before release this pointed
+    // at GitHub's raw content CDN for public/press/seria-mas-facil-odiarte/cover-web.jpg — see the
+    // Las Olas entry below for why it couldn't be a plasticlover.mx self-reference.)
+    cover: "https://i.scdn.co/image/ab67616d0000b2739c8bd346ca9062d34f29474d",
+    // The visualizer on the band's channel, added on release day (2026-10-23). Also plays in the
+    // home page's promo section. (2GyIjIxQaZs is the separate EPK-only video, see lib/press.ts.)
+    embed: {
+      provider: "youtube",
+      videoId: "-X24_YuKSZo",
+    },
     links: [
-      // PRE-RELEASE: ditto.fm presave landing page. Replace with real per-DSP links on release day.
-      { label: "Presave", href: "https://ditto.fm/seria-mas-facil-odiarte" },
+      // Real per-DSP links, replacing the ditto.fm presave link.
+      { label: "Spotify", href: "https://open.spotify.com/album/1NiESjCYTuqBK1QRuFB9hl" },
+      {
+        label: "Apple Music",
+        href: "https://music.apple.com/mx/album/seria-mas-facil-odiarte-single/6821863903",
+      },
+      // The visualizer on the band's channel (same video as `embed` above), and the auto-generated
+      // Topic release on YouTube Music — two destinations on purpose, as with Las Olas.
+      { label: "YouTube", href: "https://www.youtube.com/watch?v=-X24_YuKSZo" },
+      {
+        label: "YouTube Music",
+        href: "https://music.youtube.com/playlist?list=OLAK5uy_l48OotF1gYcgnarOMVWji4jo7zZSXZVik",
+      },
+      { label: "Deezer", href: "https://www.deezer.com/album/1119465102" },
+      { label: "Tidal", href: "https://tidal.com/album/569148522" },
+      // `es-es` storefront, as shared by the user — resolves directly.
+      {
+        label: "Qobuz",
+        href: "https://www.qobuz.com/es-es/album/seria-mas-facil-odiarte-plastic-lover-ivan-ivengo/h6ufg3rorbzsk",
+      },
     ],
   },
   {

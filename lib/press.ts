@@ -47,11 +47,11 @@ export const PRESS_KITS: PressKit[] = [
     },
     content: {
       es: [
-        "Las Olas fue escrita por Efraín Gutiérrez junto a [Sam Vazquez](https://www.instagram.com/vamsazquez/), [Ivan Ivengo](https://www.instagram.com/ivan.ivengo/) y [Omar Guajardo](https://www.instagram.com/omaar_guajardo/), y forma parte del próximo EP de Plastic Lover, producido en su totalidad por Omar Guajardo. Las voces y la batería fueron grabadas en [El Nido Records](https://www.instagram.com/elnidorecordsmx/), con [Carlos Reyna](https://www.instagram.com/creynar_/) en la batería. El arte y diseño de la portada son de Efraín Gutiérrez, con fotografía de Pablo Barrera.",
+        "Las Olas fue escrita por Efraín Gutiérrez junto a [Sam Vazquez](https://www.instagram.com/vamsazquez/), [Iván Ivengo](https://www.instagram.com/ivan.ivengo/) y [Omar Guajardo](https://www.instagram.com/omaar_guajardo/), y forma parte del próximo EP de Plastic Lover, producido en su totalidad por Omar Guajardo. Las voces y la batería fueron grabadas en [El Nido Records](https://www.instagram.com/elnidorecordsmx/), con [Carlos Reyna](https://www.instagram.com/creynar_/) en la batería. El arte y diseño de la portada son de Efraín Gutiérrez, con fotografía de Pablo Barrera.",
         "El sencillo llega acompañado de un visualizer dirigido por [JJ Smartz](https://www.instagram.com/jjsmartz), disponible desde su lanzamiento el 20 de agosto de 2026.",
       ],
       en: [
-        "Las Olas was written by Efraín Gutiérrez alongside [Sam Vazquez](https://www.instagram.com/vamsazquez/), [Ivan Ivengo](https://www.instagram.com/ivan.ivengo/), and [Omar Guajardo](https://www.instagram.com/omaar_guajardo/), and is part of Plastic Lover's upcoming EP, produced entirely by Omar Guajardo. Vocals and drums were recorded at [El Nido Records](https://www.instagram.com/elnidorecordsmx/), with [Carlos Reyna](https://www.instagram.com/creynar_/) on drums. Cover art and design are by Efraín Gutiérrez, with photography by Pablo Barrera.",
+        "Las Olas was written by Efraín Gutiérrez alongside [Sam Vazquez](https://www.instagram.com/vamsazquez/), [Iván Ivengo](https://www.instagram.com/ivan.ivengo/), and [Omar Guajardo](https://www.instagram.com/omaar_guajardo/), and is part of Plastic Lover's upcoming EP, produced entirely by Omar Guajardo. Vocals and drums were recorded at [El Nido Records](https://www.instagram.com/elnidorecordsmx/), with [Carlos Reyna](https://www.instagram.com/creynar_/) on drums. Cover art and design are by Efraín Gutiérrez, with photography by Pablo Barrera.",
         "The single arrives with a visualizer directed by [JJ Smartz](https://www.instagram.com/jjsmartz), out since its release on August 20, 2026.",
       ],
     },
@@ -73,15 +73,15 @@ export const PRESS_KITS: PressKit[] = [
     // tenemos una nueva Avanzada Regia", which lists Iván Ivengo among Monterrey names to follow);
     // `en` is a translation of it.
     bio: {
-      es: "«Sería más fácil odiarte» es el nuevo sencillo de Plastic Lover, proyecto indie pop de Monterrey. Es un desamor contado con groove: relajado, luminoso y optimista, con una confianza que la letra no termina de creerse. La canción vive en esa contradicción entre querer soltar y no poder del todo, y la resuelve bailando en lugar de llorando. Coescrita con [Ivan Ivengo](https://www.instagram.com/ivan.ivengo/) —seleccionado este año en Fresh Finds de Spotify y señalado por [Rolling Stone en Español](https://es.rollingstone.com/es-oficial-tenemos-una-nueva-avanzada-regia/) entre los nombres a seguir de la nueva Avanzada Regia— y producida por Omar Guajardo, continúa la historia que abrió «Las Olas» y deja ver el rumbo del próximo EP.",
-      en: "“Sería más fácil odiarte” (“It Would Be Easier to Hate You”) is the new single from Plastic Lover, an indie pop project from Monterrey. It's heartbreak told with groove: laid-back, bright, and optimistic, with a confidence the lyrics don't quite buy. The song lives in that contradiction between wanting to let go and not quite being able to, and it resolves it by dancing instead of crying. Co-written with [Ivan Ivengo](https://www.instagram.com/ivan.ivengo/) — picked for Spotify's Fresh Finds this year and named by [Rolling Stone en Español](https://es.rollingstone.com/es-oficial-tenemos-una-nueva-avanzada-regia/) among the artists to watch in Monterrey's new Avanzada Regia — and produced by Omar Guajardo, it picks up the story “Las Olas” began and hints at where the upcoming EP is headed.",
+      es: "«Sería más fácil odiarte» es el nuevo sencillo de Plastic Lover, proyecto indie pop de Monterrey. Es un desamor contado con groove: relajado, luminoso y optimista, con una confianza que la letra no termina de creerse. La canción vive en esa contradicción entre querer soltar y no poder del todo, y la resuelve bailando en lugar de llorando. Coescrita con [Iván Ivengo](https://www.instagram.com/ivan.ivengo/) —seleccionado este año en Fresh Finds de Spotify y señalado por [Rolling Stone en Español](https://es.rollingstone.com/es-oficial-tenemos-una-nueva-avanzada-regia/) entre los nombres a seguir de la nueva Avanzada Regia— y producida por Omar Guajardo, continúa la historia que abrió «Las Olas» y deja ver el rumbo del próximo EP.",
+      en: "“Sería más fácil odiarte” (“It Would Be Easier to Hate You”) is the new single from Plastic Lover, an indie pop project from Monterrey. It's heartbreak told with groove: laid-back, bright, and optimistic, with a confidence the lyrics don't quite buy. The song lives in that contradiction between wanting to let go and not quite being able to, and it resolves it by dancing instead of crying. Co-written with [Iván Ivengo](https://www.instagram.com/ivan.ivengo/) — picked for Spotify's Fresh Finds this year and named by [Rolling Stone en Español](https://es.rollingstone.com/es-oficial-tenemos-una-nueva-avanzada-regia/) among the artists to watch in Monterrey's new Avanzada Regia — and produced by Omar Guajardo, it picks up the story “Las Olas” began and hints at where the upcoming EP is headed.",
     },
     content: {
       es: [
-        "«Sería más fácil odiarte» fue escrita por Efraín Gutiérrez, Gerardo Martínez y [Omar Guajardo](https://www.instagram.com/omaar_guajardo/), con producción de Omar Guajardo. Sale el viernes 23 de octubre de 2026.",
+        "«Sería más fácil odiarte» fue escrita por Efraín Gutiérrez, Gerardo Martínez y [Omar Guajardo](https://www.instagram.com/omaar_guajardo/), con producción de Omar Guajardo. Salió el viernes 23 de octubre de 2026.",
       ],
       en: [
-        "“Sería más fácil odiarte” was written by Efraín Gutiérrez, Gerardo Martínez, and [Omar Guajardo](https://www.instagram.com/omaar_guajardo/), and produced by Omar Guajardo. It's out Friday, October 23, 2026.",
+        "“Sería más fácil odiarte” was written by Efraín Gutiérrez, Gerardo Martínez, and [Omar Guajardo](https://www.instagram.com/omaar_guajardo/), and produced by Omar Guajardo. It came out Friday, October 23, 2026.",
       ],
     },
     // Real master audio, supplied by Efraín.
@@ -92,7 +92,7 @@ export const PRESS_KITS: PressKit[] = [
     // Official single cover art; full-res original is cover.jpg (3000px) next to it.
     heroImage: {
       src: "/press/seria-mas-facil-odiarte/cover-web.jpg",
-      alt: "Sería Más Fácil Odiarte cover art: Plastic Lover and Ivan Ivengo slumped over a card table of poker chips",
+      alt: "Sería Más Fácil Odiarte cover art: Plastic Lover and Iván Ivengo slumped over a card table of poker chips",
     },
     // EPK-only video — the release page gets a different one (still to come), so this is
     // deliberately not mirrored into lib/releases.ts's `embed`.
@@ -167,21 +167,21 @@ export const PRESS_PHOTOS: PressPhoto[] = [
   {
     src: "/press/seria-mas-facil-odiarte/cover-web.jpg",
     downloadSrc: "/press/seria-mas-facil-odiarte/cover.jpg",
-    alt: "Sería Más Fácil Odiarte cover art: Plastic Lover and Ivan Ivengo slumped over a card table of poker chips",
+    alt: "Sería Más Fácil Odiarte cover art: Plastic Lover and Iván Ivengo slumped over a card table of poker chips",
     category: "Sería Más Fácil Odiarte",
     credit: "Photo: Pablo Barrera",
   },
   {
     src: "/press/seria-mas-facil-odiarte/web-dscf6694.jpg",
     downloadSrc: "/press/seria-mas-facil-odiarte/DSCF6694_clean_v2.jpg",
-    alt: "Plastic Lover and Ivan Ivengo in denim and sunglasses, leaning on a small card table covered in poker chips, a draped figure between them",
+    alt: "Plastic Lover and Iván Ivengo in denim and sunglasses, leaning on a small card table covered in poker chips, a draped figure between them",
     category: "Sería Más Fácil Odiarte",
     credit: "Photo: Pablo Barrera",
   },
   {
     src: "/press/seria-mas-facil-odiarte/web-dscf6704.jpg",
     downloadSrc: "/press/seria-mas-facil-odiarte/DSCF6704_clean_v2.jpg",
-    alt: "Plastic Lover and Ivan Ivengo eyeing each other across a card table of poker chips against a white backdrop",
+    alt: "Plastic Lover and Iván Ivengo eyeing each other across a card table of poker chips against a white backdrop",
     category: "Sería Más Fácil Odiarte",
     credit: "Photo: Pablo Barrera",
   },

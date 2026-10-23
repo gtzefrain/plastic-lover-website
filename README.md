@@ -122,8 +122,9 @@ npm run lint     # eslint (eslint-config-next, flat config)
   release as the hero (`PROMO_RELEASE_SLUG`). It fronted Las Olas from 2026-08-19, when it was
   restored after being commented out from July. The frame no longer hardcodes a YouTube id: it
   plays the release's `embed` from `lib/releases.ts`, so the video lives in one place for both
-  `/releases/[slug]` and the home page. Until the release has an `embed`, the frame shows its square
-  cover art (`.coverFrame`) instead. **The current copy is pre-release** ("out October 23",
+  `/releases/[slug]` and the home page. Until a release has an `embed`, the frame shows its square
+  cover art (`.coverFrame`) instead. That fallback is now dormant: the visualizer (`-X24_YuKSZo`)
+  went in on release day, 2026-10-23. **The current copy is pre-release** ("out October 23",
   presave CTA, matching the release page's ditto.fm presave link), so it needs a release-day
   pass along with the DSP links. The CTA goes to `/releases/seria-mas-facil-odiarte?site=1`.
   The `?site=1` matters: `/releases/[slug]` is a chrome-less smart link by default (built for
@@ -244,22 +245,26 @@ npm run lint     # eslint (eslint-config-next, flat config)
   for the stream section's preview track — browsers defer loading its metadata until the user
   presses play, so a `0:00` duration before that is expected, not a bug.
 
-### Sería Más Fácil Odiarte — pre-release state (releases 2026-10-23)
+### Sería Más Fácil Odiarte — released 2026-10-23
 
-Added 2026-10-20 as a `RELEASES` entry (main discography: co-written with Ivan Ivengo but a
-Plastic Lover release, so no `collaboration` flag) plus a `PressKit`. Built ahead of release the
-same way Las Olas was, so it needs a release-day pass:
+Added 2026-10-20 as a `RELEASES` entry (main discography: co-written with Iván Ivengo but a
+Plastic Lover release, so no `collaboration` flag) plus a `PressKit`, built ahead of release the
+same way Las Olas was. The release-day pass (2026-10-23) did the following:
 
-- `links` is a single ditto.fm **Presave** link — replace with real per-DSP links.
-- `cover` points at `raw.githubusercontent.com/.../public/press/seria-mas-facil-odiarte/cover-web.jpg`
-  (not plasticlover.mx, which 404s during the very build that adds the file). Swap for the
-  Spotify CDN cover — the raw GitHub host is slow (see the LCP note above). Until the file is on
-  `main`, that URL 404s; `opengraph-image.tsx` now checks `res.ok` and renders the card without
-  art instead of failing the whole build, which it previously would have.
-- Two different videos: the press kit's `videoId` is an EPK-only video (`2GyIjIxQaZs`, added
-  2026-10-21); the release page's `embed` is a separate video that's still to come — don't copy the
-  EPK one over. `PressKit.videoId` is new — the press page used to hardcode one embed (`QfgRF2Kfsos`, the Las
-  Olas video) for every kit; now a kit without one renders its `content` full width.
+- `links`: the ditto.fm **Presave** link was replaced with Spotify, Apple Music, YouTube (the
+  visualizer), YouTube Music (Topic playlist), Deezer, Tidal and Qobuz (`es-es` storefront).
+- `cover`: moved from the slow `raw.githubusercontent.com` placeholder to Spotify's CDN.
+  `opengraph-image.tsx` still checks `res.ok` and renders the card without art if a cover URL
+  404s, rather than failing the whole build.
+- `embed`: the visualizer `-X24_YuKSZo` (also in the `/videos` grid, pinned first). It's
+  separate from the press kit's EPK-only `videoId` (`2GyIjIxQaZs`); don't swap them.
+  `PressKit.videoId` is new: the press page used to hardcode one embed (`QfgRF2Kfsos`, the Las
+  Olas video) for every kit, and now a kit without one renders its `content` full width.
+- Home promo copy went from presave ("out October 23") to out-now, and the press kit's credits
+  paragraph went to past tense.
+- The co-writer is spelled **Iván** Ivengo (with the accent) everywhere on the site, matching
+  how the DSPs credit him. The site said "Ivan" until 2026-10-23. His Instagram handle
+  (`ivan.ivengo`) and URL slugs are unaccented, and that's correct.
 
 ### Las Olas press kit — known placeholders
 
