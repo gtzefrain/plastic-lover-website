@@ -7,6 +7,89 @@ export type Song = {
 };
 
 export const SONGS: Song[] = [
+  // Singles (2026)
+  {
+    slug: "seria-mas-facil-odiarte",
+    title: "Sería Más Fácil Odiarte",
+    // Gerardo Martínez is Iván Ivengo's legal name — credits here use real names, as in lib/press.ts.
+    authors: ["Efraín Gutiérrez", "Gerardo Martínez", "Omar Guajardo"],
+    releaseSlugs: ["seria-mas-facil-odiarte"],
+    lyrics: `Como le haré para olvidarte
+lo dejamos claro y entendí
+
+Estábamos mejor aparte
+No me queda nada para ti
+(pero aun te pienso)
+
+Dime si todo esto tiene sentido
+quiero entender me siento confundido
+Solo queda recordar
+
+Aceptar
+que fue la despedida
+C’est fini, me sacó de su vida
+Es mejor así
+
+Mejor le pusimos fin
+Tú no querías lastimarme
+Que mal que no te quedaste
+
+Aún siento algo por ti
+pero
+Sería más fácil odiarte
+Sería más fácil odiarte
+
+Cuando te pienso
+Veo destellos
+de los recuerdos
+
+Quiero saber si piensas en mí
+cuando ves al cielo
+
+Las luces de la capital
+No se comparan con la luz que tiene tu mirar
+Sería más fácil odiarte`,
+  },
+  {
+    slug: "las-olas",
+    title: "Las Olas",
+    // Same writers as lib/press.ts's Las Olas kit, with Iván Ivengo under his legal name (Gerardo
+    // Martínez) to match the Sería credits above.
+    authors: ["Efraín Gutiérrez", "Sam Vazquez", "Gerardo Martínez", "Omar Guajardo"],
+    releaseSlugs: ["las-olas"],
+    lyrics: `Debajo de una palma
+Tumbado viendo el sol caer
+Se siente bien
+
+Aunque ya te hayas ido
+Y extrañe el olor de tu piel
+Las olas me ayudaron a entender
+que el amor se pierde cuando va y viene
+
+Haces lo que quieres conmigo
+Mi corazón es testigo
+De todo el daño que me hiciste
+Ya tiré todo hasta tus ternurines
+
+No no no
+Ya no voy a pensarte más
+Me quedó un boleto para el viaje a Hawái
+Las olas me ayudaron a entender
+que el amor se pierde cuando va y viene
+
+Haces lo que quieres conmigo
+Mi corazón es testigo
+De todo el daño que me hiciste
+Ya tiré todo hasta tus ternurines
+
+Voy a dejarlo ir
+No voy a permitir que tú
+
+Hagas lo que quieres conmigo
+Mi corazón es testigo
+De todo el daño que me hiciste
+Ya tiré todo hasta tus ternurines`,
+  },
   // Cuadrado (EP, 2025)
   {
     slug: "vision",

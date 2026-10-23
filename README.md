@@ -123,7 +123,7 @@ npm run lint     # eslint (eslint-config-next, flat config)
   restored after being commented out from July. The frame no longer hardcodes a YouTube id: it
   plays the release's `embed` from `lib/releases.ts`, so the video lives in one place for both
   `/releases/[slug]` and the home page. Until a release has an `embed`, the frame shows its square
-  cover art (`.coverFrame`) instead. That fallback is now dormant: the visualizer (`-X24_YuKSZo`)
+  cover art (`.coverFrame`) instead. That fallback is now dormant: the visualizer (`4jWtrBLdZlo`)
   went in on release day, 2026-10-23. **The current copy is pre-release** ("out October 23",
   presave CTA, matching the release page's ditto.fm presave link), so it needs a release-day
   pass along with the DSP links. The CTA goes to `/releases/seria-mas-facil-odiarte?site=1`.
@@ -256,7 +256,8 @@ same way Las Olas was. The release-day pass (2026-10-23) did the following:
 - `cover`: moved from the slow `raw.githubusercontent.com` placeholder to Spotify's CDN.
   `opengraph-image.tsx` still checks `res.ok` and renders the card without art if a cover URL
   404s, rather than failing the whole build.
-- `embed`: the visualizer `-X24_YuKSZo` (also in the `/videos` grid, pinned first). It's
+- `embed`: the visualizer `4jWtrBLdZlo` (also in the `/videos` grid, pinned first). It replaced
+  the first upload, `-X24_YuKSZo`, which was taken down the same day and now 404s. It's
   separate from the press kit's EPK-only `videoId` (`2GyIjIxQaZs`); don't swap them.
   `PressKit.videoId` is new: the press page used to hardcode one embed (`QfgRF2Kfsos`, the Las
   Olas video) for every kit, and now a kit without one renders its `content` full width.

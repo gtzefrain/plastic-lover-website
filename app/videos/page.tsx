@@ -22,7 +22,7 @@ export async function generateMetadata(): Promise<Metadata> {
 // Sourced from youtube.com/@myplasticlover. The current single is pinned first; everything
 // below it is ordered by view count (most to least).
 const VIDEOS = [
-  { id: "-X24_YuKSZo", title: "Plastic Lover x Iván Ivengo - Sería Más Fácil Odiarte [Visualizer]", duration: "2:30" },
+  { id: "4jWtrBLdZlo", title: "Plastic Lover x Iván Ivengo - Sería Más Fácil Odiarte [Visualizer]", duration: "2:30" },
   { id: "1FgRCnTdwIo", title: "Plastic Lover - Visión [MV]", duration: "4:48" },
   { id: "iH14HLzseKU", title: "Plastic Lover - Detalles ft. Sam Vazquez [MV]", duration: "4:02" },
   { id: "cIzuD1r4vIQ", title: "Plastic Lover - Como Tú [Visualizer]", duration: "2:45" },

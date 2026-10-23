@@ -35,7 +35,7 @@ export const RELEASES: Release[] = [
     // home page's promo section. (2GyIjIxQaZs is the separate EPK-only video, see lib/press.ts.)
     embed: {
       provider: "youtube",
-      videoId: "-X24_YuKSZo",
+      videoId: "4jWtrBLdZlo",
     },
     links: [
       // Real per-DSP links, replacing the ditto.fm presave link.
@@ -46,7 +46,7 @@ export const RELEASES: Release[] = [
       },
       // The visualizer on the band's channel (same video as `embed` above), and the auto-generated
       // Topic release on YouTube Music — two destinations on purpose, as with Las Olas.
-      { label: "YouTube", href: "https://www.youtube.com/watch?v=-X24_YuKSZo" },
+      { label: "YouTube", href: "https://www.youtube.com/watch?v=4jWtrBLdZlo" },
       {
         label: "YouTube Music",
         href: "https://music.youtube.com/playlist?list=OLAK5uy_l48OotF1gYcgnarOMVWji4jo7zZSXZVik",
